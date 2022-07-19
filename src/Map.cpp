@@ -33,7 +33,7 @@ void Map::initMap()
     };
 }
 
-void Map::drawMap(RenderWindow & window)
+void Map::draw(RenderWindow & window)
 {
     RectangleShape Wall(Vector2f(CellSize, CellSize));
     Wall.setFillColor(Color::Blue);

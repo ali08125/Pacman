@@ -13,6 +13,6 @@ private:
 
 public:
     Map();
-    void drawMap(sf::RenderWindow & window);
+    void draw(sf::RenderWindow & window);
     
 };

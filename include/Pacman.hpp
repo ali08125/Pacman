@@ -6,6 +6,7 @@ class Pacman
 {
 private:
     sf::CircleShape player;
+    sf::Vector2f Pos;
 
 
     void initPacman();

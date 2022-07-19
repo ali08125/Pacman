@@ -6,6 +6,7 @@ using namespace sf;
 int main()
 {
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
+    window.setFramerateLimit(60);
     Map map;
 
     while (window.isOpen())
@@ -25,8 +26,7 @@ int main()
 
         window.clear();
 
-        //Draw
-        map.drawMap(window);
+        map.draw(window);
 
         window.display();
     }

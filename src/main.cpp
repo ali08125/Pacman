@@ -1,11 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include <info.hpp>
+#include <Map.hpp>
 
 using namespace sf;
 
 int main()
 {
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
+    Map map;
 
     while (window.isOpen())
     {
@@ -25,7 +26,7 @@ int main()
         window.clear();
 
         //Draw
-
+        map.drawMap(window);
 
         window.display();
     }

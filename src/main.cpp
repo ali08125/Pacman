@@ -5,7 +5,7 @@ using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(Width * Width, Height * Height), "PacMan");
+    RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
 
     while (window.isOpen())
     {
@@ -25,7 +25,7 @@ int main()
         window.clear();
 
         //Draw
-        
+
 
         window.display();
     }

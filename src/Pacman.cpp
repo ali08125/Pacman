@@ -10,8 +10,8 @@ Pacman::Pacman()
 
 void Pacman::initPacman()
 {
-    Pos.x = 0;
-    Pos.y = 0;
+    Pos.x = 9 * CellSize;
+    Pos.y = 10 * CellSize;
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
     player.setPosition(Pos);
@@ -25,7 +25,11 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::setPos(float x, float y)
 {
-    Pos.x = x * CellSize;
-    Pos.y = y * CellSize;
-    //player.setPosition(Vector2f(x * CellSize, y * CellSize));
+    Pos.x += x;
+    Pos.y += y;
+}
+
+void Pacman::move()
+{
+    setPos(1, 0);
 }

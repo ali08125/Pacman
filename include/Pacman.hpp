@@ -15,4 +15,5 @@ public:
     Pacman();
     void draw(sf::RenderWindow & window);
     void setPos(float x, float y);
+    void move();
 };

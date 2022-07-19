@@ -12,12 +12,22 @@ int main()
         Event event;
         while (window.pollEvent(event))
         {
-            if (event.Closed())
+            if (event.type == Event::Closed)
             {
                 window.close();
             }
-            
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
+            {
+                window.close();
+            }
         }
+
+        window.clear();
+
+        //Draw
+        
+
+        window.display();
     }
     
 

@@ -13,3 +13,8 @@ void Pacman::initPacman()
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
 }
+
+void Pacman::draw(RenderWindow & window)
+{
+    window.draw(player);
+}

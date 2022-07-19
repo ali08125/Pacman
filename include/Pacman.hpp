@@ -7,9 +7,10 @@ class Pacman
 private:
     sf::CircleShape player;
 
-    
+
     void initPacman();
 
 public:
     Pacman();
+    void draw(sf::RenderWindow & window);
 };

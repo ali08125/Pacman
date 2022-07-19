@@ -47,8 +47,12 @@ void Map::draw(RenderWindow & window)
             case '#':
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
                 break;
+            case 'p':
+                pacman.setPos(i, j);
+                break;
             }
             window.draw(Wall);
         }
     }
+    pacman.draw(window);
 }

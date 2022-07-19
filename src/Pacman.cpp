@@ -18,3 +18,8 @@ void Pacman::draw(RenderWindow & window)
 {
     window.draw(player);
 }
+
+void Pacman::setPos(float x, float y)
+{
+    player.setPosition(Vector2f(x * CellSize, y * CellSize));
+}

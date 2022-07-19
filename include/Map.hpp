@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include <info.hpp>
 #include <array>
 #include <iostream>
@@ -12,6 +13,6 @@ private:
 
 public:
     Map();
-    void drawMap();
+    void drawMap(sf::RenderWindow & window);
     
 };

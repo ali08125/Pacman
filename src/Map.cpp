@@ -1,5 +1,7 @@
 #include <Map.hpp>
 
+using namespace sf;
+
 Map::Map()
 {
     this->initMap();
@@ -15,7 +17,7 @@ void Map::initMap()
         "                   ",
         "              #    ",
         "              #    ",
-        "          p   #    ",
+        "              #    ",
         "              #    ",
         "                   ",
         "                   ",
@@ -31,7 +33,22 @@ void Map::initMap()
     };
 }
 
-void Map::drawMap()
+void Map::drawMap(RenderWindow & window)
 {
+    RectangleShape Wall(Vector2f(CellSize, CellSize));
+    Wall.setFillColor(Color::Blue);
 
+    for (size_t i = 0; i < Height; i++)
+    {
+        for (size_t j = 0; j < Width; j++)
+        {
+            switch (sketch[i][j])
+            {
+            case '#':
+                Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
+                break;
+            }
+            window.draw(Wall);
+        }
+    }
 }

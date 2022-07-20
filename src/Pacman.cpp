@@ -86,6 +86,16 @@ void Pacman::move(std::vector<sf::RectangleShape> Walls, float dt)
                 position.x = 0;
                 player.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);                
             }
+            // Bottom
+            else if (playerBounds.top < wallBounds.top
+                && playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
+                && playerBounds.left < wallBounds.left + wallBounds.width
+                && playerBounds.left + playerBounds.width > wallBounds.left
+            )
+            {
+                position.y = 0;
+                player.setPosition(player.getPosition().x, wallBounds.top - playerBounds.height);                
+            }
             
         }
     }

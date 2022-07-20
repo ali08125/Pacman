@@ -9,6 +9,7 @@ private:
     sf::CircleShape player;
     sf::Vector2f Pos;
     int dir;
+    int nextDir;
 
 
     void initPacman();
@@ -16,6 +17,5 @@ private:
 public:
     Pacman();
     void draw(sf::RenderWindow & window);
-    void setPos(float x, float y);
     void move(std::vector<sf::RectangleShape> Walls, float dt);
 };

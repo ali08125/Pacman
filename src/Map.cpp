@@ -25,7 +25,7 @@ void Map::initMap()
         "                   ",
         "                   ",
         "                   ",
-        "                   ",
+        "        #          ",
         "                   ",
         "                   ",
         "                   ",
@@ -46,13 +46,17 @@ void Map::draw(RenderWindow & window)
             {
             case '#':
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
-                break;
-            case 'p':
-                pacman.setPos(i, j);
+                Walls.push_back(Wall);
                 break;
             }
-            window.draw(Wall);
         }
     }
+
+    for(auto & a : Walls)
+    {
+        window.draw(a);
+    }
+    
+    pacman.move();
     pacman.draw(window);
 }

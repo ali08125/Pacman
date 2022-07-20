@@ -15,12 +15,12 @@ void Map::initMap()
         "                   ",
         "                   ",
         "                   ",
+        "            # #    ",
+        "            # #    ",
+        "            # #    ",
+        "         #### #### ",
         "              #    ",
         "              #    ",
-        "              #    ",
-        "              #    ",
-        "                   ",
-        "                   ",
         "                   ",
         "                   ",
         "                   ",
@@ -57,6 +57,7 @@ void Map::draw(RenderWindow & window, float dt)
         window.draw(a);
     }
     
-    pacman.move(Walls, dt);
+    
     pacman.draw(window);
+    pacman.move(Walls, dt);
 }

@@ -207,4 +207,6 @@ CMakeFiles/app.dir/src/Pacman.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/alimirzaei/Project/Pacman/include/info.hpp
+ /home/alimirzaei/Project/Pacman/include/info.hpp \
+ /usr/include/c++/11/iostream /usr/include/c++/11/istream \
+ /usr/include/c++/11/bits/istream.tcc

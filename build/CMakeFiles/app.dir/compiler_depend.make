@@ -573,7 +573,10 @@ CMakeFiles/app.dir/src/Pacman.cpp.o: ../src/Pacman.cpp \
   /usr/include/SFML/Graphics/Sprite.hpp \
   /usr/include/SFML/Graphics/Text.hpp \
   /usr/include/SFML/Graphics/VertexBuffer.hpp \
-  ../include/info.hpp
+  ../include/info.hpp \
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/istream \
+  /usr/include/c++/11/bits/istream.tcc
 
 CMakeFiles/app.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/stdc-predef.h \

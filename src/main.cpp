@@ -15,7 +15,7 @@ int main()
     while (window.isOpen())
     {
         dt = dt_clock.restart().asSeconds();
-        std::cout << dt << "\n";
+       // std::cout << dt << "\n";
 
         Event event;
         while (window.pollEvent(event))

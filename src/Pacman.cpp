@@ -14,6 +14,7 @@ void Pacman::initPacman()
     Pos.x = 9 * CellSize;
     Pos.y = 10 * CellSize;
     player.setRadius(CellSize / 2 - 1);
+   // player.setSize(Vector2f(CellSize, CellSize));
     player.setFillColor(Color::Yellow);
     player.setPosition(Pos);
     dir = 0;
@@ -48,6 +49,7 @@ void Pacman::move(std::vector<sf::RectangleShape> Walls, float dt)
         position.y -= Speed * dt;
     } else
     {
+       // dir = 0;
         switch (dir)
         {
         case 1:
@@ -76,26 +78,8 @@ void Pacman::move(std::vector<sf::RectangleShape> Walls, float dt)
 
         if (wallBounds.intersects(nextPos))
         {
-            // Right
-            if (playerBounds.left < wallBounds.left
-                && playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
-                && playerBounds.top < wallBounds.top + wallBounds.height
-                && playerBounds.top + playerBounds.height > wallBounds.top
-            )
-            {
-                position.x = 0;
-                player.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);                
-            }
-            // Bottom
-            else if (playerBounds.top < wallBounds.top
-                && playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
-                && playerBounds.left < wallBounds.left + wallBounds.width
-                && playerBounds.left + playerBounds.width > wallBounds.left
-            )
-            {
-                position.y = 0;
-                player.setPosition(player.getPosition().x, wallBounds.top - playerBounds.height);                
-            }
+            position.x = 0;
+            position.y = 0;
             
         }
     }

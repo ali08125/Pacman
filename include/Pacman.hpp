@@ -7,6 +7,7 @@ class Pacman
 {
 private:
     sf::CircleShape player;
+    //sf::RectangleShape player;
     sf::Vector2f Pos;
     int dir;
     int nextDir;

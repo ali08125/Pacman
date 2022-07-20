@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/alimirzaei/Project/Pacman/src/Map.cpp" "CMakeFiles/app.dir/src/Map.cpp.o" "gcc" "CMakeFiles/app.dir/src/Map.cpp.o.d"
+  "/home/alimirzaei/Project/Pacman/src/Pacman.cpp" "CMakeFiles/app.dir/src/Pacman.cpp.o" "gcc" "CMakeFiles/app.dir/src/Pacman.cpp.o.d"
   "/home/alimirzaei/Project/Pacman/src/main.cpp" "CMakeFiles/app.dir/src/main.cpp.o" "gcc" "CMakeFiles/app.dir/src/main.cpp.o.d"
   )
 

@@ -1,5 +1,6 @@
-CMakeFiles/app.dir/src/main.cpp.o: \
- /home/alimirzaei/Project/Pacman/src/main.cpp /usr/include/stdc-predef.h \
+CMakeFiles/app.dir/src/Map.cpp.o: \
+ /home/alimirzaei/Project/Pacman/src/Map.cpp /usr/include/stdc-predef.h \
+ /home/alimirzaei/Project/Pacman/include/Map.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -205,7 +206,6 @@ CMakeFiles/app.dir/src/main.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/alimirzaei/Project/Pacman/include/Map.hpp \
  /home/alimirzaei/Project/Pacman/include/info.hpp \
  /usr/include/c++/11/iostream /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \

@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/app.dir/src/Map.cpp.o"
+  "CMakeFiles/app.dir/src/Map.cpp.o.d"
+  "CMakeFiles/app.dir/src/Pacman.cpp.o"
+  "CMakeFiles/app.dir/src/Pacman.cpp.o.d"
   "CMakeFiles/app.dir/src/main.cpp.o"
   "CMakeFiles/app.dir/src/main.cpp.o.d"
   "app"

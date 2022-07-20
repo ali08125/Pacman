@@ -33,7 +33,7 @@ void Map::initMap()
     };
 }
 
-void Map::draw(RenderWindow & window)
+void Map::draw(RenderWindow & window, float dt)
 {
     RectangleShape Wall(Vector2f(CellSize, CellSize));
     Wall.setFillColor(Color::Blue);
@@ -57,6 +57,6 @@ void Map::draw(RenderWindow & window)
         window.draw(a);
     }
     
-    pacman.move();
+    pacman.move(Walls, dt);
     pacman.draw(window);
 }

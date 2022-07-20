@@ -18,6 +18,6 @@ private:
 
 public:
     Map();
-    void draw(sf::RenderWindow & window);
+    void draw(sf::RenderWindow & window, float dt);
     
 };

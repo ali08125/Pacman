@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class Pacman
 {
@@ -16,5 +17,5 @@ public:
     Pacman();
     void draw(sf::RenderWindow & window);
     void setPos(float x, float y);
-    void move();
+    void move(std::vector<sf::RectangleShape> Walls, float dt);
 };

@@ -30,40 +30,52 @@ void Pacman::setPos(float x, float y)
     Pos.y += y;
 }
 
-void Pacman::move()
+void Pacman::move(std::vector<sf::RectangleShape> Walls, float dt)
 {
+    Vector2f position;
+
     if(Keyboard::isKeyPressed(Keyboard::Right))
     {
         dir = 1;
-        setPos(Speed, 0);
+        position.x += Speed;
+        //setPos(Speed, 0);
     } else if(Keyboard::isKeyPressed(Keyboard::Down))
     {
         dir = 2;
-        setPos(0, Speed);
+        position.y += Speed;
+        //setPos(0, Speed);
     } else if(Keyboard::isKeyPressed(Keyboard::Left))
     {
         dir = 3;
-        setPos(-Speed, 0);
+        position.x -= Speed;
+        //setPos(-Speed, 0);
     } else if(Keyboard::isKeyPressed(Keyboard::Up))
     {
         dir = 4;
-        setPos(0, -Speed);
+        position.y -= Speed;
+        //setPos(0, -Speed);
     } else
     {
         switch (dir)
         {
         case 1:
-            setPos(Speed, 0);
+            position.x += Speed;
+            //setPos(Speed, 0);
             break;
         case 2:
-            setPos(0, Speed);
+            position.y += Speed;
+            //setPos(0, Speed);
             break;
         case 3:
-            setPos(-Speed, 0);
+            position.x -= Speed;
+            //setPos(-Speed, 0);
             break;
         case 4:
-            setPos(0, -Speed);
+            position.y -= Speed;
+            //setPos(0, -Speed);
             break;
         }
     }
+    
+    setPos(position.x * dt, position.y * dt);
 }

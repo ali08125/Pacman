@@ -9,8 +9,14 @@ int main()
     window.setFramerateLimit(60);
     Map map;
 
+    float dt;
+    Clock dt_clock;
+
     while (window.isOpen())
     {
+        dt = dt_clock.restart().asSeconds();
+        std::cout << dt << "\n";
+
         Event event;
         while (window.pollEvent(event))
         {
@@ -26,7 +32,7 @@ int main()
 
         window.clear();
 
-        map.draw(window);
+        map.draw(window, dt);
 
         window.display();
     }

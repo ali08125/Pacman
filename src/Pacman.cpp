@@ -1,6 +1,6 @@
 #include <Pacman.hpp>
 #include <iostream>
-#include <cmath>
+#include <Collision.hpp>
 
 using namespace sf;
 using namespace std;
@@ -27,7 +27,7 @@ void Pacman::draw(RenderWindow & window)
     window.draw(player);
 }
 
-void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food)
+void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food, sf::RectangleShape ghost)
 {
     std::array<bool, 4> wall;
 
@@ -100,65 +100,13 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
         position.x = Width * CellSize - Speed;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
-    
-    if (accident)
+
+    if (accident(ghost))
     {
         reset();
     }
     
     eat(food);
-}
-
-bool Pacman::collision(float px, float py, array<array<RectangleShape, Width>, Height> map)
-{
-    
-    float cell_x = px / static_cast<float>(CellSize);
-	float cell_y = py / static_cast<float>(CellSize);
-
-    for (int a = 0; a < 4; a++)
-	{
-	    float x = 0;
-		float y = 0;
-
-		switch (a)
-		{
-			case 0: //Top left cell
-			{
-				x = static_cast<float>(floor(cell_x));
-				y = static_cast<float>(floor(cell_y));
-
-				break;
-			}
-			case 1: //Top right cell
-			{
-				x = static_cast<float>(ceil(cell_x));
-				y = static_cast<float>(floor(cell_y));
-
-				break;
-			}
-			case 2: //Bottom left cell
-			{
-				x = static_cast<float>(floor(cell_x));
-				y = static_cast<float>(ceil(cell_y));
-
-				break;
-			}
-			case 3: //Bottom right cell
-			{
-				x = static_cast<float>(ceil(cell_x));
-				y = static_cast<float>(ceil(cell_y));
-			}
-		}
-
-		if (0 <= x && 0 <= y && Height > y && Width > x)
-		{
-            if (map[y][x].getFillColor() == Color::Blue)
-            {
-                return 1;
-            }
-        }
-    }
-    return 0;
 }
 
 void Pacman::eat(std::vector<sf::CircleShape> &food)
@@ -180,7 +128,6 @@ bool Pacman::accident(RectangleShape ghost)
 {
     if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()))
     {
-        cout << "accident" << endl; 
         return true;
     }
     return false;

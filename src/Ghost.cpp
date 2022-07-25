@@ -12,7 +12,7 @@ void Ghost::initGhosts()
 {
     ghost.setFillColor(Color::Red);
     ghost.setSize(Vector2f(CellSize, CellSize));
-    ghost.setPosition(Vector2f(10 * CellSize, 10 * CellSize));
+    ghost.setPosition(Vector2f(10 * CellSize, 7 * CellSize));
 }
 
 void Ghost::update()

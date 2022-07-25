@@ -57,7 +57,7 @@ void Map::initMap()
     }
 }
 
-void Map::draw(RenderWindow & window, float dt)
+void Map::draw(RenderWindow & window)
 {
     for(auto & a : map)
     {

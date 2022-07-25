@@ -3,6 +3,7 @@
 #include <cmath>
 
 using namespace sf;
+using namespace std;
 
 Pacman::Pacman()
 {
@@ -24,66 +25,63 @@ void Pacman::draw(RenderWindow & window)
     window.draw(player);
 }
 
-void Pacman::update(std::vector<sf::RectangleShape> Walls, float dt, std::array<std::string, Height> sketch)
+void Pacman::update(array<array<RectangleShape, Width>, Height> map)
 {
-   // std::cout << player.getPosition().x << "\n";
-    //std::cout << static_cast<float>(Speed * dt) << "\n";
-    /*
     std::array<bool, 4> wall;
     // Collision Right
-    wall[0] = collision(player.getPosition().x + (Speed * dt), player.getPosition().y, sketch);
+    wall[0] = collision(player.getPosition().x + (Speed), player.getPosition().y, map);
     // Collision Down
-    wall[1] = collision(player.getPosition().x, player.getPosition().y + (Speed * dt), sketch);
+    wall[1] = collision(player.getPosition().x, player.getPosition().y + (Speed), map);
     // Collision Left
-    wall[2] = collision(player.getPosition().x - (Speed * dt), player.getPosition().y, sketch);
+    wall[2] = collision(player.getPosition().x - (Speed), player.getPosition().y, map);
     // Collision Up
-    wall[3] = collision(player.getPosition().x, player.getPosition().y - (Speed * dt), sketch);
-*/
+    wall[3] = collision(player.getPosition().x, player.getPosition().y - (Speed), map);
+
     Vector2f position;
     position.x = 0;
     position.y = 0;
 
     if(Keyboard::isKeyPressed(Keyboard::Right))
     {
-        //if (wall[0] == 0)
+        if (wall[0] == 0)
         {
             dir = 0;
         }   
     } else if(Keyboard::isKeyPressed(Keyboard::Down))
     {
-        //if (wall[1] == 0)
+        if (wall[1] == 0)
         {
             dir = 1;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Left))
     {   
-        //if (wall[2] == 0)
+        if (wall[2] == 0)
         {
             dir = 2;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Up))
     {
-        //if (wall[3] == 0)
+        if (wall[3] == 0)
         {
             dir = 3;
         }
     }
 
-    //if (wall[dir] == 0)
+    if (wall[dir] == 0)
     { 
         switch (dir)
         {
         case 0:
-            position.x += Speed * dt;
+            position.x += Speed;
             break;
         case 1:
-            position.y += Speed * dt;
+            position.y += Speed;
             break;
         case 2:
-            position.x -= Speed * dt;
+            position.x -= Speed;
             break;
         case 3:
-            position.y -= Speed * dt;
+            position.y -= Speed;
             break;
         }
     }
@@ -93,8 +91,8 @@ void Pacman::update(std::vector<sf::RectangleShape> Walls, float dt, std::array<
     } else
         player.move(position.x, position.y);
 }
-/*
-bool Pacman::collision(float px, float py, std::array<std::string, Height> sketch)
+
+bool Pacman::collision(float px, float py, array<array<RectangleShape, Width>, Height> map)
 {
     
     float cell_x = px / static_cast<float>(CellSize);
@@ -138,8 +136,7 @@ bool Pacman::collision(float px, float py, std::array<std::string, Height> sketc
 
 		if (0 <= x && 0 <= y && Height > y && Width > x)
 		{
-            //std::cout << "x : " << x << "\t y : " << y << "\n";
-            if (sketch[y][x] == '#')
+            if (map[y][x].getFillColor() == Color::Blue)
             {
                 return 1;
             }
@@ -147,4 +144,3 @@ bool Pacman::collision(float px, float py, std::array<std::string, Height> sketc
     }
     return 0;
 }
-*/

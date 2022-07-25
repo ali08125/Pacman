@@ -12,4 +12,5 @@ public:
     Ghost();
     void update();
     void draw(sf::RenderWindow &window);
+    Vector2f getPos() { return ghost.getPosition(); };
 };

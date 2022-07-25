@@ -31,6 +31,7 @@ void Pacman::draw(RenderWindow & window)
 void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food)
 {
     std::array<bool, 4> wall;
+
     // Collision Right
     wall[0] = collision(player.getPosition().x + (Speed), player.getPosition().y, map);
     // Collision Down
@@ -89,6 +90,18 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
         }
     }
     player.move(position.x, position.y);
+    
+    if (player.getPosition().x >= CellSize * Width)
+    {
+        position.x = Speed - CellSize;
+        player.setPosition(Vector2f(position.x, player.getPosition().y));
+        
+    } else if (player.getPosition().x <= -CellSize)
+    {
+        position.x = Width * CellSize - Speed;
+        player.setPosition(Vector2f(position.x, player.getPosition().y));
+    }
+    
     eat(food);
 }
 

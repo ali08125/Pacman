@@ -1,23 +1,21 @@
 #include <SFML/Graphics.hpp>
 #include <Map.hpp>
+#include <Pacman.hpp>
 
 using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
-    window.setFramerateLimit(60);
     Map map;
-
-    float dt;
-    Clock dt_clock;
-
+    Pacman pacman;
+    
+    RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
+    window.setFramerateLimit(120);
+    
+    Event event;
     while (window.isOpen())
     {
-        dt = dt_clock.restart().asSeconds();
-       // std::cout << dt << "\n";
-
-        Event event;
+        
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
@@ -29,13 +27,15 @@ int main()
                 window.close();
             }
         }
-
+          
         window.clear();
 
-        map.draw(window, dt);
+        pacman.update();
+
+        map.draw(window);
+        pacman.draw(window);
 
         window.display();
+		       
     }
-    
-
 }

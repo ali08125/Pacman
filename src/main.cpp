@@ -30,7 +30,9 @@ int main()
           
         window.clear();
 
-        pacman.update();
+        std::vector<sf::CircleShape> temp = map.getPoint();
+        pacman.update(map.getMap(), temp);
+        map.setPoint(temp);
 
         map.draw(window);
         pacman.draw(window);

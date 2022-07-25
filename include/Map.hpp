@@ -4,12 +4,14 @@
 #include <array>
 #include <iostream>
 #include <info.hpp>
+#include <vector>
 
 class Map
 {
 private:
     std::array<std::string, Height> sketch;
     std::array< std::array<sf::RectangleShape, Width>, Height> map;
+    std::vector<sf::CircleShape> points;
 
     void initMap();
 

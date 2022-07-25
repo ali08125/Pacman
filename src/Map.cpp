@@ -11,11 +11,11 @@ void Map::initMap()
 {
     sketch = {
         " ################### ",
-        " #        #        # ",
-        " # ## ### # ### ## # ",
-        " #                 # ",
-        " # ## # ##### # ## # ",
-        " #    #   #   #    # ",
+        " #........#........# ",
+        " #.##.###.#.###.##.# ",
+        " #.................# ",
+        " #.##.# #####.#.## # ",
+        " #....#...#...#....# ",
         " #### ### # ### #### ",
         "    # #       # #    ",
         "##### # ##### # #####",
@@ -23,17 +23,20 @@ void Map::initMap()
         "##### # ##### # #####",
         "    # #       # #   ",
         " #### ### # ### #### ",
-        " #    #   #   #    # ",
-        " # ## # ##### # ## # ",
-        " #                 # ",
-        " # ## ### # ### ## # ",
-        " #        #        # ",
+        " #....#...#...#....# ",
+        " #.##.#.#####.#.##.# ",
+        " #.................# ",
+        " #.##.###.#.###.##.# ",
+        " #........#........# ",
         " ################### ",
         "                     ",
         "                     "
     };
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
+    CircleShape point(CellSize / 5);
+    
+    point.setFillColor(Color::Cyan);
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -51,6 +54,10 @@ void Map::initMap()
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
                 map[i][j] = Wall;
                 break;
+            case '.':
+                point.setPosition(Vector2f((j * CellSize) + 10, (i * CellSize) + 10));
+                points.push_back(point);
+                break;
             }
             
         }
@@ -65,5 +72,10 @@ void Map::draw(RenderWindow & window)
         {
             window.draw(map[i][j]);
         }
+    }
+
+    for(auto & a : points)
+    {
+        window.draw(a);
     }
 }

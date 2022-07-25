@@ -17,6 +17,7 @@ void Ghost::initGhosts()
 
 void Ghost::update()
 {
+    //ghost.move(1, 0);
 
 }
 

@@ -9,7 +9,7 @@ class Pacman
 private:
     sf::CircleShape player;
     int dir;
-    int score;
+    int score = 0;
 
     void reset();
     bool collision(float i_x, float i_y, std::array< std::array<sf::RectangleShape, Width>, Height> map);

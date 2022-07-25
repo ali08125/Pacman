@@ -20,7 +20,6 @@ void Pacman::reset()
     player.setFillColor(Color::Yellow);
     player.setPosition(Pos);
     dir = -1;
-    score = 0;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -101,6 +100,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
         position.x = Width * CellSize - Speed;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
+    
     if (accident)
     {
         reset();

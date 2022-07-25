@@ -12,7 +12,7 @@ Text1::Text1()
 
 void Text1::initText()
 {
-    if(font.loadFromFile("../Fonts/Plaguard-ZVnjx.otf"))
+    if(!font.loadFromFile("../Fonts/Plaguard-ZVnjx.otf"))
         cerr << "can not open the font!!!" << endl;
 
     text.setFont(font);

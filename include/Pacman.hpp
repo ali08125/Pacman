@@ -19,4 +19,6 @@ public:
     Pacman();
     void draw(sf::RenderWindow & window);
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map, std::vector<sf::CircleShape> &food);
+
+    int getScore() { return score; };
 };

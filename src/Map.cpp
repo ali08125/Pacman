@@ -44,12 +44,12 @@ void Map::initMap()
             case '#':
                 Wall.setFillColor(Color::Blue);
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
-                map.push_back(Wall);
+                map[i][j] = Wall;
                 break;
             case ' ':
                 Wall.setFillColor(Color::Black);
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
-                map.push_back(Wall);
+                map[i][j] = Wall;
                 break;
             }
             
@@ -59,8 +59,11 @@ void Map::initMap()
 
 void Map::draw(RenderWindow & window)
 {
-    for(auto & a : map)
+    for (size_t i = 0; i < Height; i++)
     {
-       window.draw(a);
-    }   
+        for (size_t j = 0; j < Width; j++)
+        {
+            window.draw(map[i][j]);
+        }
+    }
 }

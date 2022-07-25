@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <Map.hpp>
 #include <Pacman.hpp>
+#include <Text1.hpp>
 
 using namespace sf;
 
@@ -8,6 +9,7 @@ int main()
 {
     Map map;
     Pacman pacman;
+    Text1 text;
     
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
     window.setFramerateLimit(120);
@@ -36,6 +38,7 @@ int main()
 
         map.draw(window);
         pacman.draw(window);
+        text.draw(window, pacman.getScore());
 
         window.display();
 		       

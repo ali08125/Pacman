@@ -16,13 +16,14 @@ void Text1::initText()
         cerr << "can not open the font!!!" << endl;
 
     text.setFont(font);
-    text.setColor(Color::White);
-    text.setCharacterSize(24);
-    text.setPosition(50, CellSize * Height - CellSize);
-    text.setString("helloooooooo");
+    text.setCharacterSize(32);
+    text.setPosition(20, CellSize * Height - CellSize*1.6);
+    
 }
 
-void Text1::draw(sf::RenderWindow &window)
+void Text1::draw(sf::RenderWindow &window, int score)
 {
+    text.setString("SCORE : " + to_string(score));
+
     window.draw(text);
 }

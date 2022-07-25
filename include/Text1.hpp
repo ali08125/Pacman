@@ -11,5 +11,5 @@ private:
     void initText();
 public:
     Text1();
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderWindow &window, int score);
 };

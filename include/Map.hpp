@@ -1,18 +1,16 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <info.hpp>
 #include <array>
 #include <iostream>
-#include <Pacman.hpp>
 #include <vector>
+#include <info.hpp>
 
 class Map
 {
 private:
     std::array<std::string, Height> sketch;
-    Pacman pacman;
-    std::vector<sf::RectangleShape> Walls;
+    std::vector<sf::RectangleShape> map;
 
     void initMap();
 

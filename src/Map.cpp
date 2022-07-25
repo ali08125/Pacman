@@ -10,33 +10,30 @@ Map::Map()
 void Map::initMap()
 {
     sketch = {
-        "                   ",
-        "                   ",
-        "                   ",
-        "                   ",
-        "                   ",
-        "            # #    ",
-        "            # #    ",
-        "            # #    ",
-        "         #### #### ",
-        "              #    ",
-        "              #    ",
-        "                   ",
-        "                   ",
-        "                   ",
-        "                   ",
-        "        #          ",
-        "                   ",
-        "                   ",
-        "                   ",
-        "                   "
+        " ################### ",
+        " #        #        # ",
+        " # ## ### # ### ## # ",
+        " #                 # ",
+        " # ## # ##### # ## # ",
+        " #    #   #   #    # ",
+        " #### ### # ### #### ",
+        "    # #       # #    ",
+        "##### # ##### # #####",
+        "        #   #        ",
+        "##### # ##### # #####",
+        "    # #       # #   ",
+        " #### ### # ### #### ",
+        " #    #   #   #    # ",
+        " # ## # ##### # ## # ",
+        " #                 # ",
+        " # ## ### # ### ## # ",
+        " #        #        # ",
+        " ################### ",
+        "                     ",
+        "                     "
     };
-}
 
-void Map::draw(RenderWindow & window, float dt)
-{
     RectangleShape Wall(Vector2f(CellSize, CellSize));
-    Wall.setFillColor(Color::Blue);
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -45,19 +42,25 @@ void Map::draw(RenderWindow & window, float dt)
             switch (sketch[i][j])
             {
             case '#':
+                Wall.setFillColor(Color::Blue);
                 Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
-                Walls.push_back(Wall);
+                map.push_back(Wall);
+                break;
+            case ' ':
+                Wall.setFillColor(Color::Black);
+                Wall.setPosition(Vector2f(j * CellSize, i * CellSize));
+                map.push_back(Wall);
                 break;
             }
+            
         }
     }
+}
 
-    for(auto & a : Walls)
+void Map::draw(RenderWindow & window, float dt)
+{
+    for(auto & a : map)
     {
-        window.draw(a);
-    }
-    
-    
-    pacman.draw(window);
-    pacman.move(Walls, dt);
+       window.draw(a);
+    }   
 }

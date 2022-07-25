@@ -1,5 +1,5 @@
 #include <Ghost.hpp>
-#include <info.hpp>
+#include <Collision.hpp>
 
 using namespace sf;
 
@@ -15,9 +15,25 @@ void Ghost::initGhosts()
     ghost.setPosition(Vector2f(10 * CellSize, 7 * CellSize));
 }
 
-void Ghost::update()
+void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map)
 {
-    //ghost.move(1, 0);
+    std::array<bool, 4> wall;
+
+    // Collision Right
+    wall[0] = collision(ghost.getPosition().x + (Speed), ghost.getPosition().y, map);
+    // Collision Down
+    wall[1] = collision(ghost.getPosition().x, ghost.getPosition().y + (Speed), map);
+    // Collision Left
+    wall[2] = collision(ghost.getPosition().x - (Speed), ghost.getPosition().y, map);
+    // Collision Up
+    wall[3] = collision(ghost.getPosition().x, ghost.getPosition().y - (Speed), map);
+
+    if (wall[0] == 0)
+    {
+        ghost.move(0.2, 0); 
+    }
+    
+    
 
 }
 

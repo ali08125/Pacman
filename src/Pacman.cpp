@@ -12,12 +12,15 @@ Pacman::Pacman()
 
 void Pacman::initPacman()
 {
+    Vector2f Pos;
+
     Pos.x = 10 * CellSize;
     Pos.y = 11 * CellSize;
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
     player.setPosition(Pos);
     dir = -1;
+    score = 0;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -25,7 +28,7 @@ void Pacman::draw(RenderWindow & window)
     window.draw(player);
 }
 
-void Pacman::update(array<array<RectangleShape, Width>, Height> map)
+void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food)
 {
     std::array<bool, 4> wall;
     // Collision Right
@@ -85,11 +88,8 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map)
             break;
         }
     }
-    if (position.x == 0 && position.y == 0)
-    {
-    
-    } else
-        player.move(position.x, position.y);
+    player.move(position.x, position.y);
+    eat(food);
 }
 
 bool Pacman::collision(float px, float py, array<array<RectangleShape, Width>, Height> map)
@@ -98,7 +98,6 @@ bool Pacman::collision(float px, float py, array<array<RectangleShape, Width>, H
     float cell_x = px / static_cast<float>(CellSize);
 	float cell_y = py / static_cast<float>(CellSize);
 
-   // std::cout << cell_x << "\n";
     for (int a = 0; a < 4; a++)
 	{
 	    float x = 0;
@@ -143,4 +142,20 @@ bool Pacman::collision(float px, float py, array<array<RectangleShape, Width>, H
         }
     }
     return 0;
+}
+
+void Pacman::eat(std::vector<sf::CircleShape> &food)
+{
+    auto it = food.begin();
+    for (auto & a : food)
+    {
+        if (player.getGlobalBounds().intersects(a.getGlobalBounds()))
+        {
+            score += 10;
+            cout << score << endl;
+            food.erase(it);
+            return;
+        }
+        it++;
+    }
 }

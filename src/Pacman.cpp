@@ -7,15 +7,15 @@ using namespace std;
 
 Pacman::Pacman()
 {
-    this->initPacman();
+    this->reset();
 }
 
-void Pacman::initPacman()
+void Pacman::reset()
 {
     Vector2f Pos;
 
     Pos.x = 10 * CellSize;
-    Pos.y = 11 * CellSize;
+    Pos.y = 15 * CellSize;
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
     player.setPosition(Pos);
@@ -50,7 +50,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
         if (wall[0] == 0)
         {
             dir = 0;
-        }   
+        }
     } else if(Keyboard::isKeyPressed(Keyboard::Down))
     {
         if (wall[1] == 0)
@@ -100,6 +100,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
     {
         position.x = Width * CellSize - Speed;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
+    }
+    if (accident)
+    {
+        reset();
     }
     
     eat(food);
@@ -165,10 +169,19 @@ void Pacman::eat(std::vector<sf::CircleShape> &food)
         if (player.getGlobalBounds().intersects(a.getGlobalBounds()))
         {
             score += 10;
-            cout << score << endl;
             food.erase(it);
             return;
         }
         it++;
     }
+}
+
+bool Pacman::accident(RectangleShape ghost)
+{
+    if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()))
+    {
+        cout << "accident" << endl; 
+        return true;
+    }
+    return false;
 }

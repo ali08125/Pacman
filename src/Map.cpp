@@ -16,27 +16,29 @@ void Map::initMap()
         " #.................# ",
         " #.##.# #####.#.## # ",
         " #....#...#...#....# ",
-        " #### ### # ### #### ",
-        "    # #       # #    ",
-        "##### # ##### # #####",
-        "        #   #        ",
-        "##### # ##### # #####",
-        "    # #       # #   ",
-        " #### ### # ### #### ",
-        " #....#...#...#....# ",
-        " #.##.#.#####.#.##.# ",
-        " #.................# ",
-        " #.##.###.#.###.##.# ",
+        " ####.### # ###.#### ",
+        "    #.#       #.#    ",
+        "#####.# ## ## #.#####",
+        "     .  #   #  .     ",
+        "#####.# ##### #.#####",
+        "    #.#       #.#    ",
+        " ####.# ##### #.#### ",
         " #........#........# ",
+        " #.##.###.#.###.##.# ",
+        " #..#..... .....#..# ",
+        " ##.#.#.#####.#.#.## ",
+        " #....#...#...#....# ",
+        " #.######.#.######.# ",
+        " #.................# ",
         " ################### ",
         "                     ",
         "                     "
     };
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
-    CircleShape point(CellSize / 5);
-    
-    point.setFillColor(Color::Cyan);
+
+    CircleShape food(CellSize / 5);
+    food.setFillColor(Color::Cyan);
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -55,11 +57,10 @@ void Map::initMap()
                 map[i][j] = Wall;
                 break;
             case '.':
-                point.setPosition(Vector2f((j * CellSize) + 10, (i * CellSize) + 10));
-                points.push_back(point);
+                food.setPosition(Vector2f((j * CellSize) + 10, (i * CellSize) + 10));
+                foods.push_back(food);
                 break;
             }
-            
         }
     }
 }
@@ -74,8 +75,13 @@ void Map::draw(RenderWindow & window)
         }
     }
 
-    for(auto & a : points)
+    for(auto & a : foods)
     {
         window.draw(a);
     }
+}
+
+void Map::setPoint(std::vector<sf::CircleShape> foods)
+{
+    this->foods = foods;
 }

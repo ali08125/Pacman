@@ -35,12 +35,16 @@ int main()
           
         window.clear();
 
-        std::vector<sf::CircleShape> temp = map.getPoint();
-        pacman.update(map.getMap(), temp);
-        map.setPoint(temp);
+        std::vector<CircleShape> temp = map.getFood();
+        std::vector<CircleShape> temp1 = map.getPowerFood();
+        pacman.update(map.getMap(), temp, temp1, ghost.getGhost());
+        map.setFood(temp);
+        map.setPowerFood(temp1);
+
+        //ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
 
         map.draw(window);
-        ghost.draw(window);
+        //ghost.draw(window);
         pacman.draw(window);
         text.draw(window, pacman.getScore());
 

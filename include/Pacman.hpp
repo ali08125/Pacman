@@ -21,7 +21,7 @@ public:
     void draw(sf::RenderWindow & window);
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map
     , std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
-    , sf::RectangleShape ghost);
+    , sf::RectangleShape ghost, bool end);
 
     int getScore() { return score; };
     sf::Vector2f getPos() { return player.getPosition(); };

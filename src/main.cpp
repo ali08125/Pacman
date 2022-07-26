@@ -37,7 +37,7 @@ int main()
 
         std::vector<CircleShape> temp = map.getFood();
         std::vector<CircleShape> temp1 = map.getPowerFood();
-        pacman.update(map.getMap(), temp, temp1, ghost.getGhost());
+        pacman.update(map.getMap(), temp, temp1, ghost.getGhost(), map.checkEndLevel());
         map.setFood(temp);
         map.setPowerFood(temp1);
 
@@ -46,7 +46,7 @@ int main()
         map.draw(window);
         //ghost.draw(window);
         pacman.draw(window);
-        text.draw(window, pacman.getScore());
+        text.draw(window, pacman.getScore(), map.getLevel());
 
         window.display();
 		       

@@ -15,7 +15,6 @@ void Pacman::reset()
     Vector2f Pos;
 
     Pos.x = 10 * CellSize;
-    //Pos.y = 3 * CellSize;
     Pos.y = 15 * CellSize;
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
@@ -30,8 +29,13 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
-, sf::RectangleShape ghost)
+, sf::RectangleShape ghost, bool end)
 {
+    if (end)
+    {
+        reset();
+    }
+    
     ghsotCollision = false;
 
     std::array<bool, 4> wall;

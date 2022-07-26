@@ -74,8 +74,23 @@ void Map::initMap()
     }
 }
 
+bool Map::checkEndLevel()
+{
+    if (foods.empty() && powerFood.empty())
+    {
+        level++;
+        return true;   
+    }
+    return false;
+}
+
 void Map::draw(RenderWindow & window)
 {
+    if (checkEndLevel())
+    {
+        initMap();
+    }
+    
     for (size_t i = 0; i < Height; i++)
     {
         for (size_t j = 0; j < Width; j++)

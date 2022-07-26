@@ -29,6 +29,8 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food, sf::RectangleShape ghost)
 {
+    ghsotCollision = false;
+
     std::array<bool, 4> wall;
 
     // Collision Right
@@ -103,6 +105,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
 
     if (accident(ghost))
     {
+        ghsotCollision = true;
         reset();
     }
     

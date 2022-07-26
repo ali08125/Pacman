@@ -10,6 +10,7 @@ private:
     sf::CircleShape player;
     int dir;
     int score = 0;
+    bool ghsotCollision;
 
     void reset();
     void eat(std::vector<sf::CircleShape> &food);
@@ -22,4 +23,6 @@ public:
 
     int getScore() { return score; };
     sf::Vector2f getPos() { return player.getPosition(); };
+    bool getGhostCollision() { return ghsotCollision; };
+    
 };

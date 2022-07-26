@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <Map.hpp>
+#include <info.hpp>
 
 class Pacman
 {
@@ -21,4 +21,5 @@ public:
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map, std::vector<sf::CircleShape> &food, sf::RectangleShape ghost);
 
     int getScore() { return score; };
+    sf::Vector2f getPos() { return player.getPosition(); };
 };

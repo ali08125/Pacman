@@ -126,7 +126,8 @@ void Pacman::eat(std::vector<sf::CircleShape> &food)
 
 bool Pacman::accident(RectangleShape ghost)
 {
-    if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()))
+    if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()) 
+    || ghost.getGlobalBounds().intersects(player.getGlobalBounds()))
     {
         return true;
     }

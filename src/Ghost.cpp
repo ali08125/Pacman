@@ -2,6 +2,7 @@
 #include <Collision.hpp>
 
 using namespace sf;
+using namespace std;
 
 Ghost::Ghost()
 {
@@ -16,8 +17,13 @@ void Ghost::initGhosts()
     ghost.setPosition(Vector2f(10 * CellSize, 7 * CellSize));
 }
 
-void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map, sf::Vector2f pacmanPos)
+void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pacmanPos, bool accident)
 {
+    if (accident)
+    {
+        initGhosts();
+    }
+    
     std::array<bool, 4> wall;
 
     // Collision Right
@@ -33,6 +39,9 @@ void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map, sf
     position.x = 0;
     position.y = 0;
 
+    dir = chooseDir(pacmanPos, wall);
+
+/*
     if(Keyboard::isKeyPressed(Keyboard::D))
     {
         if (wall[0] == 0)
@@ -58,7 +67,7 @@ void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map, sf
             dir = 3;
         }
     }
-
+*/
     if (wall[dir] == 0)
     { 
         switch (dir)
@@ -77,8 +86,13 @@ void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map, sf
             break;
         }
     }
+    
     ghost.move(position.x, position.y);
 
+    
+    
+
+    // Exit from a side and enter from the other side
     if (ghost.getPosition().x >= CellSize * Width)
     {
         position.x = Speed - CellSize;
@@ -95,4 +109,77 @@ void Ghost::update(std::array<std::array<RectangleShape, Width>, Height> map, sf
 void Ghost::draw(sf::RenderWindow &window)
 {
     window.draw(ghost);
+}
+
+int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
+{
+    // Pacman is the right bottom of the ghost
+    if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    {
+        if (pacmanPos.x > ghost.getPosition().x && wall[0] == 0)
+        {
+            // Move right
+            return 0;
+        } else if (pacmanPos.y > ghost.getPosition().y && wall[1] == 0)
+        {
+            // Move down
+            return 1;
+        } else if (wall[2] == 0)
+        {
+            // Move left
+            return 2;
+        } else if (wall[3] == 0)
+        {
+            // Move up
+            return 3;
+        }
+    }
+
+    // Pacman is the left bottom of the ghost
+    if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    {
+        if (pacmanPos.x < ghost.getPosition().x && wall[2] == 0)
+        {
+            // Move left
+            return 2;
+        } else if (pacmanPos.y > ghost.getPosition().y && wall[1] == 0)
+        {
+            // Move down
+            return 1;
+        } else if (wall[0] == 0)
+        {
+            // Move right
+            return 0;
+        } else if (wall[3] == 0)
+        {
+            // Move up
+            return 3;
+        }
+    }
+
+    // Pacman is the bottom of the ghost
+    if (pacmanPos.x = ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    {
+        if (pacmanPos.y > ghost.getPosition().y && wall[1] == 0)
+        {
+            // Move down
+            return 1;
+        } else if (wall[0] == 0)
+        {
+            // Move right
+            return 0;
+        } else if (wall[2] == 0)
+        {
+            // Move left
+            return 2;
+        } else if (wall[3] == 0)
+        {
+            // Move up
+            return 3;
+        }
+        
+           
+    }
+    
+    
 }

@@ -1,5 +1,6 @@
 #include <Ghost.hpp>
 #include <Collision.hpp>
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -39,7 +40,10 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
     position.x = 0;
     position.y = 0;
 
-    dir = chooseDir(pacmanPos, wall);
+    if (wall[dir] != 0 || dir == -1)
+    {
+        dir = chooseDir(pacmanPos, wall);
+    }
 
 /*
     if(Keyboard::isKeyPressed(Keyboard::D))
@@ -68,7 +72,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
         }
     }
 */
-    if (wall[dir] == 0)
+    if (wall[dir] == 0 && dir != -1)
     { 
         switch (dir)
         {
@@ -87,11 +91,12 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
         }
     }
     
-    ghost.move(position.x, position.y);
+    if (position.x != 0 || position.y != 0)
+    {
+        ghost.move(position.x, position.y);   
+    }
 
     
-    
-
     // Exit from a side and enter from the other side
     if (ghost.getPosition().x >= CellSize * Width)
     {
@@ -116,7 +121,8 @@ int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the right bottom of the ghost
     if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
-        if (pacmanPos.x > ghost.getPosition().x && wall[0] == 0)
+        //cout << "right bottom" << endl;
+        if (pacmanPos.x > ghost.getPosition().x && wall[0] == 0 && dir != 2)
         {
             // Move right
             return 0;
@@ -138,7 +144,8 @@ int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the left bottom of the ghost
     if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
-        if (pacmanPos.x < ghost.getPosition().x && wall[2] == 0)
+        //cout << "left bottom" << endl;
+        if (pacmanPos.x < ghost.getPosition().x && wall[2] == 0 && dir != 0)
         {
             // Move left
             return 2;
@@ -158,9 +165,39 @@ int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the bottom of the ghost
-    if (pacmanPos.x = ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    if (pacmanPos.x == ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
+        //cout << "bottom" << endl;
         if (pacmanPos.y > ghost.getPosition().y && wall[1] == 0)
+        {
+            // Move down
+            return 1;
+        } else if (wall[2] == 0 && dir != 0)
+        {
+
+            // Move left
+            return 2;
+        } else if (wall[0] == 0)
+        {
+            // Move right
+            return 0;
+        } else if (wall[3] == 0)
+        {
+            // Move up
+            return 3;
+        }   
+    }
+
+    // Pacman is the left of the ghost
+    if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
+    {
+        //cout << "left" << endl;
+        if (wall[2] == 0 && dir != 0)
+        {
+
+            // Move left
+            return 2;
+        } else if (pacmanPos.y > ghost.getPosition().y && wall[1] == 0)
         {
             // Move down
             return 1;
@@ -168,17 +205,11 @@ int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
         {
             // Move right
             return 0;
-        } else if (wall[2] == 0)
-        {
-            // Move left
-            return 2;
         } else if (wall[3] == 0)
         {
             // Move up
             return 3;
-        }
-        
-           
+        }   
     }
     
     

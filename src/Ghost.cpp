@@ -45,33 +45,6 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
         dir = chooseDir(pacmanPos, wall);
     }
 
-/*
-    if(Keyboard::isKeyPressed(Keyboard::D))
-    {
-        if (wall[0] == 0)
-        {
-            dir = 0;
-        }
-    } else if(Keyboard::isKeyPressed(Keyboard::S))
-    {
-        if (wall[1] == 0)
-        {
-            dir = 1;
-        }
-    } else if(Keyboard::isKeyPressed(Keyboard::A))
-    {   
-        if (wall[2] == 0)
-        {
-            dir = 2;
-        }
-    } else if(Keyboard::isKeyPressed(Keyboard::W))
-    {
-        if (wall[3] == 0)
-        {
-            dir = 3;
-        }
-    }
-*/
     if (wall[dir] == 0 && dir != -1)
     { 
         switch (dir)
@@ -91,10 +64,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
         }
     }
     
-    if (position.x != 0 || position.y != 0)
-    {
-        ghost.move(position.x, position.y);   
-    }
+    ghost.move(position.x, position.y);   
 
     
     // Exit from a side and enter from the other side
@@ -192,7 +162,7 @@ int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
     if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
     {
         //cout << "left" << endl;
-        if (wall[2] == 0 && dir != 0)
+        if (wall[2] == 0)
         {
 
             // Move left

@@ -16,7 +16,6 @@ private:
     int level = 1;
 
     void initMap();
-    bool checkEndLevel();
 
 public:
     Map();
@@ -33,5 +32,7 @@ public:
     
     int getLevel() { return level; };
 
-      
+    bool checkEndLevel();
+    //bool getEndLevel() { return checkEndLevel(); };
+ 
 };

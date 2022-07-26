@@ -15,6 +15,7 @@ void Pacman::reset()
     Vector2f Pos;
 
     Pos.x = 10 * CellSize;
+    //Pos.y = 3 * CellSize;
     Pos.y = 15 * CellSize;
     player.setRadius(CellSize / 2);
     player.setFillColor(Color::Yellow);
@@ -27,7 +28,9 @@ void Pacman::draw(RenderWindow & window)
     window.draw(player);
 }
 
-void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<CircleShape> &food, sf::RectangleShape ghost)
+void Pacman::update(array<array<RectangleShape, Width>, Height> map
+, vector<CircleShape> &food, vector<CircleShape> &powerFood
+, sf::RectangleShape ghost)
 {
     ghsotCollision = false;
 
@@ -109,10 +112,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map, vector<Circ
         reset();
     }
     
-    eat(food);
+    eat(food, powerFood);
 }
 
-void Pacman::eat(std::vector<sf::CircleShape> &food)
+void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood)
 {
     auto it = food.begin();
     for (auto & a : food)
@@ -124,6 +127,18 @@ void Pacman::eat(std::vector<sf::CircleShape> &food)
             return;
         }
         it++;
+    }
+
+    auto it1 = powerFood.begin();
+    for (auto & b : powerFood)
+    {
+        if (player.getGlobalBounds().intersects(b.getGlobalBounds()))
+        {
+            score += 50;
+            powerFood.erase(it1);
+            return;
+        }
+        it1++;
     }
 }
 

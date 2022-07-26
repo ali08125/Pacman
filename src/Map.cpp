@@ -12,20 +12,20 @@ void Map::initMap()
     sketch = {
         " ################### ",
         " #........#........# ",
-        " #.##.###.#.###.##.# ",
+        " #0##.###.#.###.##0# ",
         " #.................# ",
-        " #.##.# #####.#.## # ",
+        " #.##.# #####.#.##.# ",
         " #....#...#...#....# ",
         " ####.### # ###.#### ",
         "    #.#       #.#    ",
-        "#####.# ## ## #.#####",
+        "#####.# ##### #.#####",
         "     .  #   #  .     ",
         "#####.# ##### #.#####",
         "    #.#       #.#    ",
         " ####.# ##### #.#### ",
         " #........#........# ",
         " #.##.###.#.###.##.# ",
-        " #..#..... .....#..# ",
+        " #0.#..... .....#.0# ",
         " ##.#.#.#####.#.#.## ",
         " #....#...#...#....# ",
         " #.######.#.######.# ",
@@ -37,8 +37,13 @@ void Map::initMap()
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
+    // Common food
     CircleShape food(CellSize / 5);
-    food.setFillColor(Color::Cyan);
+    food.setFillColor(Color::White);
+
+    // Power food
+    CircleShape power(CellSize / 3);
+    power.setFillColor(Color::White);
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -60,6 +65,10 @@ void Map::initMap()
                 food.setPosition(Vector2f((j * CellSize) + 10, (i * CellSize) + 10));
                 foods.push_back(food);
                 break;
+            case '0':
+                power.setPosition(Vector2f((j * CellSize) + 5, (i * CellSize) + 5));
+                powerFood.push_back(power);
+                break;
             }
         }
     }
@@ -79,9 +88,19 @@ void Map::draw(RenderWindow & window)
     {
         window.draw(a);
     }
+
+    for(auto & a : powerFood)
+    {
+        window.draw(a);
+    }
 }
 
-void Map::setPoint(std::vector<sf::CircleShape> foods)
+void Map::setFood(std::vector<sf::CircleShape> foods)
 {
     this->foods = foods;
+}
+
+void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
+{
+    this->powerFood = powerFood;
 }

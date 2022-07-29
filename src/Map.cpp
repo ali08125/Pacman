@@ -10,6 +10,7 @@ Map::Map()
 
 void Map::initMap()
 {
+    /*
     sketch = {
         " ################### ",
         " #........#........# ",
@@ -35,7 +36,8 @@ void Map::initMap()
         "                     ",
         "                     "
     };
-    /*
+    */
+    
     sketch = {
         " ################### ",
         " #        #        # ",
@@ -61,7 +63,7 @@ void Map::initMap()
         "                     ",
         "                     "
     };
-    */
+    
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
@@ -108,10 +110,7 @@ void Map::initMap()
 
 void Map::update(sf::Time time)
 {
-    if (checkEndLevel())
-    {
-        initMap();
-    }
+    checkEndLevel();
     
     if (!fruit.empty() && time.asSeconds() > 10)
     {

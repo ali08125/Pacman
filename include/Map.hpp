@@ -36,6 +36,7 @@ public:
     void setPowerFood(std::vector<sf::CircleShape> powerFood);
     //Fruit
     void createFruit();
+    sf::CircleShape getFruit() { return apple; };
     
     int getLevel() { return level; };
 

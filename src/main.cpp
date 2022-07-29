@@ -30,27 +30,32 @@ int main()
             {
                 window.close();
             }
-            if (event.type == Event::KeyPressed && !start)
-            {
-                start = true;
-                clock.restart();
-            }
         }
 
         window.clear();
 
+        if (pacman.createFruit())
+        {
+            map.createFruit();
+        }
+
         std::vector<CircleShape> temp = map.getFood();
         std::vector<CircleShape> temp1 = map.getPowerFood();
-        pacman.update(map.getMap(), temp, temp1, ghost.getGhost(), map.checkEndLevel());
+        std::vector<CircleShape> temp2 = map.getFruit();
+        
+        pacman.update(map.getMap(), temp, temp1, ghost.getGhost(), map.checkEndLevel()
+        , map.getLevel(), temp2);
+
         map.setFood(temp);
         map.setPowerFood(temp1);
+        map.setFruit(temp2);
+        
+        map.update();
 
-        map.update(time);
-
-        ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
+        //ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
 
         map.draw(window);
-        ghost.draw(window);
+        //ghost.draw(window);
         pacman.draw(window);
         text.draw(window, pacman.getScore(), map.getLevel());
 

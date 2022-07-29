@@ -73,6 +73,10 @@ void Map::initMap()
     CircleShape power(CellSize / 3);
     power.setFillColor(Color::White);
 
+    //Fruits
+    apple.setRadius(CellSize / 3);
+    apple.setFillColor(Color::Red);
+
     for (size_t i = 0; i < Height; i++)
     {
         for (size_t j = 0; j < Width; j++)
@@ -107,7 +111,15 @@ void Map::update()
     if (checkEndLevel())
     {
         initMap();
+        fruitNum = 0;
     }
+
+    if (fruitNum == 0)
+    {
+        fruitNum++;
+        //show fruit
+    }
+    
 }
 
 bool Map::checkEndLevel()

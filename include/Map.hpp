@@ -14,6 +14,8 @@ private:
     std::vector<sf::CircleShape> foods;
     std::vector<sf::CircleShape> powerFood;
 
+    sf::CircleShape apple;
+
     int level = 1;
     int fruitNum = 0;
 
@@ -26,16 +28,17 @@ public:
     
     std::array< std::array<sf::RectangleShape, Width>, Height> getMap() { return map; };
 
-    // Common food
+    //Common food
     std::vector<sf::CircleShape> getFood() { return foods; };
     void setFood(std::vector<sf::CircleShape> foods);
-    // Power food
+    //Power food
     std::vector<sf::CircleShape> getPowerFood() { return powerFood; };
     void setPowerFood(std::vector<sf::CircleShape> powerFood);
+    //Fruit
+    void createFruit();
     
     int getLevel() { return level; };
 
     bool checkEndLevel();
-    //bool getEndLevel() { return checkEndLevel(); };
  
 };

@@ -10,7 +10,6 @@ Map::Map()
 
 void Map::initMap()
 {
-    /*
     sketch = {
         " ################### ",
         " #........#........# ",
@@ -36,7 +35,7 @@ void Map::initMap()
         "                     ",
         "                     "
     };
-*/
+    /*
     sketch = {
         " ################### ",
         " #        #        # ",
@@ -62,6 +61,7 @@ void Map::initMap()
         "                     ",
         "                     "
     };
+    */
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
@@ -111,15 +111,8 @@ void Map::update()
     if (checkEndLevel())
     {
         initMap();
-        fruitNum = 0;
     }
 
-    if (fruitNum == 0)
-    {
-        fruitNum++;
-        //show fruit
-    }
-    
 }
 
 bool Map::checkEndLevel()
@@ -152,6 +145,15 @@ void Map::draw(RenderWindow & window)
     {
         window.draw(a);
     }
+
+    // if (fruitNum == 1 || fruitNum == 2)
+    // {
+    //     window.draw(apple);
+    // }
+    for (auto & a : test)
+    {
+        window.draw(a);
+    }
 }
 
 void Map::setFood(std::vector<sf::CircleShape> foods)
@@ -162,4 +164,44 @@ void Map::setFood(std::vector<sf::CircleShape> foods)
 void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
 {
     this->powerFood = powerFood;
+}
+
+void Map::createFruit()
+{
+    bool notCreated = true;
+    srand(time(0));
+    int x;
+    int y;
+
+    if (level < 64)
+    {
+        while (notCreated)
+        {
+            x = rand() % 20;
+            y = rand() % 21;
+            apple.setPosition(Vector2f(x * CellSize + 5, y * CellSize + 5));
+
+            int tmp = 0;
+
+            //Check that it does not interfere with anything
+            if (sketch[y][x] == '.')
+            {    
+                for (auto & a : foods)
+                {
+                    if (a.getGlobalBounds().intersects(apple.getGlobalBounds()))
+                    {
+                        tmp = 1;
+                    }
+                }
+            } else
+                continue;
+
+            if(tmp == 1)
+                continue;
+
+            notCreated = false;
+        }
+    }
+
+    test.push_back(apple);
 }

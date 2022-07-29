@@ -15,9 +15,9 @@ private:
     std::vector<sf::CircleShape> powerFood;
 
     sf::CircleShape apple;
+    std::vector<sf::CircleShape> test;
 
     int level = 1;
-    int fruitNum = 0;
 
     void initMap();
 

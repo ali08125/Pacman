@@ -106,13 +106,18 @@ void Map::initMap()
     }
 }
 
-void Map::update()
+void Map::update(sf::Time time)
 {
     if (checkEndLevel())
     {
         initMap();
     }
-
+    
+    if (!fruit.empty() && time.asSeconds() > 10)
+    {
+        fruit.erase(fruit.begin());
+    }
+    
 }
 
 bool Map::checkEndLevel()
@@ -146,13 +151,9 @@ void Map::draw(RenderWindow & window)
         window.draw(a);
     }
 
-    // if (fruitNum == 1 || fruitNum == 2)
-    // {
-    //     window.draw(apple);
-    // }
-    for (auto & a : test)
+    if (!fruit.empty())
     {
-        window.draw(a);
+        window.draw(fruit[0]);
     }
 }
 
@@ -164,6 +165,10 @@ void Map::setFood(std::vector<sf::CircleShape> foods)
 void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
 {
     this->powerFood = powerFood;
+}
+void Map::setFruit(std::vector<sf::CircleShape> fruit)
+{
+    this->fruit = fruit;
 }
 
 void Map::createFruit()
@@ -203,5 +208,5 @@ void Map::createFruit()
         }
     }
 
-    test.push_back(apple);
+    fruit.push_back(apple);
 }

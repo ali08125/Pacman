@@ -12,6 +12,9 @@ int main()
     Pacman pacman;
     Ghost ghost;
     Text1 text;
+
+    Clock clock;
+    Time time;
     
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
     window.setFramerateLimit(120);
@@ -37,12 +40,15 @@ int main()
         if (pacman.createFruit())
         {
             map.createFruit();
+            clock.restart();
+            time = seconds(clock.getElapsedTime().asSeconds());
         }
+        time = seconds(clock.getElapsedTime().asSeconds());
 
         std::vector<CircleShape> temp = map.getFood();
         std::vector<CircleShape> temp1 = map.getPowerFood();
         std::vector<CircleShape> temp2 = map.getFruit();
-        
+
         pacman.update(map.getMap(), temp, temp1, ghost.getGhost(), map.checkEndLevel()
         , map.getLevel(), temp2);
 
@@ -50,7 +56,7 @@ int main()
         map.setPowerFood(temp1);
         map.setFruit(temp2);
         
-        map.update();
+        map.update(time);
 
         //ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
 

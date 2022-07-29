@@ -13,12 +13,15 @@ private:
     std::array<std::array<sf::RectangleShape, Width>, Height> map;
     std::vector<sf::CircleShape> foods;
     std::vector<sf::CircleShape> powerFood;
+
     int level = 1;
+    int fruitNum = 0;
 
     void initMap();
 
 public:
     Map();
+    void update();
     void draw(sf::RenderWindow & window);
     
     std::array< std::array<sf::RectangleShape, Width>, Height> getMap() { return map; };

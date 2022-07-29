@@ -1,4 +1,5 @@
 #include <Map.hpp>
+#include <iostream>
 
 using namespace sf;
 
@@ -101,6 +102,14 @@ void Map::initMap()
     }
 }
 
+void Map::update()
+{
+    if (checkEndLevel())
+    {
+        initMap();
+    }
+}
+
 bool Map::checkEndLevel()
 {
     if (foods.empty() && powerFood.empty())
@@ -114,11 +123,6 @@ bool Map::checkEndLevel()
 
 void Map::draw(RenderWindow & window)
 {
-    if (checkEndLevel())
-    {
-        initMap();
-    }
-    
     for (size_t i = 0; i < Height; i++)
     {
         for (size_t j = 0; j < Width; j++)

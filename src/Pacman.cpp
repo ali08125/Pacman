@@ -29,8 +29,15 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
-, sf::RectangleShape ghost, bool end)
+, sf::RectangleShape ghost, bool end, int level)
 {
+    //For fruits
+    if (level > lastLevel)
+    {
+        foodNum = 0;
+        lastLevel = level;
+    }
+    
     if (end)
     {
         reset();
@@ -126,6 +133,7 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood)
     {
         if (player.getGlobalBounds().intersects(a.getGlobalBounds()))
         {
+            foodNum += 1;
             score += 10;
             food.erase(it);
             return;
@@ -138,6 +146,7 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood)
     {
         if (player.getGlobalBounds().intersects(b.getGlobalBounds()))
         {
+            foodNum += 5;
             score += 50;
             powerFood.erase(it1);
             return;
@@ -151,6 +160,20 @@ bool Pacman::accident(RectangleShape ghost)
     if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()) 
     || ghost.getGlobalBounds().intersects(player.getGlobalBounds()))
     {
+        return true;
+    }
+    return false;
+}
+
+bool Pacman::createFruit()
+{
+    if (foodNum >= 7 && foodNum == 0)
+    {
+        foodNum++;
+        return true;
+    } else if (foodNum >= 17 && foodNum == 1)
+    {
+        foodNum++;
         return true;
     }
     return false;

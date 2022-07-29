@@ -29,7 +29,7 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
-, sf::RectangleShape ghost, bool end, int level)
+, sf::RectangleShape ghost, bool end, int level, vector<CircleShape> &fruit)
 {
     //if level up
     if (level > lastLevel)
@@ -126,10 +126,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         reset();
     }
     
-    eat(food, powerFood);
+    eat(food, powerFood, fruit);
 }
 
-void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood)
+void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vector<CircleShape> &fruit)
 {
     auto it = food.begin();
     for (auto & a : food)
@@ -156,6 +156,18 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood)
         }
         it1++;
     }
+    
+    if (!fruit.empty() && player.getGlobalBounds().intersects(fruit[0].getGlobalBounds()))
+    {
+        auto it2 = fruit.begin();
+        if (lastLevel < 64)
+        {
+            score += 100;
+            fruit.erase(it2);
+            return;
+        }
+    }
+    
 }
 
 bool Pacman::accident(RectangleShape ghost)
@@ -170,11 +182,11 @@ bool Pacman::accident(RectangleShape ghost)
 
 bool Pacman::createFruit()
 {
-    if (foodNum == 70 && !spawnFruit1)
+    if (foodNum == 7 && !spawnFruit1)
     {
         spawnFruit1 = true;
         return true;
-    } else if (foodNum == 130 && !spawnFruit2)
+    } else if (foodNum == 13 && !spawnFruit2)
     {
         spawnFruit2 = true;
         return true;

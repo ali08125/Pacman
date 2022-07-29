@@ -15,7 +15,12 @@ int main()
     
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
     window.setFramerateLimit(120);
-    //window.setView();
+    
+
+    Clock clock;
+    Time time;
+    bool start = false;
+    time = seconds(0.f);
     
     Event event;
     while (window.isOpen())
@@ -31,8 +36,20 @@ int main()
             {
                 window.close();
             }
+            if (event.type == Event::KeyPressed && !start)
+            {
+                start = true;
+                clock.restart();
+            }
         }
-          
+
+        
+        if (start)
+        {
+            time = seconds(clock.getElapsedTime().asSeconds());
+        }
+        //std::cout << time.asSeconds() << "\n";
+
         window.clear();
 
         std::vector<CircleShape> temp = map.getFood();

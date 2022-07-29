@@ -15,13 +15,7 @@ int main()
     
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
     window.setFramerateLimit(120);
-    
 
-    Clock clock;
-    Time time;
-    bool start = false;
-    time = seconds(0.f);
-    
     Event event;
     while (window.isOpen())
     {
@@ -43,13 +37,6 @@ int main()
             }
         }
 
-        
-        if (start)
-        {
-            time = seconds(clock.getElapsedTime().asSeconds());
-        }
-        //std::cout << time.asSeconds() << "\n";
-
         window.clear();
 
         std::vector<CircleShape> temp = map.getFood();
@@ -58,14 +45,15 @@ int main()
         map.setFood(temp);
         map.setPowerFood(temp1);
 
-        //ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
+        map.update(time);
+
+        ghost.update(map.getMap(), pacman.getPos(), pacman.getGhostCollision());
 
         map.draw(window);
-        //ghost.draw(window);
+        ghost.draw(window);
         pacman.draw(window);
         text.draw(window, pacman.getScore(), map.getLevel());
 
-        window.display();
-		       
+        window.display(); 
     }
 }

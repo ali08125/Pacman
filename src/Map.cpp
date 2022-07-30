@@ -65,8 +65,26 @@ void Map::initMap()
     };
     
 */
-    apple.loadFromFile("../Photo/fruits/apple.png");
+    //Load fruits photo
+    if(!apple.loadFromFile("../Photo/fruits/apple.png"))
+        std::cerr << "can not open apple.png\n";
 
+    if(!strawberry.loadFromFile("../Photo/fruits/strawberry.png"))
+        std::cerr << "can not open strawberry.png\n";
+
+    if(!cherry.loadFromFile("../Photo/fruits/cherry.png"))
+        std::cerr << "can not open cherry.png\n";
+
+    if(!peach.loadFromFile("../Photo/fruits/peach.png"))
+        std::cerr << "can not open peach.png\n";
+
+    if(!grape.loadFromFile("../Photo/fruits/grape.png"))
+        std::cerr << "can not open grape.png\n";
+
+    if(!banana.loadFromFile("../Photo/fruits/banana.png"))
+        std::cerr << "can not open banana.png\n";
+
+    //Wall
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
     // Common food

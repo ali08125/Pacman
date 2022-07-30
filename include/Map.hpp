@@ -17,6 +17,11 @@ private:
     sf::Sprite Fruit;
     std::vector<sf::Sprite> fruit;
     sf::Texture apple;
+    sf::Texture strawberry;
+    sf::Texture cherry;
+    sf::Texture peach;
+    sf::Texture grape;
+    sf::Texture banana;
     
     
 

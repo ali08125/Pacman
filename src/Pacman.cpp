@@ -120,14 +120,14 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     }
     player.move(position.x, position.y);
     
-    if (player.getPosition().x >= CellSize * Width)
+    if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right
     {
-        position.x = Speed - CellSize;
-        player.setPosition(Vector2f(position.x, player.getPosition().y));
+        position.x = Speed - CellSize + 15;
+        player.setPosition(Vector2f(position.x , player.getPosition().y));
         
-    } else if (player.getPosition().x <= -CellSize)
+    } else if (player.getPosition().x - 15 <= -CellSize) //Exit from left
     {
-        position.x = Width * CellSize - Speed;
+        position.x = Width * CellSize - Speed + 15;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
 

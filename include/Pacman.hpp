@@ -42,5 +42,7 @@ public:
     bool getGhostCollision() { return ghsotCollision; };
     //Check when Pacman has eaten 70 or 170 foods
     bool createFruit(); 
+    //Get Pacman
+    sf::CircleShape getPacman() { return player; };
     
 };

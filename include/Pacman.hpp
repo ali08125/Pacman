@@ -7,7 +7,10 @@
 class Pacman
 {
 private:
-    sf::CircleShape player; //Pacman
+    //sf::CircleShape player; //Pacman
+    sf::Sprite player;
+    sf::Texture pacman;
+
     int dir;//Direction
     int score = 0;//Score
     int foodNum = 0;//Foods eaten by Pacman in a level
@@ -43,6 +46,6 @@ public:
     //Check when Pacman has eaten 70 or 170 foods
     bool createFruit(); 
     //Get Pacman
-    sf::CircleShape getPacman() { return player; };
+    sf::Sprite getPacman() { return player; };
     
 };

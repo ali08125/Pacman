@@ -12,13 +12,16 @@ Pacman::Pacman()
 
 void Pacman::reset()
 {
-    Vector2f Pos;
+    //player.setScale();
+    //player.setFillColor(Color::Yellow);
+    if (!pacman.loadFromFile("../Photo/pacman/pacman3.png"))
+        std::cerr << "can not open pacman3.png\n";
+    pacman.setSmooth(true);
 
-    Pos.x = 10 * CellSize;
-    Pos.y = 15 * CellSize;
-    player.setRadius(CellSize / 2);
-    player.setFillColor(Color::Yellow);
-    player.setPosition(Pos);
+    player.setTexture(pacman);
+    player.setPosition(Vector2f(10 * CellSize, 15 * CellSize));
+    player.setScale(Vector2f(0.3, 0.3));
+    
     dir = -1;
 }
 

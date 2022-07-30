@@ -164,15 +164,28 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vect
     
     if (!fruit.empty() && player.getGlobalBounds().intersects(fruit[0].getGlobalBounds()))
     {
-        auto it2 = fruit.begin();
-        if (lastLevel < 64)
+        if (lastLevel <= 64)
         {
             score += 100;
-            fruit.erase(it2);
-            return;
-        }
+        } else if (lastLevel > 64 && lastLevel <= 128)
+        {
+            score += 300;
+        } else if (lastLevel > 128 && lastLevel <= 192)
+        {
+            score += 500;
+        } else if (lastLevel > 192 && lastLevel <= 224)
+        {
+            score += 700;
+        } else if (lastLevel > 224 && lastLevel <= 240)
+        {
+            score += 1000;
+        } else if (lastLevel > 240 && lastLevel <= 255)
+        {
+            score += 2000;
+        }  
+        fruit.erase(fruit.begin());
+        return;
     }
-    
 }
 
 bool Pacman::accident(RectangleShape ghost)
@@ -187,11 +200,11 @@ bool Pacman::accident(RectangleShape ghost)
 
 bool Pacman::createFruit()
 {
-    if (foodNum == 7 && !spawnFruit1)
+    if (foodNum == 70 && !spawnFruit1)
     {
         spawnFruit1 = true;
         return true;
-    } else if (foodNum == 14 && !spawnFruit2)
+    } else if (foodNum == 140 && !spawnFruit2)
     {
         spawnFruit2 = true;
         return true;

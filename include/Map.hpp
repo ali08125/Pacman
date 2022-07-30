@@ -14,8 +14,11 @@ private:
     std::vector<sf::CircleShape> foods;
     std::vector<sf::CircleShape> powerFood;
 
-    sf::CircleShape apple;
-    std::vector<sf::CircleShape> fruit;
+    sf::Sprite Fruit;
+    std::vector<sf::Sprite> fruit;
+    sf::Texture apple;
+    
+    
 
     int level = 1;
 
@@ -36,8 +39,8 @@ public:
     void setPowerFood(std::vector<sf::CircleShape> powerFood);
     //Fruit
     void createFruit();
-    std::vector<sf::CircleShape> getFruit() { return fruit; };
-    void setFruit(std::vector<sf::CircleShape> fruit); 
+    std::vector<sf::Sprite> getFruit() { return fruit; };
+    void setFruit(std::vector<sf::Sprite> fruit); 
 
     int getLevel() { return level; };
 

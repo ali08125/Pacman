@@ -20,7 +20,7 @@ private:
     void reset();
     //When Pacman encouter foods, eat them
     void eat(std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
-    , std::vector<sf::CircleShape> &fruit);
+    , std::vector<sf::Sprite> &fruit);
     //
     bool accident(sf::RectangleShape ghost);
 
@@ -32,7 +32,7 @@ public:
     //Pacman changes in every frame
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map
     , std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
-    , sf::RectangleShape ghost, bool end, int level, std::vector<sf::CircleShape> &fruit);
+    , sf::RectangleShape ghost, bool end, int level, std::vector<sf::Sprite> &fruit);
 
     //Get score
     int getScore() { return score; };

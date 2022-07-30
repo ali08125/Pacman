@@ -10,7 +10,7 @@ Map::Map()
 
 void Map::initMap()
 {
-    /*
+    
     sketch = {
         " ################### ",
         " #........#........# ",
@@ -36,7 +36,7 @@ void Map::initMap()
         "                     ",
         "                     "
     };
-    */
+    /*
     
     sketch = {
         " ################### ",
@@ -64,6 +64,8 @@ void Map::initMap()
         "                     "
     };
     
+*/
+    apple.loadFromFile("../Photo/fruits/apple.png");
 
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
@@ -75,9 +77,8 @@ void Map::initMap()
     CircleShape power(CellSize / 3);
     power.setFillColor(Color::White);
 
-    //Fruits
-    apple.setRadius(CellSize / 3);
-    apple.setFillColor(Color::Red);
+    // Fruit
+    Fruit.scale(Vector2f(0.5, 0.5));
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -165,7 +166,7 @@ void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
 {
     this->powerFood = powerFood;
 }
-void Map::setFruit(std::vector<sf::CircleShape> fruit)
+void Map::setFruit(std::vector<sf::Sprite> fruit)
 {
     this->fruit = fruit;
 }
@@ -177,35 +178,59 @@ void Map::createFruit()
     int x;
     int y;
 
-    if (level < 64)
+    if (level <= 64)
     {
-        while (notCreated)
-        {
-            x = rand() % 20;
-            y = rand() % 21;
-            apple.setPosition(Vector2f(x * CellSize + 5, y * CellSize + 5));
+        Fruit.setTexture(apple);
+    } else if (level > 64 && level <= 128)
+    {
+        //farangi
+    } else if (level > 128 && level <= 192)
+    {
+        //albaloo
+    } else if (level > 192 && level <= 224)
+    {
+        //holoo
+    } else if (level > 224 && level <= 240)
+    {
+        //angoor
+    } else if (level > 240 && level <= 255)
+    {
+        
+    }
+    
+    
+    
+    
+    
+    
+    while (notCreated)
+    {
+        x = rand() % 20;
+        y = rand() % 21;
+        Fruit.setPosition(Vector2f(x * CellSize + 5, y * CellSize + 5));
+        
 
-            int tmp = 0;
+        int tmp = 0;
 
-            //Check that it does not interfere with anything
-            if (sketch[y][x] == '.')
-            {    
-                for (auto & a : foods)
+        //Check that it does not interfere with anything
+        if (sketch[y][x] == '.')
+        {    
+            for (auto & a : foods)
+            {
+                if (a.getGlobalBounds().intersects(Fruit.getGlobalBounds()))
                 {
-                    if (a.getGlobalBounds().intersects(apple.getGlobalBounds()))
-                    {
-                        tmp = 1;
-                    }
+                    tmp = 1;
                 }
-            } else
-                continue;
+            }
+        } else
+            continue;
 
-            if(tmp == 1)
-                continue;
+        if(tmp == 1)
+            continue;
 
-            notCreated = false;
-        }
+        notCreated = false;
     }
 
-    fruit.push_back(apple);
+    
+    fruit.push_back(Fruit);
 }

@@ -14,14 +14,16 @@ void Pacman::reset()
 {
     //player.setScale();
     //player.setFillColor(Color::Yellow);
-    if (!pacman.loadFromFile("../Photo/pacman/pacman3.png"))
-        std::cerr << "can not open pacman3.png\n";
+    if (!pacman.loadFromFile("../Photo/pacman/3.png"))
+        std::cerr << "can not open 3.png\n";
     pacman.setSmooth(true);
 
     player.setTexture(pacman);
-    player.setPosition(Vector2f(10 * CellSize, 15 * CellSize));
-    player.setScale(Vector2f(0.3, 0.3));
     
+    player.setScale(Vector2f(0.3, 0.3));
+    player.setOrigin(Vector2f(50, 50));
+    player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
+
     dir = -1;
 }
 
@@ -34,6 +36,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
 , sf::RectangleShape ghost, bool end, int level, vector<Sprite> &fruit)
 {
+    lastDir = dir;
     //if level up
     if (level > lastLevel)
     {
@@ -46,7 +49,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         {
             fruit.erase(fruit.begin());
         }
-        
     }
     
     if (end)
@@ -59,13 +61,13 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     std::array<bool, 4> wall;
 
     // Collision Right
-    wall[0] = collision(player.getPosition().x + (Speed), player.getPosition().y, map);
+    wall[0] = collision(player.getPosition().x + (Speed) - 15, player.getPosition().y - 15, map);
     // Collision Down
-    wall[1] = collision(player.getPosition().x, player.getPosition().y + (Speed), map);
+    wall[1] = collision(player.getPosition().x - 15, player.getPosition().y + (Speed) - 15, map);
     // Collision Left
-    wall[2] = collision(player.getPosition().x - (Speed), player.getPosition().y, map);
+    wall[2] = collision(player.getPosition().x - (Speed) - 15, player.getPosition().y - 15, map);
     // Collision Up
-    wall[3] = collision(player.getPosition().x, player.getPosition().y - (Speed), map);
+    wall[3] = collision(player.getPosition().x - 15, player.getPosition().y - (Speed) - 15, map);
 
     Vector2f position;
     position.x = 0;
@@ -103,6 +105,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         {
         case 0:
             position.x += Speed;
+            player.rotate(0);
             break;
         case 1:
             position.y += Speed;
@@ -135,6 +138,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     }
     
     eat(food, powerFood, fruit);
+    Rotate();
 }
 
 void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vector<Sprite> &fruit)
@@ -213,4 +217,45 @@ bool Pacman::createFruit()
         return true;
     }
     return false;
+}
+
+void Pacman::Rotate()
+{
+    switch (lastDir)
+    {
+    case 0:
+        //Right
+        break;    
+    case 1:
+        //Down
+        player.rotate(-90);
+        break;
+    case 2:
+        //Left
+        player.rotate(-180);
+        break;
+    case 3: 
+        //Up
+        player.rotate(-270);
+        break;
+    }
+
+    switch (dir)
+    {
+    case 0:
+        //Right
+        break;    
+    case 1:
+        //Down
+        player.rotate(90);
+        break;
+    case 2:
+        //Left
+        player.rotate(180);
+        break;
+    case 3: 
+        //Up
+        player.rotate(270);
+        break;
+    }
 }

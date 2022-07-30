@@ -12,12 +12,13 @@ private:
     sf::Texture pacman;
 
     int dir;//Direction
+    int lastDir;
     int score = 0;//Score
     int foodNum = 0;//Foods eaten by Pacman in a level
     int lastLevel = 1;//Understand when level up
     bool ghsotCollision;//Pacman encounter with the ghost
-    bool spawnFruit1 = false;//
-    bool spawnFruit2 = false;//
+    bool spawnFruit1 = false;
+    bool spawnFruit2 = false;
 
     //Return Pacman to the first position
     void reset();
@@ -26,6 +27,8 @@ private:
     , std::vector<sf::Sprite> &fruit);
     //
     bool accident(sf::RectangleShape ghost);
+    //reset pacman rotate
+    void Rotate();
 
 public:
     Pacman();

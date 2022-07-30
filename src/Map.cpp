@@ -168,7 +168,31 @@ void Map::draw(RenderWindow & window)
     {
         window.draw(a);
     }
+    
+    Fruit.setTexture(apple);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 2 * CellSize + 5));
+    window.draw(Fruit);
+    
+    Fruit.setTexture(strawberry);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 3 * CellSize + 5));
+    window.draw(Fruit);
 
+    Fruit.setTexture(cherry);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 4 * CellSize + 5));
+    window.draw(Fruit);
+
+    Fruit.setTexture(peach);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 1 * CellSize + 5));
+    window.draw(Fruit);
+
+    Fruit.setTexture(grape);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 5 * CellSize + 5));
+    window.draw(Fruit);
+
+    Fruit.setTexture(banana);
+    Fruit.setPosition(Vector2f(2 * CellSize + 5, 6 * CellSize + 5));
+    window.draw(Fruit);
+    
     if (!fruit.empty())
     {
         window.draw(fruit[0]);
@@ -189,37 +213,32 @@ void Map::setFruit(std::vector<sf::Sprite> fruit)
     this->fruit = fruit;
 }
 
-void Map::createFruit()
+void Map::createFruit(CircleShape pacman)
 {
     bool notCreated = true;
     srand(time(0));
     int x;
     int y;
 
-    if (level <= 64)
+    if (level == 0)//level <= 64)
     {
         Fruit.setTexture(apple);
     } else if (level > 64 && level <= 128)
     {
-        //farangi
+        Fruit.setTexture(strawberry);
     } else if (level > 128 && level <= 192)
     {
-        //albaloo
-    } else if (level > 192 && level <= 224)
+        Fruit.setTexture(cherry);
+    } else if (level == 1)//level > 192 && level <= 224)
     {
-        //holoo
+        Fruit.setTexture(peach);
     } else if (level > 224 && level <= 240)
     {
-        //angoor
+        Fruit.setTexture(grape);
     } else if (level > 240 && level <= 255)
     {
-        
-    }
-    
-    
-    
-    
-    
+        Fruit.setTexture(banana);
+    }    
     
     while (notCreated)
     {
@@ -233,6 +252,11 @@ void Map::createFruit()
         //Check that it does not interfere with anything
         if (sketch[y][x] == '.')
         {    
+            if (Fruit.getGlobalBounds().intersects(pacman.getGlobalBounds()))
+            {
+                continue;
+            }
+            
             for (auto & a : foods)
             {
                 if (a.getGlobalBounds().intersects(Fruit.getGlobalBounds()))
@@ -249,6 +273,5 @@ void Map::createFruit()
         notCreated = false;
     }
 
-    
     fruit.push_back(Fruit);
 }

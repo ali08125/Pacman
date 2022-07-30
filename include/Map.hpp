@@ -43,7 +43,7 @@ public:
     std::vector<sf::CircleShape> getPowerFood() { return powerFood; };
     void setPowerFood(std::vector<sf::CircleShape> powerFood);
     //Fruit
-    void createFruit();
+    void createFruit(sf::CircleShape pacman);
     std::vector<sf::Sprite> getFruit() { return fruit; };
     void setFruit(std::vector<sf::Sprite> fruit); 
 

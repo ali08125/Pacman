@@ -31,6 +31,8 @@ void Pacman::initVariables()
     player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
 
     dir = -1;
+    lastDir = -1;
+    nextDir = -1;
     start = false;
 }
 
@@ -94,6 +96,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         if (wall[0] == 0)
         {
             dir = 0;
+            nextDir = -1;
+        } else
+        {
+            nextDir = 0;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Down))
     {
@@ -101,6 +107,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         if (wall[1] == 0)
         {
             dir = 1;
+            nextDir = -1;
+        } else
+        {
+            nextDir = 1;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Left))
     {   
@@ -108,6 +118,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         if (wall[2] == 0)
         {
             dir = 2;
+            nextDir = -1;
+        } else
+        {
+            nextDir = 2;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Up))
     {
@@ -115,10 +129,33 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         if (wall[3] == 0)
         {
             dir = 3;
+            nextDir = -1;
+        } else
+        {
+            nextDir = 3;
         }
     }
 
-    if (wall[dir] == 0)
+    if (nextDir != -1 && wall[nextDir] == 0)
+    {
+        dir = nextDir;
+        switch (nextDir)
+        {
+        case 0:
+            position.x += Speed;
+            break;
+        case 1:
+            position.y += Speed;
+            break;
+        case 2:
+            position.x -= Speed;
+            break;
+        case 3:
+            position.y -= Speed;
+            break;
+        }
+        nextDir = -1;
+    } else if (wall[dir] == 0)
     { 
         switch (dir)
         {
@@ -136,6 +173,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
             break;
         }
     }
+
     player.move(position.x, position.y);
     
     if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right

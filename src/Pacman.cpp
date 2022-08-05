@@ -144,6 +144,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     
     eat(food, powerFood, fruit);
     Rotate();
+    animation();
 }
 
 void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vector<Sprite> &fruit)
@@ -226,7 +227,6 @@ bool Pacman::createFruit()
 
 void Pacman::Rotate()
 {
-    animation();
     switch (lastDir)
     {
     case 0:
@@ -268,27 +268,32 @@ void Pacman::Rotate()
 
 void Pacman::animation()
 {
-    switch (frame)
+    if (clock.getElapsedTime().asSeconds() > 0.08)
     {
-    case 1:
-        player.setTexture(pacman1);
-        frame++;
-        break;
-    case 2:
-        player.setTexture(pacman2);
-        frame++;
-        break;
-    case 3:
-        player.setTexture(pacman3);
-        frame++;
-        break;
-    case 4:
-        player.setTexture(pacman2);
-        frame++;
-        break;
-    
-    default:
-        frame = 1;
-        break;
-    }
+        clock.restart();
+
+        switch (frame)
+        {
+        case 1:
+            player.setTexture(pacman1);
+            frame++;
+            break;
+        case 2:
+            player.setTexture(pacman2);
+            frame++;
+            break;
+        case 3:
+            player.setTexture(pacman3);
+            frame++;
+            break;
+        case 4:
+            player.setTexture(pacman2);
+            frame++;
+            break;
+        
+        default:
+            frame = 1;
+            break;
+        }
+    } 
 }

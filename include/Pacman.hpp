@@ -7,7 +7,8 @@
 class Pacman
 {
 private:
-    //sf::CircleShape player; //Pacman
+    sf::Clock clock;
+    
     sf::Sprite player;
     sf::Texture pacman1;
     sf::Texture pacman2;

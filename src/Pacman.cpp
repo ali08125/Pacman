@@ -42,6 +42,7 @@ void Pacman::reset()
 
     dir = -1;
     start = false;
+    ghsotCollision = false;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -61,7 +62,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         spawnFruit1 = false;
         spawnFruit2 = false;
         lastLevel = level;
-        reset();
+        this->reset();
         if (!fruit.empty())
         {
             fruit.erase(fruit.begin());
@@ -69,12 +70,26 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     }
     
     if (end)
-    {
-        reset();
-    }
-    
-    ghsotCollision = false;
+        this->reset();
 
+    this->move(map);
+    this->Rotate();
+
+    if (this->accident(ghost))
+    {
+        ghsotCollision = true;
+        this->reset();
+    }
+
+    if (start)
+        this->animation();
+    
+    this->eat(food, powerFood, fruit);
+       
+}
+
+void Pacman::move(array<array<RectangleShape, Width>, Height> map)
+{
     std::array<bool, 4> wall;
 
     // Collision Right
@@ -186,20 +201,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         position.x = Width * CellSize - Speed + 15;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
-
-    if (accident(ghost))
-    {
-        ghsotCollision = true;
-        reset();
-    }
-
-    if (start)
-    {
-        animation();
-    }
-    eat(food, powerFood, fruit);
-    Rotate();
-    
 }
 
 void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vector<Sprite> &fruit)

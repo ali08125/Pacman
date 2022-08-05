@@ -14,8 +14,8 @@ private:
     sf::Texture pacman3;//The third mode of Pacman
   
     int dir;//Direction
-    int nextDir;
-    int lastDir;
+    int nextDir;//Next direction
+    int lastDir;//Last direction
     int score = 0;//Score
     int foodNum = 0;//Foods eaten by Pacman in a level
     int lastLevel = 1;//Understand when level up
@@ -25,10 +25,12 @@ private:
     bool spawnFruit1 = false;
     bool spawnFruit2 = false;
     
-
+    //Initialize variables
     void initVariables();
     //Return Pacman to the first position
     void reset();
+    //Move the Pacman
+    void move(std::array<std::array<sf::RectangleShape, Width>, Height> map);
     //When Pacman encouter foods, eat them
     void eat(std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
     ,std::vector<sf::Sprite> &fruit);

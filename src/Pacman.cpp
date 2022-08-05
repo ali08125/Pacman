@@ -226,6 +226,7 @@ bool Pacman::createFruit()
 
 void Pacman::Rotate()
 {
+    animation();
     switch (lastDir)
     {
     case 0:
@@ -270,21 +271,24 @@ void Pacman::animation()
     switch (frame)
     {
     case 1:
-        
+        player.setTexture(pacman1);
         frame++;
         break;
     case 2:
+        player.setTexture(pacman2);
         frame++;
         break;
     case 3:
+        player.setTexture(pacman3);
         frame++;
         break;
     case 4:
+        player.setTexture(pacman2);
         frame++;
         break;
     
     default:
-        frame++;
+        frame = 1;
         break;
     }
 }

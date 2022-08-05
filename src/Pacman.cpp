@@ -30,6 +30,7 @@ void Pacman::reset()
     player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
 
     dir = -1;
+    start = false;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -40,7 +41,7 @@ void Pacman::draw(RenderWindow & window)
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
 , sf::RectangleShape ghost, bool end, int level, vector<Sprite> &fruit)
-{
+{   
     lastDir = dir;
     //if level up
     if (level > lastLevel)
@@ -80,24 +81,28 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 
     if(Keyboard::isKeyPressed(Keyboard::Right))
     {
+        start = true;
         if (wall[0] == 0)
         {
             dir = 0;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Down))
     {
+        start = true;
         if (wall[1] == 0)
         {
             dir = 1;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Left))
     {   
+        start = true;
         if (wall[2] == 0)
         {
             dir = 2;
         }
     } else if(Keyboard::isKeyPressed(Keyboard::Up))
     {
+        start = true;
         if (wall[3] == 0)
         {
             dir = 3;
@@ -141,10 +146,14 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         ghsotCollision = true;
         reset();
     }
-    
+
+    if (start)
+    {
+        animation();
+    }
     eat(food, powerFood, fruit);
     Rotate();
-    animation();
+    
 }
 
 void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vector<Sprite> &fruit)

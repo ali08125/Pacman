@@ -8,12 +8,13 @@ class Pacman
 {
 private:
     sf::Clock clock;
-    
+
     sf::Sprite player;
     sf::Texture pacman1;
     sf::Texture pacman2;
     sf::Texture pacman3;
 
+    bool start = false;
     int dir;//Direction
     int lastDir;
     int score = 0;//Score

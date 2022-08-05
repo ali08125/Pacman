@@ -12,14 +12,19 @@ Pacman::Pacman()
 
 void Pacman::reset()
 {
-    //player.setScale();
-    //player.setFillColor(Color::Yellow);
-    if (!pacman.loadFromFile("../Photo/pacman/3.png"))
-        std::cerr << "can not open 3.png\n";
-    pacman.setSmooth(true);
+    if (!pacman1.loadFromFile("../Photo/pacman/1.png"))
+        std::cerr << "can not open 1.png\n";
+    pacman1.setSmooth(true);
 
-    player.setTexture(pacman);
-    
+    if (!pacman2.loadFromFile("../Photo/pacman/2.png"))
+        std::cerr << "can not open 2.png\n";
+    pacman2.setSmooth(true);
+
+    if (!pacman3.loadFromFile("../Photo/pacman/3.png"))
+        std::cerr << "can not open 3.png\n";
+    pacman3.setSmooth(true);
+
+    player.setTexture(pacman1);   
     player.setScale(Vector2f(0.3, 0.3));
     player.setOrigin(Vector2f(50, 50));
     player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
@@ -256,6 +261,30 @@ void Pacman::Rotate()
     case 3: 
         //Up
         player.rotate(270);
+        break;
+    }
+}
+
+void Pacman::animation()
+{
+    switch (frame)
+    {
+    case 1:
+        
+        frame++;
+        break;
+    case 2:
+        frame++;
+        break;
+    case 3:
+        frame++;
+        break;
+    case 4:
+        frame++;
+        break;
+    
+    default:
+        frame++;
         break;
     }
 }

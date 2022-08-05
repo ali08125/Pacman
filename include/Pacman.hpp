@@ -9,7 +9,9 @@ class Pacman
 private:
     //sf::CircleShape player; //Pacman
     sf::Sprite player;
-    sf::Texture pacman;
+    sf::Texture pacman1;
+    sf::Texture pacman2;
+    sf::Texture pacman3;
 
     int dir;//Direction
     int lastDir;
@@ -19,16 +21,19 @@ private:
     bool ghsotCollision;//Pacman encounter with the ghost
     bool spawnFruit1 = false;
     bool spawnFruit2 = false;
+    int frame = 1;//Control pacman animation
 
     //Return Pacman to the first position
     void reset();
     //When Pacman encouter foods, eat them
     void eat(std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
-    , std::vector<sf::Sprite> &fruit);
+    ,std::vector<sf::Sprite> &fruit);
     //
     bool accident(sf::RectangleShape ghost);
-    //reset pacman rotate
+    //Reset pacman rotate
     void Rotate();
+    //Animate pacman
+    void animation();
 
 public:
     Pacman();

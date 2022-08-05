@@ -7,24 +7,26 @@
 class Pacman
 {
 private:
-    sf::Clock clock;
-
-    sf::Sprite player;
-    sf::Texture pacman1;
-    sf::Texture pacman2;
-    sf::Texture pacman3;
-
-    bool start = false;
+    sf::Clock clock;//Time
+    sf::Sprite player;//Pacman
+    sf::Texture pacman1;//The first mode of Pacman
+    sf::Texture pacman2;//The second mode of Pacman
+    sf::Texture pacman3;//The third mode of Pacman
+  
     int dir;//Direction
+    int nextDir;
     int lastDir;
     int score = 0;//Score
     int foodNum = 0;//Foods eaten by Pacman in a level
     int lastLevel = 1;//Understand when level up
+    int frame = 1;//Control pacman animation
     bool ghsotCollision;//Pacman encounter with the ghost
+    bool start = false;//Is the game started?!
     bool spawnFruit1 = false;
     bool spawnFruit2 = false;
-    int frame = 1;//Control pacman animation
+    
 
+    void initVariables();
     //Return Pacman to the first position
     void reset();
     //When Pacman encouter foods, eat them

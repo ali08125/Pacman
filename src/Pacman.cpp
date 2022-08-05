@@ -8,9 +8,10 @@ using namespace std;
 Pacman::Pacman()
 {
     this->reset();
+    this->initVariables();
 }
 
-void Pacman::reset()
+void Pacman::initVariables()
 {
     if (!pacman1.loadFromFile("../Photo/pacman/1.png"))
         std::cerr << "can not open 1.png\n";
@@ -27,6 +28,14 @@ void Pacman::reset()
     player.setTexture(pacman1);   
     player.setScale(Vector2f(0.3, 0.3));
     player.setOrigin(Vector2f(50, 50));
+    player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
+
+    dir = -1;
+    start = false;
+}
+
+void Pacman::reset()
+{
     player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
 
     dir = -1;
@@ -115,7 +124,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         {
         case 0:
             position.x += Speed;
-            player.rotate(0);
             break;
         case 1:
             position.y += Speed;

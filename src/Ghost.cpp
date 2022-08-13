@@ -41,8 +41,8 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
     position.x = 0;
     position.y = 0;
     
-    //dir = chooseDir(pacmanPos, wall);
-    dir = scatterMode(wall);
+    dir = chaseMode(pacmanPos, wall);
+    //dir = scatterMode(wall);
 
     if (wall[dir] == 0 && dir != -1)
     { 
@@ -106,19 +106,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the right top of the ghost
     if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && (dir != 1 || wall[1] != 0))
+        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
-        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && (dir != 2 || wall[2] != 0))
+        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && dir != 2)
         {
             // Right
             return 0;
-        } else if (wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        } else if (wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;
-        } else if (wall[1] == 0 && (dir != 3 || wall[3] != 0))
+        } else if (wall[1] == 0 && dir != 3)
         {
             // Down
             return 1;
@@ -128,19 +128,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the left top of the ghost
     if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && (dir != 1 || wall[1] != 0))
+        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
-        } else if (random == 1 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && (dir != 0 || wall[0] != 0))
+        } else if (random == 1 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && dir != 0)
             {
                 // Left
                 return 2;
-            } else if (wall[1] == 0 && (dir != 3 || wall[3] != 0))
+            } else if (wall[1] == 0 && dir != 3)
             {
                 // Down
                 return 1;
-            } else if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+            } else if (wall[0] == 0 && dir != 2)
             {
                 // Right
                 return 0;
@@ -150,19 +150,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the top of the ghost
     if (pacmanPos.x == ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
     {
-        if ((pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && (dir != 1 || wall[1] != 0))
+        if ((pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
-        } else if (random == 0 && wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        } else if (random == 0 && wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;
-        } else if (random == 1 && wall[1] == 1 && (dir != 3 || wall[3] != 0))
+        } else if (random == 1 && wall[1] == 1 && dir != 3)
         {
             // Down
             return 1;
-        } else if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+        } else if (wall[0] == 0 && dir != 2)
         {
             // Right
             return 0;
@@ -172,19 +172,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the right bottom of the ghost
     if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && (dir != 3 || wall[3] != 0))
+        if (random == 0 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && dir != 3)
         {
             // Down
             return 1;
-        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && (dir != 2 || wall[2] != 0))
+        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && dir != 2)
         {
             // Right
             return 0;
-        } else if (wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        } else if (wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;
-        } else if (wall[3] == 0 && (dir != 1 || wall[1] != 0))
+        } else if (wall[3] == 0 && dir != 1)
         {
             // Up
             return 3;
@@ -194,19 +194,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the left bottom of the ghost
     if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
-        if (random == 0 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && (dir != 0 || wall[0] != 0))
+        if (random == 0 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && dir != 0)
         {
             // Left
             return 2;
-        } else if (random == 1 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && (dir != 3 || wall[3] != 0))
+        } else if (random == 1 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && dir != 3)
         {
             // Down
             return 1;
-        } else if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+        } else if (wall[0] == 0 && dir != 2)
         {
             // Right
             return 0;
-        } else if (wall[3] == 0 && (dir != 1 || wall[1] != 0))
+        } else if (wall[3] == 0 && dir != 1)
         {
             // Up
             return 3;
@@ -216,19 +216,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the bottom of the ghost
     if (pacmanPos.x == ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
     {
-        if ((wall[1] == 0) && (dir != 3 || wall[3] != 0))
+        if ((wall[1] == 0) && dir != 3)
         {
             // Down
             return 1;
-        } else if (wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        } else if (wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;
-        } else if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+        } else if (wall[0] == 0 && dir != 2)
         {
             // Right
             return 0;
-        } else if (wall[3] == 0 && (dir != 1 || wall[1] != 0))
+        } else if (wall[3] == 0 && dir != 1)
         {
             // Up
             return 3;
@@ -238,19 +238,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the left of the ghost
     if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
     {
-        if (wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        if (wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;
-        } else if (wall[1] == 0 && (dir != 3 || wall[3] != 0))
+        } else if (wall[1] == 0 && dir != 3)
         {
             // Down
             return 1;
-        } else if (wall[3] == 0 && (dir != 1 || wall[1] != 0))
+        } else if (wall[3] == 0 && dir != 1)
         {
             // Up
             return 3;
-        } else if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+        } else if (wall[0] == 0 && dir != 2)
         {
             // Right
             return 0;
@@ -260,19 +260,19 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     // Pacman is the right of the ghost
     if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
     {
-        if (wall[0] == 0 && (dir != 2 || wall[2] != 0))
+        if (wall[0] == 0 && dir != 2)
         {
             // Right
             return 0;
-        } else if (wall[1] == 0 && (dir != 3 || wall[3] != 0))
+        } else if (wall[1] == 0 && dir != 3)
         {
             // Down
             return 1;
-        } else if (wall[3] == 0 && (dir != 1 || wall[1] != 0))
+        } else if (wall[3] == 0 && dir != 1)
         {
             // Up
             return 3;
-        } else if (wall[2] == 0 && (dir != 0 || wall[0] != 0))
+        } else if (wall[2] == 0 && dir != 0)
         {
             // Left
             return 2;

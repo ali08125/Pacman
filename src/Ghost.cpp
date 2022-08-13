@@ -41,7 +41,8 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
     position.x = 0;
     position.y = 0;
     
-    dir = chooseDir(pacmanPos, wall);
+    //dir = chooseDir(pacmanPos, wall);
+    dir = scatterMode(wall);
 
     if (wall[dir] == 0 && dir != -1)
     { 
@@ -84,10 +85,23 @@ void Ghost::draw(sf::RenderWindow &window)
     window.draw(ghost);
 }
 
+int Ghost::scatterMode(std::array<bool, 4> wall)
+{
+    int random;
+    while (1)
+    {
+        random = rand() % 4;
+        if (!wall[random] && (random != dir - 2 && random != dir + 2))
+        {
+            return random;
+        } 
+    }
+    return -1;
+}
+
 int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
 {
     int random = rand() % 2;
-    cout << random << endl;
 
     // Pacman is the right top of the ghost
     if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)

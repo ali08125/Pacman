@@ -11,6 +11,7 @@ private:
     
     void initGhosts();
     int chooseDir(sf::Vector2f pacmanPos, std::array<bool, 4> wall);
+    int scatterMode(std::array<bool, 4> wall);
 public:
     Ghost();
     void update(std::array<std::array<sf::RectangleShape, Width>, Height> map, sf::Vector2f pacmanPos, bool accident);

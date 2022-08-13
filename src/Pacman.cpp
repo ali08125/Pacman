@@ -7,7 +7,7 @@ using namespace std;
 
 Pacman::Pacman()
 {
-    this->reset();
+    //this->reset();
     this->initVariables();
 }
 
@@ -34,13 +34,18 @@ void Pacman::initVariables()
     lastDir = -1;
     nextDir = -1;
     start = false;
+    ghsotCollision = false;
 }
 
 void Pacman::reset()
 {
     player.setPosition(Vector2f(10 * CellSize + 15, 15 * CellSize + 15));
+    player.setTexture(pacman1);
 
     dir = -1;
+    Rotate();
+    lastDir = -1;
+    nextDir = -1;
     start = false;
     ghsotCollision = false;
 }
@@ -54,8 +59,8 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
 , sf::RectangleShape ghost, bool end, int level, vector<Sprite> &fruit)
 {   
+    //Check level up
     lastDir = dir;
-    //if level up
     if (level > lastLevel)
     {
         foodNum = 0;
@@ -75,17 +80,19 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     this->move(map);
     this->Rotate();
 
+    //Check Pacman and ghost collision
     if (this->accident(ghost))
     {
         ghsotCollision = true;
         this->reset();
     }
 
+    //If player pressed a key, animation will work
     if (start)
         this->animation();
     
+    //Eat foods
     this->eat(food, powerFood, fruit);
-       
 }
 
 void Pacman::move(array<array<RectangleShape, Width>, Height> map)

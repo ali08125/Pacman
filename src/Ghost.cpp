@@ -99,7 +99,7 @@ int Ghost::scatterMode(std::array<bool, 4> wall)
     return -1;
 }
 
-int Ghost::chooseDir(Vector2f pacmanPos, std::array<bool, 4> wall)
+int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
 {
     int random = rand() % 2;
 

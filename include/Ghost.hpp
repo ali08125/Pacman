@@ -9,8 +9,11 @@ private:
     sf::RectangleShape ghost;
     int dir;
     
+    //Initialilization
     void initGhosts();
-    int chooseDir(sf::Vector2f pacmanPos, std::array<bool, 4> wall);
+    //Chase Pacman
+    int chaseMode(sf::Vector2f pacmanPos, std::array<bool, 4> wall);
+    //Move randomly
     int scatterMode(std::array<bool, 4> wall);
 public:
     Ghost();

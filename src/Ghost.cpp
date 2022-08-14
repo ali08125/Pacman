@@ -13,15 +13,19 @@ Ghost::Ghost()
 
 void Ghost::initGhosts()
 {
-    for (size_t i = 0; i < 8; i++)
+    for (size_t i = 0; i < 4; i++)
     {
-        string red = "../Photo/ghost/red";
-        red += to_string(i) + ".png";
-        if (!ghostTexture[i].loadFromFile(red))
-            cout << "can not load " << red << endl;
+        
+        for (size_t j = 0; j < 2; j++)
+        {
+            string red = "../Photo/ghost/red";
+            red += to_string(i) + to_string(j) + ".png";
+            if (!ghostTexture[i][j].loadFromFile(red))
+               cout << "can not load " << red << endl;
+        }
     }
     
-    ghost.setTexture(ghostTexture[0]);
+    ghost.setTexture(ghostTexture[0][0]);
     ghost.setScale(Vector2f(0.3, 0.3));
     ghost.setOrigin(Vector2f(50, 50));
     ghost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));

@@ -13,6 +13,19 @@ Ghost::Ghost()
 
 void Ghost::initGhosts()
 {
+    for (size_t i = 0; i < 8; i++)
+    {
+        string red = "../Photo/ghost/red";
+        red += to_string(i) + ".png";
+        if (!ghostTexture[i].loadFromFile(red))
+            cout << "can not load " << red << endl;
+    }
+    
+    redGhost.setTexture(ghostTexture[0]);
+    redGhost.setOrigin(Vector2f(50, 50));
+    redGhost.setScale(Vector2f(0.3, 0.3));
+    redGhost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));
+
     dir = -1;
     ghost.setFillColor(Color::Red);
     ghost.setSize(Vector2f(CellSize, CellSize));
@@ -41,8 +54,8 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
     position.x = 0;
     position.y = 0;
     
-    dir = chaseMode(pacmanPos, wall);
-    //dir = scatterMode(wall);
+    //dir = chaseMode(pacmanPos, wall);
+    dir = scatterMode(wall);
 
     if (wall[dir] == 0 && dir != -1)
     { 
@@ -83,6 +96,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
 void Ghost::draw(sf::RenderWindow &window)
 {
     window.draw(ghost);
+    window.draw(redGhost);
 }
 
 int Ghost::scatterMode(std::array<bool, 4> wall)

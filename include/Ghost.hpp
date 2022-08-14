@@ -7,6 +7,8 @@ class Ghost
 {
 private:
     sf::RectangleShape ghost;
+    sf::Sprite redGhost;
+    std::array<sf::Texture, 8> ghostTexture;
     int dir;
     
     //Initialilization

@@ -6,8 +6,8 @@
 class Ghost
 {
 private:
-    sf::RectangleShape ghost;
-    sf::Sprite redGhost;
+    //sf::RectangleShape ghost;
+    sf::Sprite ghost;
     std::array<sf::Texture, 8> ghostTexture;
     int dir;
     
@@ -22,5 +22,5 @@ public:
     void update(std::array<std::array<sf::RectangleShape, Width>, Height> map, sf::Vector2f pacmanPos, bool accident);
     void draw(sf::RenderWindow &window);
 
-    sf::RectangleShape getGhost() { return ghost; };
+    sf::Sprite getGhost() { return ghost; };
 };

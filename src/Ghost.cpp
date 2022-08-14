@@ -21,15 +21,12 @@ void Ghost::initGhosts()
             cout << "can not load " << red << endl;
     }
     
-    redGhost.setTexture(ghostTexture[0]);
-    redGhost.setOrigin(Vector2f(50, 50));
-    redGhost.setScale(Vector2f(0.3, 0.3));
-    redGhost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));
+    ghost.setTexture(ghostTexture[0]);
+    ghost.setScale(Vector2f(0.3, 0.3));
+    ghost.setOrigin(Vector2f(50, 50));
+    ghost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));
 
     dir = -1;
-    ghost.setFillColor(Color::Red);
-    ghost.setSize(Vector2f(CellSize, CellSize));
-    ghost.setPosition(Vector2f(10 * CellSize, 7 * CellSize));
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pacmanPos, bool accident)
@@ -42,13 +39,13 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
     std::array<bool, 4> wall;
 
     // Collision Right
-    wall[0] = collision(ghost.getPosition().x + (Speed), ghost.getPosition().y, map);
+    wall[0] = collision(ghost.getPosition().x - 15 + (Speed), ghost.getPosition().y - 15, map);
     // Collision Down
-    wall[1] = collision(ghost.getPosition().x, ghost.getPosition().y + (Speed), map);
+    wall[1] = collision(ghost.getPosition().x - 15, ghost.getPosition().y + (Speed) - 15, map);
     // Collision Left
-    wall[2] = collision(ghost.getPosition().x - (Speed), ghost.getPosition().y, map);
+    wall[2] = collision(ghost.getPosition().x - 15 - (Speed), ghost.getPosition().y - 15, map);
     // Collision Up
-    wall[3] = collision(ghost.getPosition().x, ghost.getPosition().y - (Speed), map);
+    wall[3] = collision(ghost.getPosition().x - 15, ghost.getPosition().y - (Speed) - 15, map);
 
     Vector2f position;
     position.x = 0;
@@ -80,14 +77,14 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
 
     
     // Exit from a side and enter from the other side
-    if (ghost.getPosition().x >= CellSize * Width)
+    if (ghost.getPosition().x - 15 >= CellSize * Width)
     {
-        position.x = Speed - CellSize;
+        position.x = Speed - CellSize + 15;
         ghost.setPosition(Vector2f(position.x, ghost.getPosition().y));
         
-    } else if (ghost.getPosition().x <= -CellSize)
+    } else if (ghost.getPosition().x - 15 <= -CellSize)
     {
-        position.x = Width * CellSize - Speed;
+        position.x = Width * CellSize - Speed + 15;
         ghost.setPosition(Vector2f(position.x, ghost.getPosition().y));
     }
 
@@ -96,7 +93,6 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pac
 void Ghost::draw(sf::RenderWindow &window)
 {
     window.draw(ghost);
-    window.draw(redGhost);
 }
 
 int Ghost::scatterMode(std::array<bool, 4> wall)

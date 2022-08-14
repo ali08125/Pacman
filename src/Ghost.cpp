@@ -29,11 +29,17 @@ void Ghost::initGhosts()
     dir = -1;
 }
 
-void Ghost::update(array<array<RectangleShape, Width>, Height> map, Vector2f pacmanPos, bool accident)
-{
+void Ghost::update(array<array<RectangleShape, Width>, Height> map
+, Vector2f pacmanPos, bool accident, bool start)
+{   
     if (accident)
     {
         initGhosts();
+    }
+    
+    if (!start)
+    {
+        return;
     }
     
     std::array<bool, 4> wall;

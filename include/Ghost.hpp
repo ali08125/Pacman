@@ -19,7 +19,8 @@ private:
     int scatterMode(std::array<bool, 4> wall);
 public:
     Ghost();
-    void update(std::array<std::array<sf::RectangleShape, Width>, Height> map, sf::Vector2f pacmanPos, bool accident);
+    void update(std::array<std::array<sf::RectangleShape, Width>, Height> map
+    ,sf::Vector2f pacmanPos, bool accident, bool start);
     void draw(sf::RenderWindow &window);
 
     sf::Sprite getGhost() { return ghost; };

@@ -8,14 +8,8 @@ using namespace std;
 Ghost::Ghost()
 {
     srand(time(0));
-    initGhosts();
-}
-
-void Ghost::initGhosts()
-{
     for (size_t i = 0; i < 4; i++)
     {
-        
         for (size_t j = 0; j < 2; j++)
         {
             string red = "../Photo/ghost/red";
@@ -24,6 +18,11 @@ void Ghost::initGhosts()
                cout << "can not load " << red << endl;
         }
     }
+    initGhosts();
+}
+
+void Ghost::initGhosts()
+{
     frame = 0;
     
     ghost.setTexture(ghostTexture[0][frame]);

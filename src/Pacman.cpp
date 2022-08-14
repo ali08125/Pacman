@@ -71,6 +71,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         spawnFruit1 = false;
         spawnFruit2 = false;
         lastLevel = level;
+        ghsotCollision = true;
         this->reset();
         if (!fruit.empty())
         {

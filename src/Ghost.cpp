@@ -24,13 +24,15 @@ void Ghost::initGhosts()
                cout << "can not load " << red << endl;
         }
     }
+    frame = 0;
     
-    ghost.setTexture(ghostTexture[0][0]);
+    ghost.setTexture(ghostTexture[0][frame]);
     ghost.setScale(Vector2f(0.3, 0.3));
     ghost.setOrigin(Vector2f(50, 50));
     ghost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));
 
     dir = -1;
+
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map
@@ -84,6 +86,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
     }
     
     ghost.move(position.x, position.y);   
+    animation();
 
     
     // Exit from a side and enter from the other side
@@ -103,6 +106,21 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
 void Ghost::draw(sf::RenderWindow &window)
 {
     window.draw(ghost);
+}
+
+void Ghost::animation()
+{
+    if (clock.getElapsedTime().asSeconds() > 0.08)
+    {
+        clock.restart();
+
+        ghost.setTexture(ghostTexture[dir][frame]);
+
+        if (frame == 0)
+            frame = 1;
+        else
+            frame = 0;
+    } 
 }
 
 int Ghost::scatterMode(std::array<bool, 4> wall)

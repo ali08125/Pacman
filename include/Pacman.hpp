@@ -35,7 +35,7 @@ private:
     void eat(std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
     ,std::vector<sf::Sprite> &fruit);
     //
-    bool accident(sf::RectangleShape ghost);
+    bool accident(sf::Sprite ghost);
     //Reset pacman rotate
     void Rotate();
     //Animate pacman
@@ -49,7 +49,7 @@ public:
     //Pacman changes in every frame
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map
     , std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
-    , sf::RectangleShape ghost, bool end, int level, std::vector<sf::Sprite> &fruit);
+    , sf::Sprite ghost, bool end, int level, std::vector<sf::Sprite> &fruit);
 
     //Get score
     int getScore() { return score; };
@@ -61,5 +61,7 @@ public:
     bool createFruit(); 
     //Get Pacman
     sf::Sprite getPacman() { return player; };
+    //Get announcing the start of the game
+    bool getStart() { return start; };
     
 };

@@ -47,7 +47,6 @@ void Pacman::reset()
     lastDir = -1;
     nextDir = -1;
     start = false;
-    ghsotCollision = false;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -57,8 +56,13 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
-, sf::RectangleShape ghost, bool end, int level, vector<Sprite> &fruit)
+, Sprite ghost, bool end, int level, vector<Sprite> &fruit)
 {   
+    if (ghsotCollision)
+    {
+        ghsotCollision = false;
+    }
+    
     //Check level up
     lastDir = dir;
     if (level > lastLevel)
@@ -264,7 +268,7 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vect
     }
 }
 
-bool Pacman::accident(RectangleShape ghost)
+bool Pacman::accident(Sprite ghost)
 {
     if (player.getGlobalBounds().intersects(ghost.getGlobalBounds()) 
     || ghost.getGlobalBounds().intersects(player.getGlobalBounds()))

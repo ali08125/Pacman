@@ -20,7 +20,7 @@ void Map::initMap()
         " #....#...#...#....# ",
         " ####.### # ###.#### ",
         "    #.#       #.#    ",
-        "#####.# ##### #.#####",
+        "#####.# ##D## #.#####",
         "     .  #   #  .     ",
         "#####.# ##### #.#####",
         "    #.#       #.#    ",
@@ -36,35 +36,7 @@ void Map::initMap()
         "                     ",
         "                     "
     };
-    /*
-    
-    sketch = {
-        " ################### ",
-        " #        #        # ",
-        " # ## ### # ### ## # ",
-        " #                 # ",
-        " # ## # ##### # ## # ",
-        " #    #   #   #    # ",
-        " #### ### # ### #### ",
-        "    # #       # #    ",
-        "##### # ##### # #####",
-        "        #   #        ",
-        "##### # ##### # #####",
-        "    # #       # #    ",
-        " #### # ##### # #### ",
-        " #        #        # ",
-        " # ## ### # ### ## # ",
-        " #  #      ..   #  # ",
-        " ## # # ##### # # ## ",
-        " #    #   #   #    # ",
-        " # ###### # ###### # ",
-        " #                 # ",
-        " ################### ",
-        "                     ",
-        "                     "
-    };
-    
-*/
+
     //Load fruits photo
     if(!apple.loadFromFile("../Photo/fruits/apple.png"))
         std::cerr << "can not open apple.png\n";
@@ -96,7 +68,10 @@ void Map::initMap()
     power.setFillColor(Color::White);
 
     // Fruit
-    Fruit.scale(Vector2f(0.5, 0.5));
+    if (level == 1)
+    {
+        Fruit.scale(Vector2f(0.5, 0.5));    
+    }
 
     for (size_t i = 0; i < Height; i++)
     {
@@ -121,6 +96,12 @@ void Map::initMap()
             case '0':
                 power.setPosition(Vector2f((j * CellSize) + 5, (i * CellSize) + 5));
                 powerFood.push_back(power);
+                break;
+            case 'D':
+                RectangleShape door(Vector2f(CellSize, CellSize / 2));
+                door.setFillColor(Color::White);
+                door.setPosition(Vector2f(j * CellSize, i * CellSize));
+                map[i][j] = door;
                 break;
             }
         }
@@ -169,30 +150,6 @@ void Map::draw(RenderWindow & window)
         window.draw(a);
     }
     
-    Fruit.setTexture(apple);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 2 * CellSize + 5));
-    window.draw(Fruit);
-    
-    Fruit.setTexture(strawberry);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 3 * CellSize + 5));
-    window.draw(Fruit);
-
-    Fruit.setTexture(cherry);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 4 * CellSize + 5));
-    window.draw(Fruit);
-
-    Fruit.setTexture(peach);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 1 * CellSize + 5));
-    window.draw(Fruit);
-
-    Fruit.setTexture(grape);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 5 * CellSize + 5));
-    window.draw(Fruit);
-
-    Fruit.setTexture(banana);
-    Fruit.setPosition(Vector2f(2 * CellSize + 5, 6 * CellSize + 5));
-    window.draw(Fruit);
-    
     if (!fruit.empty())
     {
         window.draw(fruit[0]);
@@ -213,14 +170,14 @@ void Map::setFruit(std::vector<sf::Sprite> fruit)
     this->fruit = fruit;
 }
 
-void Map::createFruit(CircleShape pacman)
+void Map::createFruit(Sprite pacman)
 {
     bool notCreated = true;
     srand(time(0));
     int x;
     int y;
 
-    if (level == 0)//level <= 64)
+    if (level <= 64)
     {
         Fruit.setTexture(apple);
     } else if (level > 64 && level <= 128)
@@ -229,7 +186,7 @@ void Map::createFruit(CircleShape pacman)
     } else if (level > 128 && level <= 192)
     {
         Fruit.setTexture(cherry);
-    } else if (level == 1)//level > 192 && level <= 224)
+    } else if (level > 192 && level <= 224)
     {
         Fruit.setTexture(peach);
     } else if (level > 224 && level <= 240)
@@ -245,7 +202,6 @@ void Map::createFruit(CircleShape pacman)
         x = rand() % 20;
         y = rand() % 21;
         Fruit.setPosition(Vector2f(x * CellSize + 5, y * CellSize + 5));
-        
 
         int tmp = 0;
 

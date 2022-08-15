@@ -4,7 +4,7 @@
 using namespace std;
 using namespace sf;
 
-bool collision(float px, float py, array<array<RectangleShape, Width>, Height> map)
+bool collision(float px, float py, array<array<RectangleShape, Width>, Height> map, int door)
 {
     float cell_x = px / static_cast<float>(CellSize);
 	float cell_y = py / static_cast<float>(CellSize);
@@ -44,12 +44,16 @@ bool collision(float px, float py, array<array<RectangleShape, Width>, Height> m
 			}
 		}
 
+		Vector2f block(10 * CellSize, 8 * CellSize);
 		if (0 <= x && 0 <= y && Height > y && Width > x)
 		{
             if (map[y][x].getFillColor() == Color::Blue)
             {
                 return 1;
-            }
+            } else if (map[y][x].getPosition() == block && door == 0)
+			{
+				return 1;
+			}
         }
     }
     return 0;

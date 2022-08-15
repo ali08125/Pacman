@@ -7,7 +7,6 @@ using namespace std;
 
 Pacman::Pacman()
 {
-    //this->reset();
     this->initVariables();
 }
 
@@ -34,7 +33,11 @@ void Pacman::initVariables()
     lastDir = -1;
     nextDir = -1;
     start = false;
-    ghsotCollision = false;
+    for (size_t i = 0; i < 4; i++)
+    {
+        ghsotCollision[i] = false;
+    }
+    eatPowerFood = false;
 }
 
 void Pacman::reset()
@@ -47,6 +50,7 @@ void Pacman::reset()
     lastDir = -1;
     nextDir = -1;
     start = false;
+    eatPowerFood = false;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -56,12 +60,18 @@ void Pacman::draw(RenderWindow & window)
 
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
-, Sprite ghost, bool end, int level, vector<Sprite> &fruit)
+, array<Sprite, 4> ghost, bool end, int level, vector<Sprite> &fruit)
 {   
-    if (ghsotCollision)
+    if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
-        ghsotCollision = false;
+        eatPowerFood = false;
     }
+    
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (ghsotCollision[i])
+            ghsotCollision[i] = false;
+    }  
     
     //Check level up
     lastDir = dir;
@@ -71,7 +81,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         spawnFruit1 = false;
         spawnFruit2 = false;
         lastLevel = level;
-        ghsotCollision = true;
+        for (size_t i = 0; i < 4; i++)
+        {
+            ghsotCollision[i] = true;
+        }
         this->reset();
         if (!fruit.empty())
         {
@@ -86,10 +99,13 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     this->Rotate();
 
     //Check Pacman and ghost collision
-    if (this->accident(ghost))
+    for (size_t i = 0; i < 4; i++)
     {
-        ghsotCollision = true;
-        this->reset();
+        if (this->accident(ghost[i]))
+        {
+            ghsotCollision[i] = true;
+            this->reset();
+        }
     }
 
     //If player pressed a key, animation will work
@@ -235,6 +251,8 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vect
     {
         if (player.getGlobalBounds().intersects(b.getGlobalBounds()))
         {
+            powerFoodTime.restart();
+            eatPowerFood = true;
             foodNum += 1;
             score += 50;
             powerFood.erase(it1);

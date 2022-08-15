@@ -7,25 +7,26 @@ class Ghost
 {
 private:
 
-    sf::Clock clock;
-    sf::Sprite ghost;
-    std::array<std::array<sf::Texture, 2>, 4> ghostTexture;
-    int dir;
-    int frame;
+    std::array<sf::Clock, 4> clock;
+    std::array<sf::Sprite, 4> ghost;
+    std::array<std::array<std::array<sf::Texture, 2>, 4>, 4> ghostTexture;
+
+    std::array<int, 4> ghostDir;
+    std::array<int, 4> frame;
     
     //Initialilization
     void initGhosts();
     //Chase Pacman
     int chaseMode(sf::Vector2f pacmanPos, std::array<bool, 4> wall);
     //Move randomly
-    int scatterMode(std::array<bool, 4> wall);
+    int scatterMode(std::array<bool, 4> wall, int dir);
     //Animate the Ghost
-    void animation();
+    void animation(int dir, int i);
 public:
     Ghost();
     void update(std::array<std::array<sf::RectangleShape, Width>, Height> map
-    ,sf::Vector2f pacmanPos, bool accident, bool start);
+    ,sf::Vector2f pacmanPos, std::array<bool, 4> accident, bool start);
     void draw(sf::RenderWindow &window);
 
-    sf::Sprite getGhost() { return ghost; };
+    std::array<sf::Sprite, 4> getGhost() { return ghost; };
 };

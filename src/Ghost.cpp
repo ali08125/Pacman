@@ -8,38 +8,89 @@ using namespace std;
 Ghost::Ghost()
 {
     srand(time(0));
-    for (size_t i = 0; i < 4; i++)
+
+    //Load textures
+    for (size_t k = 0; k < 4; k++)
     {
-        for (size_t j = 0; j < 2; j++)
+        for (size_t i = 0; i < 4; i++)
         {
-            string red = "../Photo/ghost/red";
-            red += to_string(i) + to_string(j) + ".png";
-            if (!ghostTexture[i][j].loadFromFile(red))
-               cout << "can not load " << red << endl;
+            for (size_t j = 0; j < 2; j++)
+            {
+                string ghostColor;
+
+                switch (k)
+                {
+                case 0://Red
+                    ghostColor = "../Photo/ghost/red";
+                    break;
+                case 1://Pink
+                    ghostColor = "../Photo/ghost/pink";
+                    break;
+                case 2://Orange
+                    ghostColor = "../Photo/ghost/orange";
+                    break;
+                case 3://Blue
+                    ghostColor = "../Photo/ghost/blue";
+                    break;
+                }
+
+                ghostColor += to_string(i) + to_string(j) + ".png";
+                if (!ghostTexture[k][i][j].loadFromFile(ghostColor))
+                cout << "can not load " << ghostColor << endl;
+            }
         }
     }
+    
     initGhosts();
 }
 
 void Ghost::initGhosts()
-{
-    frame = 0;
-    
-    ghost.setTexture(ghostTexture[0][frame]);
-    ghost.setScale(Vector2f(0.3, 0.3));
-    ghost.setOrigin(Vector2f(50, 50));
-    ghost.setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));
-
-    dir = -1;
-
+{    
+    for (size_t i = 0; i < 4; i++)
+    {
+        frame[i] = 0;
+        clock[i].restart();
+        
+        switch (i)
+        {
+        case 0://Red
+            ghost[i].setTexture(ghostTexture[i][0][0]);
+            ghost[i].setScale(Vector2f(0.3, 0.3));
+            ghost[i].setOrigin(Vector2f(50, 50));
+            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));        
+            break;
+        case 1://Pink
+            ghost[i].setTexture(ghostTexture[i][0][0]);
+            ghost[i].setScale(Vector2f(0.3, 0.3));
+            ghost[i].setOrigin(Vector2f(50, 50));
+            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 9 * CellSize + 15));
+            break;
+        case 2://Orange
+            ghost[i].setTexture(ghostTexture[i][0][0]);
+            ghost[i].setScale(Vector2f(0.3, 0.3));
+            ghost[i].setOrigin(Vector2f(50, 50));
+            ghost[i].setPosition(Vector2f(11 * CellSize + 15, 9 * CellSize + 15));
+            break;
+        case 3://Blue
+            ghost[i].setTexture(ghostTexture[i][0][0]);
+            ghost[i].setScale(Vector2f(0.3, 0.3));
+            ghost[i].setOrigin(Vector2f(50, 50));
+            ghost[i].setPosition(Vector2f(9 * CellSize + 15, 9 * CellSize + 15));
+            break;
+        }
+        ghostDir[i] = -1;
+    }
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map
-, Vector2f pacmanPos, bool accident, bool start)
+, Vector2f pacmanPos, array<bool, 4> accident, bool start)
 {   
-    if (accident)
+    for (size_t i = 0; i < 4; i++)
     {
-        initGhosts();
+        if (accident[i])
+        {
+            initGhosts();
+        }
     }
     
     if (!start)
@@ -47,97 +98,110 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         return;
     }
     
-    std::array<bool, 4> wall;
-
-    // Collision Right
-    wall[0] = collision(ghost.getPosition().x - 15 + (Speed), ghost.getPosition().y - 15, map);
-    // Collision Down
-    wall[1] = collision(ghost.getPosition().x - 15, ghost.getPosition().y + (Speed) - 15, map);
-    // Collision Left
-    wall[2] = collision(ghost.getPosition().x - 15 - (Speed), ghost.getPosition().y - 15, map);
-    // Collision Up
-    wall[3] = collision(ghost.getPosition().x - 15, ghost.getPosition().y - (Speed) - 15, map);
+    array<array<bool, 4>, 4> wall;
 
     Vector2f position;
-    position.x = 0;
-    position.y = 0;
-    
-    //dir = chaseMode(pacmanPos, wall);
-    dir = scatterMode(wall);
 
-    if (wall[dir] == 0 && dir != -1)
-    { 
-        switch (dir)
-        {
-        case 0:
-            position.x += Speed;
-            break;
-        case 1:
-            position.y += Speed;
-            break;
-        case 2:
-            position.x -= Speed;
-            break;
-        case 3:
-            position.y -= Speed;
-            break;
+    for (size_t i = 0; i < 4; i++)
+    {
+        // Collision Right
+        wall[i][0] = collision(ghost[i].getPosition().x - 15 + Speed, ghost[i].getPosition().y - 15, map);
+        // Collision Down
+        wall[i][1] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y + Speed - 15, map);
+        // Collision Left
+        wall[i][2] = collision(ghost[i].getPosition().x - 15 - Speed, ghost[i].getPosition().y - 15, map);
+        // Collision Up
+        wall[i][3] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y - Speed - 15, map, 1);
+
+        position.x = 0;
+        position.y = 0;
+
+        //dir = chaseMode(pacmanPos, wall);
+        ghostDir[i] = scatterMode(wall[i], ghostDir[i]);
+
+        if (wall[i][ghostDir[i]] == 0 && ghostDir[i] != -1)
+        { 
+            switch (ghostDir[i])
+            {
+            case 0:
+                position.x += Speed;
+                break;
+            case 1:
+                position.y += Speed;
+                break;
+            case 2:
+                position.x -= Speed;
+                break;
+            case 3:
+                position.y -= Speed;
+                break;
+            }
         }
-    }
-    
-    ghost.move(position.x, position.y);   
-    animation();
 
-    
-    // Exit from a side and enter from the other side
-    if (ghost.getPosition().x - 15 >= CellSize * Width)
-    {
-        position.x = Speed - CellSize + 15;
-        ghost.setPosition(Vector2f(position.x, ghost.getPosition().y));
-        
-    } else if (ghost.getPosition().x - 15 <= -CellSize)
-    {
-        position.x = Width * CellSize - Speed + 15;
-        ghost.setPosition(Vector2f(position.x, ghost.getPosition().y));
+        ghost[i].move(position.x, position.y);
+        animation(ghostDir[i], i);
+
+        // Exit from a side and enter from the other side
+        if (ghost[i].getPosition().x - 15 >= CellSize * Width)
+        {
+            position.x = Speed - CellSize + 15;
+            ghost[i].setPosition(Vector2f(position.x, ghost[i].getPosition().y));
+            
+        } else if (ghost[i].getPosition().x - 15 <= -CellSize)
+        {
+            position.x = Width * CellSize - Speed + 15;
+            ghost[i].setPosition(Vector2f(position.x, ghost[i].getPosition().y));
+        }
     }
 
 }
 
 void Ghost::draw(sf::RenderWindow &window)
 {
-    window.draw(ghost);
+    for (size_t i = 0; i < 4; i++)
+    {
+        window.draw(ghost[i]);
+    }
 }
 
-void Ghost::animation()
+void Ghost::animation(int dir, int i)
 {
-    if (clock.getElapsedTime().asSeconds() > 0.08)
+    if (clock[i].getElapsedTime().asSeconds() > 0.05)
     {
-        clock.restart();
+        clock[i].restart();
+        ghost[i].setTexture(ghostTexture[i][dir][frame[i]]);
 
-        ghost.setTexture(ghostTexture[dir][frame]);
-
-        if (frame == 0)
-            frame = 1;
+        if (frame[i] == 0)
+            frame[i] = 1;
         else
-            frame = 0;
+            frame[i] = 0;
     } 
 }
 
-int Ghost::scatterMode(std::array<bool, 4> wall)
+int Ghost::scatterMode(array<bool, 4> wall, int dir)
 {
+    int try1 = 0;
     int random;
     while (1)
     {
+        try1++;
         random = rand() % 4;
         if (!wall[random] && (random != dir - 2 && random != dir + 2))
         {
             return random;
-        } 
+        }
+
+        if (try1 > 50)
+        {
+            return -1;   
+        }
     }
     return -1;
 }
 
 int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
 {
+    /*
     int random = rand() % 2;
 
     // Pacman is the right top of the ghost
@@ -315,5 +379,6 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
             return 2;
         }   
     }
-    return dir;
+    */
+    return -1;
 }

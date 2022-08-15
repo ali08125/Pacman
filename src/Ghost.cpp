@@ -41,6 +41,19 @@ Ghost::Ghost()
         }
     }
     
+    for (size_t i = 0; i < 2; i++)
+    { 
+        for (size_t j = 0; j < 2; j++)
+        {
+            string ghostState = "../Photo/ghost/scared";
+            ghostState += to_string(i) + to_string(j) + ".png";
+            if(!scaredGhostTexture[i][j].loadFromFile(ghostState))
+                cout << "can not load " << ghostState << endl;
+        }
+        
+    }
+    
+    
     initGhosts();
 }
 
@@ -50,6 +63,7 @@ void Ghost::initGhosts()
     {
         frame[i] = 0;
         clock[i].restart();
+        wink[i] = 0;
         
         switch (i)
         {
@@ -83,8 +97,14 @@ void Ghost::initGhosts()
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map
-, Vector2f pacmanPos, array<bool, 4> accident, bool start)
+, Vector2f pacmanPos, array<bool, 4> accident, bool start, bool eatPowerFood)
 {   
+    if (!scared && eatPowerFood)
+    {  
+        scaredTime.restart();
+    }
+    this->scared = eatPowerFood;
+
     for (size_t i = 0; i < 4; i++)
     {
         if (accident[i])
@@ -139,7 +159,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         }
 
         ghost[i].move(position.x, position.y);
-        animation(ghostDir[i], i);
+        animation(ghostDir[i], i, eatPowerFood);
 
         // Exit from a side and enter from the other side
         if (ghost[i].getPosition().x - 15 >= CellSize * Width)
@@ -164,18 +184,48 @@ void Ghost::draw(sf::RenderWindow &window)
     }
 }
 
-void Ghost::animation(int dir, int i)
+void Ghost::animation(int dir, int i, bool scared)
 {
-    if (clock[i].getElapsedTime().asSeconds() > 0.05)
+    if (scared)
     {
-        clock[i].restart();
-        ghost[i].setTexture(ghostTexture[i][dir][frame[i]]);
+        if (scaredTimeWink[i].getElapsedTime().asSeconds() > 0.09)
+        {
+            scaredTimeWink[i].restart();
+            if (scaredTime.getElapsedTime().asSeconds() >= 2)
+            {
+                if (wink[i] == 0)
+                {
+                    wink[i] = 1;
+                } else
+                {
+                    wink[i] = 0;
+                }
+            }
+        }
 
-        if (frame[i] == 0)
-            frame[i] = 1;
-        else
-            frame[i] = 0;
-    } 
+        if (clock[i].getElapsedTime().asSeconds() > 0.05)
+        {
+            clock[i].restart();
+            ghost[i].setTexture(scaredGhostTexture[wink[i]][frame[i]]);
+
+            if (frame[i] == 0)
+                frame[i] = 1;
+            else
+                frame[i] = 0;
+        } 
+    } else
+    {
+        if (clock[i].getElapsedTime().asSeconds() > 0.05)
+        {
+            clock[i].restart();
+            ghost[i].setTexture(ghostTexture[i][dir][frame[i]]);
+
+            if (frame[i] == 0)
+                frame[i] = 1;
+            else
+                frame[i] = 0;
+        } 
+    }
 }
 
 int Ghost::scatterMode(array<bool, 4> wall, int dir)

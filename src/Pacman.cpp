@@ -74,7 +74,11 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     }  
     
     //Check level up
-    lastDir = dir;
+    if (dir != -1)
+    {
+        lastDir = dir;
+    }
+    
     if (level > lastLevel)
     {
         foodNum = 0;
@@ -96,7 +100,15 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         this->reset();
 
     this->move(map);
-    this->Rotate();
+
+    //If player pressed a key, animation will work
+    if (start && dir != -1)
+    {
+        
+        this->animation();
+        this->Rotate();
+    }
+    
 
     //Check Pacman and ghost collision
     for (size_t i = 0; i < 4; i++)
@@ -106,11 +118,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
             ghsotCollision[i] = true;
             this->reset();
         }
-    }
-
-    //If player pressed a key, animation will work
-    if (start)
-        this->animation();
+    }    
     
     //Eat foods
     this->eat(food, powerFood, fruit);
@@ -216,6 +224,10 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
             break;
         }
     }
+    if (position.x == 0 && position.y == 0)
+    {
+        dir = -1;
+    }
 
     player.move(position.x, position.y);
     
@@ -303,7 +315,7 @@ bool Pacman::createFruit()
     {
         spawnFruit1 = true;
         return true;
-    } else if (foodNum == 140 && !spawnFruit2)
+    } else if (foodNum == 135 && !spawnFruit2)
     {
         spawnFruit2 = true;
         return true;

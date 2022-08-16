@@ -65,17 +65,9 @@ int main()
 
         if (levelUp)
         {
-            Clock loadingScreen;
-            while (loadingScreen.getElapsedTime().asSeconds() <= 2)
-            {
-                window.clear(Color::Cyan);
-
-                //window.draw();
-
-                window.display();
-            }
+            menu.levelUpScreen(window, map.getLevel());
         }
-
+    
         map.draw(window);
         ghost.draw(window);
         pacman.draw(window);

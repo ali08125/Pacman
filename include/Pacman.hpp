@@ -30,6 +30,7 @@ private:
     std::array<bool, 4> scaredGhost;//Is the Ghost scared?!
     float pacmanSpeed = Speed + 1;
     bool levelUp = false;
+    int health = 3;
     
     //Initialize variables
     void initVariables();
@@ -72,4 +73,5 @@ public:
     bool getPowerFoodInfo();
     int getGhostEncounter();
     bool getLevelUp();
+    int getHealth() { return health; };
 };

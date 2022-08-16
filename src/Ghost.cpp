@@ -66,6 +66,7 @@ void Ghost::initGhosts()
         frame[i] = 0;
         clock[i].restart();
         wink[i] = 0;
+        scared[i] = false;
         
         switch (i)
         {
@@ -95,21 +96,21 @@ void Ghost::initGhosts()
             break;
         }
         ghostDir[i] = -1;
+        eaten[i] = false;
     }
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map
-, Vector2f pacmanPos, array<bool, 4> accident, bool start, bool eatPowerFood)
+, Vector2f pacmanPos, array<bool, 4> accident, bool start, bool eatPowerFood, int eatGhost, bool levelUp)
 {   
-    if (!scared && eatPowerFood)
-    {  
-        scaredTime.restart();
+    if (levelUp)
+    {
+        initGhosts();
     }
-    this->scared = eatPowerFood;
-
+    
     for (size_t i = 0; i < 4; i++)
     {
-        if (accident[i])
+        if (accident[i] && !scared[i])
         {
             initGhosts();
         }
@@ -117,8 +118,28 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
     
     if (!start)
     {
+        scaredTime.restart();
         return;
+    } 
+
+    if (eatPowerFood)
+    {  
+        scaredTime.restart();
+        for (size_t i = 0; i < 4; i++)
+        {            
+            scared[i] = true;
+        }
     }
+    
+    if (scaredTime.getElapsedTime().asSeconds() >= 5 && scaredTime.getElapsedTime().asSeconds() <= 6)
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            scared[i] = false;
+        }   
+    }
+    
+    
     
     array<array<bool, 4>, 4> wall;
 
@@ -139,7 +160,39 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         position.y = 0;
 
         //dir = chaseMode(pacmanPos, wall);
-        ghostDir[i] = scatterMode(wall[i], ghostDir[i]);
+        if (i == eatGhost)
+        {
+            switch (i)
+            {
+            case 0://Red
+                ghostDir[i] = -1;
+                scared[i] = false;
+                ghost[i].setTexture(ghostTexture[i][0][0]);
+                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));      
+                break;
+            case 1://Pink
+                ghostDir[i] = -1;
+                scared[i] = false;
+                ghost[i].setTexture(ghostTexture[i][0][0]);
+                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 9 * CellSize + 15));
+                break;
+            case 2://Orange
+                ghostDir[i] = -1;
+                scared[i] = false;
+                ghost[i].setTexture(ghostTexture[i][0][0]);
+                ghost[i].setPosition(Vector2f(11 * CellSize + 15, 9 * CellSize + 15));
+                break;
+            case 3://Blue
+                ghostDir[i] = -1;
+                scared[i] = false;
+                ghost[i].setTexture(ghostTexture[i][0][0]);
+                ghost[i].setPosition(Vector2f(9 * CellSize + 15, 9 * CellSize + 15));
+                break;
+            }
+        } else
+        {
+            ghostDir[i] = scatterMode(wall[i], ghostDir[i]);
+        }
 
         if (wall[i][ghostDir[i]] == 0 && ghostDir[i] != -1)
         { 
@@ -161,7 +214,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         }
 
         ghost[i].move(position.x, position.y);
-        animation(ghostDir[i], i, eatPowerFood);
+        animation(ghostDir[i], i, scared[i]);
 
         // Exit from a side and enter from the other side
         if (ghost[i].getPosition().x - 15 >= CellSize * Width)
@@ -188,7 +241,7 @@ void Ghost::draw(sf::RenderWindow &window)
 
 void Ghost::animation(int dir, int i, bool scared)
 {
-    if (scared)
+    if (scared && scaredTime.getElapsedTime().asSeconds() <= 5)
     {
         if (scaredTimeWink[i].getElapsedTime().asSeconds() > 0.09)
         {
@@ -251,19 +304,18 @@ int Ghost::scatterMode(array<bool, 4> wall, int dir)
     return -1;
 }
 
-int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
+int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall, int dir, int i)
 {
-    /*
     int random = rand() % 2;
 
     // Pacman is the right top of the ghost
-    if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
+    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
+        if (random == 0 && (pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
-        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && dir != 2)
+        } else if (random == 1 && (pacmanPos.x > ghost[i].getPosition().x && wall[0] == 0) && dir != 2)
         {
             // Right
             return 0;
@@ -279,13 +331,13 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the left top of the ghost
-    if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
+    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
+        if (random == 0 && (pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
-        } else if (random == 1 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && dir != 0)
+        } else if (random == 1 && (pacmanPos.x < ghost[i].getPosition().x && wall[2] == 0) && dir != 0)
             {
                 // Left
                 return 2;
@@ -301,9 +353,9 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the top of the ghost
-    if (pacmanPos.x == ghost.getPosition().x && pacmanPos.y < ghost.getPosition().y)
+    if (pacmanPos.x == ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
     {
-        if ((pacmanPos.y < ghost.getPosition().y && wall[3] == 0) && dir != 1)
+        if ((pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
         {
             // Up
             return 3;
@@ -323,13 +375,13 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the right bottom of the ghost
-    if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
     {
-        if (random == 0 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && dir != 3)
+        if (random == 0 && (pacmanPos.y > ghost[i].getPosition().y && wall[1] == 0) && dir != 3)
         {
             // Down
             return 1;
-        } else if (random == 1 && (pacmanPos.x > ghost.getPosition().x && wall[0] == 0) && dir != 2)
+        } else if (random == 1 && (pacmanPos.x > ghost[i].getPosition().x && wall[0] == 0) && dir != 2)
         {
             // Right
             return 0;
@@ -345,13 +397,13 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the left bottom of the ghost
-    if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
     {
-        if (random == 0 && (pacmanPos.x < ghost.getPosition().x && wall[2] == 0) && dir != 0)
+        if (random == 0 && (pacmanPos.x < ghost[i].getPosition().x && wall[2] == 0) && dir != 0)
         {
             // Left
             return 2;
-        } else if (random == 1 && (pacmanPos.y > ghost.getPosition().y && wall[1] == 0) && dir != 3)
+        } else if (random == 1 && (pacmanPos.y > ghost[i].getPosition().y && wall[1] == 0) && dir != 3)
         {
             // Down
             return 1;
@@ -367,7 +419,7 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the bottom of the ghost
-    if (pacmanPos.x == ghost.getPosition().x && pacmanPos.y > ghost.getPosition().y)
+    if (pacmanPos.x == ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
     {
         if ((wall[1] == 0) && dir != 3)
         {
@@ -389,7 +441,7 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the left of the ghost
-    if (pacmanPos.x < ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
+    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y == ghost[i].getPosition().y)
     {
         if (wall[2] == 0 && dir != 0)
         {
@@ -411,7 +463,7 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
     }
 
     // Pacman is the right of the ghost
-    if (pacmanPos.x > ghost.getPosition().x && pacmanPos.y == ghost.getPosition().y)
+    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y == ghost[i].getPosition().y)
     {
         if (wall[0] == 0 && dir != 2)
         {
@@ -431,6 +483,6 @@ int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall)
             return 2;
         }   
     }
-    */
+    
     return -1;
 }

@@ -25,7 +25,11 @@ private:
     bool start = false;//Is the game started?!
     bool spawnFruit1 = false;
     bool spawnFruit2 = false;
-    bool eatPowerFood;
+    bool eatPowerFood;//Eating power food
+    int soul;//Wich ghost has met Pacman?
+    std::array<bool, 4> scaredGhost;//Is the Ghost scared?!
+    float pacmanSpeed = Speed;
+    bool levelUp = false;
     
     //Initialize variables
     void initVariables();
@@ -65,6 +69,7 @@ public:
     sf::Sprite getPacman() { return player; };
     //Get announcing the start of the game
     bool getStart() { return start; };
-    bool getPowerFoodInfo() { return eatPowerFood; };
-    
+    bool getPowerFoodInfo();
+    int getGhostEncounter();
+    bool getLevelUp();
 };

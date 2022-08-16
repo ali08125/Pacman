@@ -19,12 +19,13 @@ private:
     std::array<int, 4> ghostDir;
     std::array<int, 4> frame;
 
-    bool scared;
+    std::array<bool, 4> scared;//Are the ghosts scared?!
+    std::array<bool, 4> eaten;//When the ghost is eaten by Pacman
     
     //Initialilization
     void initGhosts();
     //Chase Pacman
-    int chaseMode(sf::Vector2f pacmanPos, std::array<bool, 4> wall);
+    int chaseMode(sf::Vector2f pacmanPos, std::array<bool, 4> wall, int dir, int i);
     //Move randomly
     int scatterMode(std::array<bool, 4> wall, int dir);
     //Animate the Ghost
@@ -33,7 +34,8 @@ private:
 public:
     Ghost();
     void update(std::array<std::array<sf::RectangleShape, Width>, Height> map
-    ,sf::Vector2f pacmanPos, std::array<bool, 4> accident, bool start, bool eatPowerFood);
+    ,sf::Vector2f pacmanPos, std::array<bool, 4> accident
+    ,bool start, bool eatPowerFood, int eatGhost,bool levelUp);
     void draw(sf::RenderWindow &window);
 
     std::array<sf::Sprite, 4> getGhost() { return ghost; };

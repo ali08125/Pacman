@@ -36,8 +36,10 @@ void Pacman::initVariables()
     for (size_t i = 0; i < 4; i++)
     {
         ghsotCollision[i] = false;
+        scaredGhost[i] = false;
     }
     eatPowerFood = false;
+    soul = -1;
 }
 
 void Pacman::reset()
@@ -51,6 +53,11 @@ void Pacman::reset()
     nextDir = -1;
     start = false;
     eatPowerFood = false;
+    for (size_t i = 0; i < 4; i++)
+    {
+        scaredGhost[i] = false;
+    }
+    soul = -1;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -64,7 +71,10 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 {   
     if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
-        eatPowerFood = false;
+        for (size_t i = 0; i < 4; i++)
+        {
+            scaredGhost[i] = false;
+        }
     }
     
     for (size_t i = 0; i < 4; i++)
@@ -81,6 +91,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     
     if (level > lastLevel)
     {
+        levelUp = true;
         foodNum = 0;
         spawnFruit1 = false;
         spawnFruit2 = false;
@@ -104,22 +115,27 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     //If player pressed a key, animation will work
     if (start && dir != -1)
     {
-        
         this->animation();
         this->Rotate();
     }
-    
 
     //Check Pacman and ghost collision
     for (size_t i = 0; i < 4; i++)
     {
         if (this->accident(ghost[i]))
         {
-            ghsotCollision[i] = true;
-            this->reset();
+            if (scaredGhost[i])
+            {
+                score += 200;
+                soul = i;
+                scaredGhost[i] = false;
+            } else
+            {
+                ghsotCollision[i] = true;
+                this->reset();
+            }   
         }
     }    
-    
     //Eat foods
     this->eat(food, powerFood, fruit);
 }
@@ -193,16 +209,16 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
         switch (nextDir)
         {
         case 0:
-            position.x += Speed;
+            position.x += pacmanSpeed;
             break;
         case 1:
-            position.y += Speed;
+            position.y += pacmanSpeed;
             break;
         case 2:
-            position.x -= Speed;
+            position.x -= pacmanSpeed;
             break;
         case 3:
-            position.y -= Speed;
+            position.y -= pacmanSpeed;
             break;
         }
         nextDir = -1;
@@ -211,19 +227,20 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
         switch (dir)
         {
         case 0:
-            position.x += Speed;
+            position.x += pacmanSpeed;
             break;
         case 1:
-            position.y += Speed;
+            position.y += pacmanSpeed;
             break;
         case 2:
-            position.x -= Speed;
+            position.x -= pacmanSpeed;
             break;
         case 3:
-            position.y -= Speed;
+            position.y -= pacmanSpeed;
             break;
         }
     }
+    
     if (position.x == 0 && position.y == 0)
     {
         dir = -1;
@@ -265,6 +282,10 @@ void Pacman::eat(vector<CircleShape> &food, vector<CircleShape> &powerFood, vect
         {
             powerFoodTime.restart();
             eatPowerFood = true;
+            for (size_t i = 0; i < 4; i++)
+            {
+                scaredGhost[i] = true;
+            }
             foodNum += 1;
             score += 50;
             powerFood.erase(it1);
@@ -328,7 +349,7 @@ void Pacman::Rotate()
     switch (lastDir)
     {
     case 0:
-        //Right
+        //Right 
         break;    
     case 1:
         //Down
@@ -394,4 +415,25 @@ void Pacman::animation()
             break;
         }
     } 
+}
+
+int Pacman::getGhostEncounter()
+{
+    int temp = soul;
+    soul = -1;
+    return temp;
+}
+
+bool Pacman::getPowerFoodInfo()
+{
+    bool tmp = eatPowerFood;
+    eatPowerFood = false;
+    return tmp;
+}
+
+bool Pacman::getLevelUp()
+{
+    bool tmp = levelUp;
+    levelUp = false;
+    return tmp;
 }

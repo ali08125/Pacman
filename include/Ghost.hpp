@@ -11,6 +11,7 @@ private:
     std::array<sf::Sprite, 4> ghost;
     std::array<std::array<std::array<sf::Texture, 2>, 4>, 4> ghostTexture;
     std::array<std::array<sf::Texture, 2>, 2> scaredGhostTexture;
+    sf::Texture eyes;
     sf::Clock scaredTime;
     std::array<sf::Clock, 4> scaredTimeWink;
     std::array<int, 4> wink;

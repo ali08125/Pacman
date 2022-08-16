@@ -53,6 +53,8 @@ Ghost::Ghost()
         
     }
     
+    if(!eyes.loadFromFile("../Photo/ghost/eyes.png"))
+                cout << "can not load eyes" << endl;
     
     initGhosts();
 }

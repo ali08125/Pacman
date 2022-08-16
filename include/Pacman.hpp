@@ -28,7 +28,7 @@ private:
     bool eatPowerFood;//Eating power food
     int soul;//Wich ghost has met Pacman?
     std::array<bool, 4> scaredGhost;//Is the Ghost scared?!
-    float pacmanSpeed = Speed;
+    float pacmanSpeed = Speed + 1;
     bool levelUp = false;
     
     //Initialize variables

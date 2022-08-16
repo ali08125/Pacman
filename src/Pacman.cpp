@@ -250,12 +250,12 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
     
     if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right
     {
-        position.x = Speed - CellSize + 15;
+        position.x = pacmanSpeed - CellSize + 15;
         player.setPosition(Vector2f(position.x , player.getPosition().y));
         
     } else if (player.getPosition().x - 15 <= -CellSize) //Exit from left
     {
-        position.x = Width * CellSize - Speed + 15;
+        position.x = Width * CellSize - pacmanSpeed + 15;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
 }

@@ -71,8 +71,12 @@ int main()
         map.draw(window);
         ghost.draw(window);
         pacman.draw(window);
-        menu.draw(window, pacman.getScore(), map.getLevel());
+        menu.draw(window, pacman.getScore(), map.getLevel(), pacman.getHealth());
         
         window.display(); 
+        if (pacman.getDeath())
+        {
+            window.close();
+        }
     }
 }

@@ -68,7 +68,7 @@ void Pacman::draw(RenderWindow & window)
 void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
 , array<Sprite, 4> ghost, bool end, int level, vector<Sprite> &fruit)
-{   
+{
     if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
         for (size_t i = 0; i < 4; i++)
@@ -131,6 +131,12 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
                 scaredGhost[i] = false;
             } else
             {
+                health--;
+                if (health == 0)
+                {
+                    death = true;
+                }
+                
                 ghsotCollision[i] = true;
                 this->reset();
             }   

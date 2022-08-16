@@ -31,6 +31,7 @@ private:
     float pacmanSpeed = Speed + 1;
     bool levelUp = false;
     int health = 3;
+    bool death = false;
     
     //Initialize variables
     void initVariables();
@@ -74,4 +75,5 @@ public:
     int getGhostEncounter();
     bool getLevelUp();
     int getHealth() { return health; };
+    bool getDeath() { return death; };
 };

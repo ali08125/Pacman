@@ -17,6 +17,7 @@ private:
     sf::Text backToMenu;
     sf::Text resetHighScore;
     sf::Text menu;
+    sf::Text highScore;
     sf::Texture backgroundTexture;
     std::array<sf::Sprite, 3> pacman;
     sf::Texture pacmanTexture;
@@ -30,6 +31,7 @@ public:
     int gameMenu(sf::RenderWindow &window);
     int mouseHandle(sf::RenderWindow &window, std::string tmp);
     void settingScreen(sf::RenderWindow &window);
+    void resetData();
     void draw(sf::RenderWindow &window, int score, int level, int health);
 
 };

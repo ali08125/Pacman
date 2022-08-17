@@ -1,6 +1,7 @@
 #include <Menu.hpp>
 #include <iostream>
 #include <info.hpp>
+#include <fstream>
 
 using namespace std;
 using namespace sf;
@@ -20,7 +21,10 @@ void Menu::initMenu()
         cerr << "can not open the font!!!" << endl;
 
     score.setFont(font);
-    this->score.setCharacterSize(24);
+    score.setCharacterSize(24);
+
+    highScore.setFont(font);
+    highScore.setCharacterSize(24);
 
     level.setFont(font);
     level.setCharacterSize(24);
@@ -91,10 +95,23 @@ void Menu::initMenu()
 
 void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
 {
-    this->score.setString("SCORE " + to_string(score));
     this->level.setString("LEVEL " + to_string(level));
+
+    this->score.setString("SCORE " + to_string(score));
     this->score.setOrigin(this->score.getLocalBounds().width / 2, this->score.getLocalBounds().height / 2);
     this->score.setPosition(CellSize * Width / 2.0f, 10);
+
+
+    //Reading highScore from file
+    int high_score;
+    fstream file;
+    file.open("../data/data.txt", ios::in);
+    file >> high_score;
+    file.close();
+    
+    highScore.setString("HIGH SCORE " + to_string(high_score));
+    highScore.setOrigin(highScore.getLocalBounds().width / 2, highScore.getLocalBounds().height / 2);
+    highScore.setPosition(520, 10);
 
     window.draw(this->score);
     window.draw(this->level);
@@ -108,6 +125,7 @@ void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
     {
         gameMenu(window);
     }
+    window.draw(highScore);
 }
 
 void Menu::levelUpScreen(RenderWindow &window, int level)
@@ -327,7 +345,7 @@ void Menu::settingScreen(sf::RenderWindow &window)
             switch (click)
             {
             case 1:
-                
+                resetData();
                 break;
             case 2:
                 return;
@@ -344,4 +362,13 @@ void Menu::settingScreen(sf::RenderWindow &window)
         window.display();
     }
     exit(EXIT_SUCCESS);
+}
+
+void Menu::resetData()
+{
+    int score = 0;
+    fstream file;
+    file.open("../data/data.txt", ios::out);
+    file << score;
+    file.close();
 }

@@ -18,6 +18,12 @@ bool collision(float px, float py, array<array<RectangleShape, Width>, Height> m
 			{
 				return 1;
 			}
+
+			if (door == 0 && wall.getGlobalBounds().intersects(map[j][i].getGlobalBounds())
+			&& map[j][i].getFillColor() == Color::White)
+			{
+				return 1;
+			}
 		}
 	}
 	return 0;

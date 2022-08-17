@@ -39,6 +39,24 @@ void Menu::initMenu()
 
     deathScore.setFont(font);
     deathScore.setCharacterSize(32);
+
+    play.setFont(font);
+    play.setCharacterSize(72);
+    play.setString("PLAY");
+    play.setOrigin(play.getLocalBounds().width / 2, play.getLocalBounds().height / 2);
+    play.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 70);
+
+    setting.setFont(font);
+    setting.setCharacterSize(72);
+    setting.setString("SETTINGS");
+    setting.setOrigin(setting.getLocalBounds().width / 2, setting.getLocalBounds().height / 2);
+    setting.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 20);
+
+    quit.setFont(font);
+    quit.setCharacterSize(72);
+    quit.setString("QUIT");
+    quit.setOrigin(quit.getLocalBounds().width / 2, quit.getLocalBounds().height / 2);
+    quit.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 110);
     
 
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
@@ -141,11 +159,46 @@ void Menu::gameMenu(sf::RenderWindow &window)
                 window.close();
             }
         }
+        
+        mouseHower(window);
 
         window.clear();
 
         window.draw(background);
+        window.draw(play);
+        window.draw(setting);
+        window.draw(quit);
 
         window.display();
+    }
+}
+
+void Menu::mouseHower(sf::RenderWindow &window)
+{
+    Vector2f mouse = window.mapPixelToCoords(Mouse::getPosition(window));
+
+    //play
+    if (play.getGlobalBounds().contains(mouse))
+    {
+        play.setFillColor(Color::Yellow);
+    } else
+    {
+        play.setFillColor(Color::White);
+    }
+    //seetings
+    if (setting.getGlobalBounds().contains(mouse))
+    {
+        setting.setFillColor(Color::Yellow);
+    } else
+    {
+        setting.setFillColor(Color::White);
+    }
+    //quit
+    if (quit.getGlobalBounds().contains(mouse))
+    {
+        quit.setFillColor(Color::Yellow);
+    } else
+    {
+        quit.setFillColor(Color::White);
     }
 }

@@ -26,6 +26,7 @@ public:
     void deathScreen(sf::RenderWindow &window, int score);
     int gameMenu(sf::RenderWindow &window);
     int mouseHandle(sf::RenderWindow &window);
+    void settingScreen(sf::RenderWindow &window);
     void draw(sf::RenderWindow &window, int score, int level, int health);
 
 };

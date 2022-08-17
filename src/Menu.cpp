@@ -173,7 +173,8 @@ int Menu::gameMenu(sf::RenderWindow &window)
                 
                 break;
             case 3://Quit
-                
+                window.close();
+                return 3;
                 break;
             }
         }
@@ -187,6 +188,7 @@ int Menu::gameMenu(sf::RenderWindow &window)
 
         window.display();
     }
+    exit(EXIT_SUCCESS);
     return 0;
 }
 
@@ -232,4 +234,9 @@ int Menu::mouseHandle(sf::RenderWindow &window)
     }
 
     return 0;
+}
+
+void Menu::settingScreen(sf::RenderWindow &window)
+{
+
 }

@@ -21,11 +21,10 @@ void Menu::initMenu()
 
     score.setFont(font);
     this->score.setCharacterSize(24);
-    this->score.setPosition(30, 1);
 
     level.setFont(font);
     level.setCharacterSize(24);
-    level.setPosition(500, 660);
+    level.setPosition(520, 660);
 
     levelUp.setFont(font);
     levelUp.setCharacterSize(48);
@@ -57,7 +56,25 @@ void Menu::initMenu()
     quit.setString("QUIT");
     quit.setOrigin(quit.getLocalBounds().width / 2, quit.getLocalBounds().height / 2);
     quit.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 110);
-    
+
+    resetHighScore.setFont(font);
+    resetHighScore.setCharacterSize(60);
+    resetHighScore.setString("RESET HIGH SCORE");
+    resetHighScore.setOrigin(resetHighScore.getLocalBounds().width / 2
+    ,resetHighScore.getLocalBounds().height / 2);
+    resetHighScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 10);
+
+    backToMenu.setFont(font);
+    backToMenu.setCharacterSize(60);
+    backToMenu.setString("BACK TO MENU");
+    backToMenu.setOrigin(backToMenu.getLocalBounds().width / 2, backToMenu.getLocalBounds().height / 2);
+    backToMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 80);
+
+    menu.setFont(font);
+    menu.setCharacterSize(24);
+    menu.setString("BACK TO MENU");
+    menu.setOrigin(menu.getLocalBounds().width / 2, menu.getLocalBounds().height / 2);
+    menu.setPosition(95, 10);
 
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
         cout << "can not open 2.png" << endl;
@@ -76,6 +93,8 @@ void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
 {
     this->score.setString("SCORE " + to_string(score));
     this->level.setString("LEVEL " + to_string(level));
+    this->score.setOrigin(this->score.getLocalBounds().width / 2, this->score.getLocalBounds().height / 2);
+    this->score.setPosition(CellSize * Width / 2.0f, 10);
 
     window.draw(this->score);
     window.draw(this->level);
@@ -84,6 +103,11 @@ void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
     {
         window.draw(this->pacman[i]);
     }    
+    window.draw(menu);
+    if(mouseHandle(window, "backMenuFromGame") == 1)
+    {
+        gameMenu(window);
+    }
 }
 
 void Menu::levelUpScreen(RenderWindow &window, int level)
@@ -161,7 +185,7 @@ int Menu::gameMenu(sf::RenderWindow &window)
             }
         }
 
-        int click = mouseHandle(window);
+        int click = mouseHandle(window, "menu");
         if(click != 0)
         {
             switch (click)
@@ -170,7 +194,7 @@ int Menu::gameMenu(sf::RenderWindow &window)
                 return 1;
                 break;
             case 2://Settings
-                
+                settingScreen(window);
                 break;
             case 3://Quit
                 window.close();
@@ -192,51 +216,132 @@ int Menu::gameMenu(sf::RenderWindow &window)
     return 0;
 }
 
-int Menu::mouseHandle(sf::RenderWindow &window)
+int Menu::mouseHandle(sf::RenderWindow &window, string tmp)
 {
     Vector2f mouse = window.mapPixelToCoords(Mouse::getPosition(window));
 
-    //play
-    if (play.getGlobalBounds().contains(mouse))
-    {
-        play.setFillColor(Color::Yellow);
-        if (Mouse::isButtonPressed(Mouse::Left))
+    if (tmp == "menu")
+    {    
+        //play
+        if (play.getGlobalBounds().contains(mouse))
         {
-            return 1;
-        }
-    } else
-    {
-        play.setFillColor(Color::White);
-    }
-    //seetings
-    if (setting.getGlobalBounds().contains(mouse))
-    {
-        setting.setFillColor(Color::Yellow);
-        if (Mouse::isButtonPressed(Mouse::Left))
+            play.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 1;
+            }
+        } else
         {
-            return 2;
+            play.setFillColor(Color::White);
         }
-    } else
-    {
-        setting.setFillColor(Color::White);
-    }
-    //quit
-    if (quit.getGlobalBounds().contains(mouse))
-    {
-        quit.setFillColor(Color::Yellow);
-        if (Mouse::isButtonPressed(Mouse::Left))
+        //seetings
+        if (setting.getGlobalBounds().contains(mouse))
         {
-            return 3;
+            setting.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 2;
+            }
+        } else
+        {
+            setting.setFillColor(Color::White);
         }
-    } else
-    {
-        quit.setFillColor(Color::White);
-    }
+        //quit
+        if (quit.getGlobalBounds().contains(mouse))
+        {
+            quit.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 3;
+            }
+        } else
+        {
+            quit.setFillColor(Color::White);
+        }
 
+        return 0;
+    } else if (tmp == "setting")
+    {
+        //resetHighScore
+        if (resetHighScore.getGlobalBounds().contains(mouse))
+        {
+            resetHighScore.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 1;
+            }
+        } else
+        {
+            resetHighScore.setFillColor(Color::White);
+        }
+        //backToMenu
+        if (backToMenu.getGlobalBounds().contains(mouse))
+        {
+            backToMenu.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 2;
+            }
+        } else
+        {
+            backToMenu.setFillColor(Color::White);
+        }
+        return 0;
+    } else if (tmp == "backMenuFromGame")
+    {
+        if (menu.getGlobalBounds().contains(mouse))
+        {
+            menu.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 1;
+            }
+        } else
+        {
+            menu.setFillColor(Color::White);
+        }
+    }
     return 0;
 }
 
 void Menu::settingScreen(sf::RenderWindow &window)
 {
+    while (window.isOpen())
+    {
+        Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+            {
+                window.close();
+            }
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
+            {
+                window.close();
+            }
+        }
 
+        int click = mouseHandle(window, "setting");
+        if (click != 0)
+        {
+            switch (click)
+            {
+            case 1:
+                
+                break;
+            case 2:
+                return;
+                break;
+            }
+        }
+
+        window.clear();
+
+        window.draw(background);
+        window.draw(resetHighScore);
+        window.draw(backToMenu);
+
+        window.display();
+    }
+    exit(EXIT_SUCCESS);
 }

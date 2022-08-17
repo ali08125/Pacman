@@ -18,10 +18,13 @@ private:
     sf::Text resetHighScore;
     sf::Text menu;
     sf::Text highScore;
+    sf::Text Reseted;
     sf::Texture backgroundTexture;
     std::array<sf::Sprite, 3> pacman;
     sf::Texture pacmanTexture;
     sf::Sprite background;
+    sf::Clock clock;
+    bool reset = false;
 
     void initMenu();
 public:

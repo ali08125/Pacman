@@ -80,6 +80,13 @@ void Menu::initMenu()
     menu.setOrigin(menu.getLocalBounds().width / 2, menu.getLocalBounds().height / 2);
     menu.setPosition(95, 10);
 
+    Reseted.setFont(font);
+    Reseted.setCharacterSize(32);
+    Reseted.setString("RESET SUCCESSFULLY");
+    Reseted.setOrigin(Reseted.getLocalBounds().width / 2, Reseted.getLocalBounds().height / 2);
+    Reseted.setPosition(CellSize * Width / 2.0f, 600);
+    
+
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
         cout << "can not open 2.png" << endl;
     for (size_t i = 0; i < 3; i++)
@@ -108,7 +115,7 @@ void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
     file.open("../data/data.txt", ios::in);
     file >> high_score;
     file.close();
-    
+
     highScore.setString("HIGH SCORE " + to_string(high_score));
     highScore.setOrigin(highScore.getLocalBounds().width / 2, highScore.getLocalBounds().height / 2);
     highScore.setPosition(520, 10);
@@ -346,6 +353,8 @@ void Menu::settingScreen(sf::RenderWindow &window)
             {
             case 1:
                 resetData();
+                clock.restart();
+                reset = true;
                 break;
             case 2:
                 return;
@@ -354,10 +363,14 @@ void Menu::settingScreen(sf::RenderWindow &window)
         }
 
         window.clear();
-
+        
         window.draw(background);
         window.draw(resetHighScore);
         window.draw(backToMenu);
+        if (reset == true && clock.getElapsedTime().asSeconds() < 1)
+        {
+            window.draw(Reseted);
+        }
 
         window.display();
     }

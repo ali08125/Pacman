@@ -9,10 +9,19 @@ private:
     sf::Text score;
     sf::Text level;
     sf::Text levelUp;
+    sf::Text death;
+    sf::Text deathScore;
+    sf::Texture backgroundTexture;
+    std::array<sf::Sprite, 3> pacman;
+    sf::Texture pacmanTexture;
+    sf::Sprite background;
 
     void initMenu();
 public:
     Menu();
     void levelUpScreen(sf::RenderWindow &window, int level);
-    void draw(sf::RenderWindow &window, int score, int level);
+    void deathScreen(sf::RenderWindow &window, int score);
+    void gameMenu(sf::RenderWindow &window);
+    void draw(sf::RenderWindow &window, int score, int level, int health);
+
 };

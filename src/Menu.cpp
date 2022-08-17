@@ -32,13 +32,13 @@ void Menu::initMenu()
     levelUp.setPosition((Width / 2 * CellSize) - 70, (Height / 2 * CellSize) - 60);
 
     death.setFont(font);
-    death.setCharacterSize(48);
+    death.setCharacterSize(72);
     death.setString("YOU DIED");
     death.setOrigin(death.getLocalBounds().width / 2, death.getLocalBounds().height / 2);
     death.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 70);
 
     deathScore.setFont(font);
-    deathScore.setCharacterSize(32);
+    deathScore.setCharacterSize(50);
 
     play.setFont(font);
     play.setCharacterSize(72);
@@ -117,7 +117,7 @@ void Menu::deathScreen(RenderWindow &window, int score)
 {
     deathScore.setString("SCORE " + to_string(score));
     deathScore.setOrigin(deathScore.getLocalBounds().width / 2, deathScore.getLocalBounds().height / 2);
-    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 20);
+    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 20);
     
     while (window.isOpen())
     {
@@ -136,6 +136,7 @@ void Menu::deathScreen(RenderWindow &window, int score)
 
         window.clear(Color::Black);
 
+        window.draw(background);
         window.draw(death);
         window.draw(deathScore);
 
@@ -143,7 +144,7 @@ void Menu::deathScreen(RenderWindow &window, int score)
     }
 }
 
-void Menu::gameMenu(sf::RenderWindow &window)
+int Menu::gameMenu(sf::RenderWindow &window)
 {
     while (window.isOpen())
     {
@@ -159,8 +160,23 @@ void Menu::gameMenu(sf::RenderWindow &window)
                 window.close();
             }
         }
-        
-        mouseHower(window);
+
+        int click = mouseHandle(window);
+        if(click != 0)
+        {
+            switch (click)
+            {
+            case 1://Play
+                return 1;
+                break;
+            case 2://Settings
+                
+                break;
+            case 3://Quit
+                
+                break;
+            }
+        }
 
         window.clear();
 
@@ -171,9 +187,10 @@ void Menu::gameMenu(sf::RenderWindow &window)
 
         window.display();
     }
+    return 0;
 }
 
-void Menu::mouseHower(sf::RenderWindow &window)
+int Menu::mouseHandle(sf::RenderWindow &window)
 {
     Vector2f mouse = window.mapPixelToCoords(Mouse::getPosition(window));
 
@@ -181,6 +198,10 @@ void Menu::mouseHower(sf::RenderWindow &window)
     if (play.getGlobalBounds().contains(mouse))
     {
         play.setFillColor(Color::Yellow);
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            return 1;
+        }
     } else
     {
         play.setFillColor(Color::White);
@@ -189,6 +210,10 @@ void Menu::mouseHower(sf::RenderWindow &window)
     if (setting.getGlobalBounds().contains(mouse))
     {
         setting.setFillColor(Color::Yellow);
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            return 2;
+        }
     } else
     {
         setting.setFillColor(Color::White);
@@ -197,8 +222,14 @@ void Menu::mouseHower(sf::RenderWindow &window)
     if (quit.getGlobalBounds().contains(mouse))
     {
         quit.setFillColor(Color::Yellow);
+        if (Mouse::isButtonPressed(Mouse::Left))
+        {
+            return 3;
+        }
     } else
     {
         quit.setFillColor(Color::White);
     }
+
+    return 0;
 }

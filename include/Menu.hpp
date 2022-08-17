@@ -24,8 +24,8 @@ public:
     Menu();
     void levelUpScreen(sf::RenderWindow &window, int level);
     void deathScreen(sf::RenderWindow &window, int score);
-    void gameMenu(sf::RenderWindow &window);
-    void mouseHower(sf::RenderWindow &window);
+    int gameMenu(sf::RenderWindow &window);
+    int mouseHandle(sf::RenderWindow &window);
     void draw(sf::RenderWindow &window, int score, int level, int health);
 
 };

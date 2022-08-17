@@ -1,6 +1,7 @@
 #include <Pacman.hpp>
 #include <iostream>
 #include <Collision.hpp>
+#include <fstream>
 
 using namespace sf;
 using namespace std;
@@ -69,6 +70,22 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 , vector<CircleShape> &food, vector<CircleShape> &powerFood
 , array<Sprite, 4> ghost, bool end, int level, vector<Sprite> &fruit)
 {
+    //Update highScore
+    int highScore;
+    fstream file;
+    file.open("../data/data.txt", ios::in);
+    file >> highScore;
+    file.close();
+
+    if (score > highScore)
+    {
+        fstream file;
+        file.open("../data/data.txt", ios::out);
+        highScore = score;
+        file << highScore;
+        file.close();
+    }
+
     if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
         for (size_t i = 0; i < 4; i++)

@@ -134,6 +134,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         for (size_t i = 0; i < 4; i++)
         {            
             scared[i] = true;
+            wink[i] = 0;
         }
     }
     

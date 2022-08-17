@@ -39,4 +39,5 @@ public:
     void draw(sf::RenderWindow &window);
 
     std::array<sf::Sprite, 4> getGhost() { return ghost; };
+    void resetGhosts();
 };

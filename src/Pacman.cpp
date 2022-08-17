@@ -30,17 +30,34 @@ void Pacman::initVariables()
     player.setOrigin(Vector2f(50, 50));
     player.setPosition(Vector2f(10 * CellSize + 15, 16 * CellSize + 15));
 
+    resetPacman();
+}
+
+void Pacman::resetPacman()
+{
+    player.setPosition(Vector2f(10 * CellSize + 15, 16 * CellSize + 15));
+    player.setTexture(pacman1);
+    
     dir = -1;
-    lastDir = -1;
     nextDir = -1;
+    lastDir = -1;
+    score = 0;
+    foodNum = 0;
+    lastLevel = 1;
+    frame = 1;
     start = false;
+    spawnFruit1 = false;
+    spawnFruit2 = false;
+    eatPowerFood = false;
+    soul = -1;
     for (size_t i = 0; i < 4; i++)
     {
         ghsotCollision[i] = false;
         scaredGhost[i] = false;
     }
-    eatPowerFood = false;
-    soul = -1;
+    levelUp = false;
+    health = 3;
+    death = false;
 }
 
 void Pacman::reset()
@@ -86,6 +103,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         file.close();
     }
 
+    
     if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
         for (size_t i = 0; i < 4; i++)

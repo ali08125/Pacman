@@ -22,6 +22,8 @@ int main()
     Event event;
     clock.restart();
 
+    bool click = false;
+
     while (window.isOpen())
     {
         while (window.pollEvent(event))
@@ -34,6 +36,28 @@ int main()
             {
                 window.close();
             }
+        }
+        //menu.deathScreen(window, pacman.getScore());
+        if (click == false)
+        {
+            int tmp = 0;
+            while (1 && tmp == 0)
+            {
+                int choice = menu.gameMenu(window);
+                switch (choice)
+                {
+                case 0:
+                    continue;
+                    break;
+                case 1:
+                    tmp = 1;
+                    break;
+                case 3:
+                    exit(EXIT_SUCCESS);
+                    break;
+                }
+            }
+            click = true;
         }
         
         window.clear();
@@ -74,9 +98,19 @@ int main()
         menu.draw(window, pacman.getScore(), map.getLevel(), pacman.getHealth());
         
         window.display(); 
+
         if (pacman.getDeath())
         {
-            window.close();
+            if(menu.deathScreen(window, pacman.getScore()))
+            {
+                pacman.resetPacman();
+                map.initMap();
+                ghost.resetGhosts();
+                click = false;
+                continue;
+            }
         }
     }
+
+    return 0;
 }

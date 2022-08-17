@@ -16,6 +16,10 @@ void Menu::initMenu()
     if (!backgroundTexture.loadFromFile("../Photo/menu/pacmanMenu.jpg"))
         cerr << "can not open the background!!!" << endl;
     background.setTexture(backgroundTexture);
+
+    if (!background1Texture.loadFromFile("../Photo/menu/background1.jpg"))
+        cerr << "can not open the background!!!" << endl;
+    background1.setTexture(background1Texture);
     
     if(!font.loadFromFile("../Fonts/MaldiniBold-EaqGW.otf"))
         cerr << "can not open the font!!!" << endl;
@@ -85,7 +89,13 @@ void Menu::initMenu()
     Reseted.setString("RESET SUCCESSFULLY");
     Reseted.setOrigin(Reseted.getLocalBounds().width / 2, Reseted.getLocalBounds().height / 2);
     Reseted.setPosition(CellSize * Width / 2.0f, 600);
-    
+
+    deathScreenMenu.setFont(font);
+    deathScreenMenu.setCharacterSize(24);
+    deathScreenMenu.setString("BACK TO MENU");
+    deathScreenMenu.setOrigin(deathScreenMenu.getLocalBounds().width / 2
+    ,deathScreenMenu.getLocalBounds().height / 2);
+    deathScreenMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 90);
 
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
         cout << "can not open 2.png" << endl;
@@ -162,7 +172,7 @@ void Menu::levelUpScreen(RenderWindow &window, int level)
     }
 }
 
-void Menu::deathScreen(RenderWindow &window, int score)
+bool Menu::deathScreen(RenderWindow &window, int score)
 {
     deathScore.setString("SCORE " + to_string(score));
     deathScore.setOrigin(deathScore.getLocalBounds().width / 2, deathScore.getLocalBounds().height / 2);
@@ -183,14 +193,21 @@ void Menu::deathScreen(RenderWindow &window, int score)
             }
         }
 
+        if (mouseHandle(window, "deathScreen") == 1)
+        {
+            return true;
+        }
+
         window.clear(Color::Black);
 
-        window.draw(background);
+        window.draw(background1);
         window.draw(death);
         window.draw(deathScore);
+        window.draw(deathScreenMenu);
 
         window.display();
     }
+    return false;
 }
 
 int Menu::gameMenu(sf::RenderWindow &window)
@@ -325,6 +342,19 @@ int Menu::mouseHandle(sf::RenderWindow &window, string tmp)
         {
             menu.setFillColor(Color::White);
         }
+    } else if (tmp == "deathScreen")
+    {
+        if (deathScreenMenu.getGlobalBounds().contains(mouse))
+        {
+            deathScreenMenu.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left))
+            {
+                return 1;
+            }
+        } else
+        {
+            deathScreenMenu.setFillColor(Color::White);
+        }
     }
     return 0;
 }
@@ -371,7 +401,6 @@ void Menu::settingScreen(sf::RenderWindow &window)
         {
             window.draw(Reseted);
         }
-
         window.display();
     }
     exit(EXIT_SUCCESS);

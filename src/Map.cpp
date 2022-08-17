@@ -12,6 +12,7 @@ void Map::initMap()
 {
     
     sketch = {
+        "                     ",
         " ################### ",
         " #........#........# ",
         " #0##.###.#.###.##0# ",
@@ -33,7 +34,6 @@ void Map::initMap()
         " #.######.#.######.# ",
         " #.................# ",
         " ################### ",
-        "                     ",
         "                     "
     };
 
@@ -68,9 +68,10 @@ void Map::initMap()
     power.setFillColor(Color::White);
 
     // Fruit
-    if (level == 1)
+    if (level == 1 && !initFruit)
     {
-        Fruit.scale(Vector2f(0.5, 0.5));    
+        Fruit.scale(Vector2f(0.5, 0.5));
+        initFruit = true;
     }
 
     for (size_t i = 0; i < Height; i++)

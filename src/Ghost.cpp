@@ -62,42 +62,48 @@ Ghost::Ghost()
 void Ghost::initGhosts()
 {    
     for (size_t i = 0; i < 4; i++)
-    {
-        frame[i] = 0;
+    {   
         clock[i].restart();
+        scaredTimeWink[i].restart();
         wink[i] = 0;
+        ghostDir[i] = -1;
+        frame[i] = 0;
         scared[i] = false;
-        
+        eaten[i] = false;
+
         switch (i)
         {
         case 0://Red
             ghost[i].setTexture(ghostTexture[i][0][0]);
             ghost[i].setScale(Vector2f(0.3, 0.3));
             ghost[i].setOrigin(Vector2f(50, 50));
-            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));        
+            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 8 * CellSize + 15));        
             break;
         case 1://Pink
             ghost[i].setTexture(ghostTexture[i][0][0]);
             ghost[i].setScale(Vector2f(0.3, 0.3));
             ghost[i].setOrigin(Vector2f(50, 50));
-            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 9 * CellSize + 15));
+            ghost[i].setPosition(Vector2f(10 * CellSize + 15, 10 * CellSize + 15));
             break;
         case 2://Orange
             ghost[i].setTexture(ghostTexture[i][0][0]);
             ghost[i].setScale(Vector2f(0.3, 0.3));
             ghost[i].setOrigin(Vector2f(50, 50));
-            ghost[i].setPosition(Vector2f(11 * CellSize + 15, 9 * CellSize + 15));
+            ghost[i].setPosition(Vector2f(11 * CellSize + 15, 10 * CellSize + 15));
             break;
         case 3://Blue
             ghost[i].setTexture(ghostTexture[i][0][0]);
             ghost[i].setScale(Vector2f(0.3, 0.3));
             ghost[i].setOrigin(Vector2f(50, 50));
-            ghost[i].setPosition(Vector2f(9 * CellSize + 15, 9 * CellSize + 15));
+            ghost[i].setPosition(Vector2f(9 * CellSize + 15, 10 * CellSize + 15));
             break;
         }
-        ghostDir[i] = -1;
-        eaten[i] = false;
     }
+}
+
+void Ghost::resetGhosts()
+{
+    initGhosts();
 }
 
 void Ghost::update(array<array<RectangleShape, Width>, Height> map
@@ -168,25 +174,25 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
                 ghostDir[i] = -1;
                 scared[i] = false;
                 ghost[i].setTexture(ghostTexture[i][0][0]);
-                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 7 * CellSize + 15));      
+                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 8 * CellSize + 15));      
                 break;
             case 1://Pink
                 ghostDir[i] = -1;
                 scared[i] = false;
                 ghost[i].setTexture(ghostTexture[i][0][0]);
-                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 9 * CellSize + 15));
+                ghost[i].setPosition(Vector2f(10 * CellSize + 15, 10 * CellSize + 15));
                 break;
             case 2://Orange
                 ghostDir[i] = -1;
                 scared[i] = false;
                 ghost[i].setTexture(ghostTexture[i][0][0]);
-                ghost[i].setPosition(Vector2f(11 * CellSize + 15, 9 * CellSize + 15));
+                ghost[i].setPosition(Vector2f(11 * CellSize + 15, 10 * CellSize + 15));
                 break;
             case 3://Blue
                 ghostDir[i] = -1;
                 scared[i] = false;
                 ghost[i].setTexture(ghostTexture[i][0][0]);
-                ghost[i].setPosition(Vector2f(9 * CellSize + 15, 9 * CellSize + 15));
+                ghost[i].setPosition(Vector2f(9 * CellSize + 15, 10 * CellSize + 15));
                 break;
             }
         } else

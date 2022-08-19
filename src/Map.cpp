@@ -5,11 +5,13 @@ using namespace sf;
 
 Map::Map()
 {
+    initFruit = false;
     this->initMap();
 }
 
 void Map::initMap()
 {
+    level = 1;
     
     sketch = {
         "                     ",
@@ -59,16 +61,16 @@ void Map::initMap()
     //Wall
     RectangleShape Wall(Vector2f(CellSize, CellSize));
 
-    // Common food
+    //Common food
     CircleShape food(CellSize / 5);
     food.setFillColor(Color::White);
 
-    // Power food
+    //Power food
     CircleShape power(CellSize / 3);
     power.setFillColor(Color::White);
 
-    // Fruit
-    if (level == 1 && !initFruit)
+    //Set fruit size only once
+    if (!initFruit)
     {
         Fruit.scale(Vector2f(0.5, 0.5));
         initFruit = true;
@@ -112,23 +114,13 @@ void Map::initMap()
 void Map::update(sf::Time time)
 {
     checkEndLevel();
-    
+
+    //If the fruit is on the map for more than 10 seconds, it will disappear
     if (!fruit.empty() && time.asSeconds() > 10)
     {
         fruit.erase(fruit.begin());
     }
     
-}
-
-bool Map::checkEndLevel()
-{
-    if (foods.empty() && powerFood.empty())
-    {
-        level++;
-        initMap();
-        return true;
-    }
-    return false;
 }
 
 void Map::draw(RenderWindow & window)
@@ -155,20 +147,6 @@ void Map::draw(RenderWindow & window)
     {
         window.draw(fruit[0]);
     }
-}
-
-void Map::setFood(std::vector<sf::CircleShape> foods)
-{
-    this->foods = foods;
-}
-
-void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
-{
-    this->powerFood = powerFood;
-}
-void Map::setFruit(std::vector<sf::Sprite> fruit)
-{
-    this->fruit = fruit;
 }
 
 void Map::createFruit(Sprite pacman)
@@ -218,6 +196,7 @@ void Map::createFruit(Sprite pacman)
             {
                 if (a.getGlobalBounds().intersects(Fruit.getGlobalBounds()))
                 {
+                    //Using an extra variable to continue outer loop
                     tmp = 1;
                 }
             }
@@ -231,4 +210,29 @@ void Map::createFruit(Sprite pacman)
     }
 
     fruit.push_back(Fruit);
+}
+
+void Map::setFood(std::vector<sf::CircleShape> foods)
+{
+    this->foods = foods;
+}
+
+void Map::setPowerFood(std::vector<sf::CircleShape> powerFood)
+{
+    this->powerFood = powerFood;
+}
+void Map::setFruit(std::vector<sf::Sprite> fruit)
+{
+    this->fruit = fruit;
+}
+
+bool Map::checkEndLevel()
+{
+    if (foods.empty() && powerFood.empty())
+    {
+        level++;
+        initMap();
+        return true;
+    }
+    return false;
 }

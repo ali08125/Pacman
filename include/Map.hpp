@@ -11,22 +11,22 @@ class Map
 private:
     std::array<std::string, Height> sketch;
     std::array<std::array<sf::RectangleShape, Width>, Height> map;
-    std::vector<sf::CircleShape> foods;
-    std::vector<sf::CircleShape> powerFood;
+    std::vector<sf::CircleShape> foods;//Save foods
+    std::vector<sf::CircleShape> powerFood;//Save power foods
+    std::vector<sf::Sprite> fruit;//Save fruits
 
     sf::Sprite Fruit;
-    std::vector<sf::Sprite> fruit;
     sf::Texture apple;
     sf::Texture strawberry;
     sf::Texture cherry;
     sf::Texture peach;
     sf::Texture grape;
     sf::Texture banana;
-    
-    
 
-    int level = 1;
+    int level;
+    bool initFruit;//Change the size of the fruit only once
 
+    //Intial the game map
     void initMap();
 
 public:
@@ -34,21 +34,24 @@ public:
     void update(sf::Time time);
     void draw(sf::RenderWindow & window);
     
-    std::array< std::array<sf::RectangleShape, Width>, Height> getMap() { return map; };
-
-    //Common food
+    int getLevel() { return level; };
+    std::array< std::array<sf::RectangleShape, Width>, Height> getMap() { return map; }; 
     std::vector<sf::CircleShape> getFood() { return foods; };
-    void setFood(std::vector<sf::CircleShape> foods);
-    //Power food
     std::vector<sf::CircleShape> getPowerFood() { return powerFood; };
-    void setPowerFood(std::vector<sf::CircleShape> powerFood);
-    //Fruit
-    void createFruit(sf::Sprite pacman);
     std::vector<sf::Sprite> getFruit() { return fruit; };
+    //Spawn a fruit on the map
+    void createFruit(sf::Sprite pacman);
+    
+
+    //Common food information update
+    void setFood(std::vector<sf::CircleShape> foods);
+    //Power food information update
+    void setPowerFood(std::vector<sf::CircleShape> powerFood);
+    //Fruit information update
     void setFruit(std::vector<sf::Sprite> fruit); 
 
-    int getLevel() { return level; };
-
+    //Checks whether all the food has been eaten 
     bool checkEndLevel();
- 
+    //Reset the map
+    void resetMap() { initMap(); };
 };

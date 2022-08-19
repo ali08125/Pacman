@@ -141,11 +141,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     if (dir != -1)
         previousDir = dir;
     
-    
-    //
-    if (end)
-        this->reset();
-
     //Move Pacman
     this->move(map);
     

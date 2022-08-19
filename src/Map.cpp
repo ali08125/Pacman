@@ -6,13 +6,12 @@ using namespace sf;
 Map::Map()
 {
     initFruit = false;
+    level = 1;
     this->initMap();
 }
 
 void Map::initMap()
-{
-    level = 1;
-    
+{   
     sketch = {
         "                     ",
         " ################### ",
@@ -235,4 +234,10 @@ bool Map::checkEndLevel()
         return true;
     }
     return false;
+}
+
+void Map::resetMap()
+{
+    level = 1;
+    initMap();
 }

@@ -53,5 +53,5 @@ public:
     //Checks whether all the food has been eaten 
     bool checkEndLevel();
     //Reset the map
-    void resetMap() { initMap(); };
+    void resetMap();
 };

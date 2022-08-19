@@ -7,7 +7,7 @@
 class Pacman
 {
 private:
-    sf::Clock clock;//Time
+    sf::Clock clock;
     sf::Clock powerFoodTime;
     sf::Sprite player;//Pacman
     sf::Texture pacman1;//The first mode of Pacman
@@ -16,22 +16,22 @@ private:
   
     int dir;//Direction
     int nextDir;//Next direction
-    int lastDir;//Last direction
-    int score = 0;//Score
-    int foodNum = 0;//Foods eaten by Pacman in a level
-    int lastLevel = 1;//Understand when level up
-    int frame = 1;//Control pacman animation
+    int previousDir;//Previous direction
+    int score;//Score
+    int foodNum;//Foods eaten by Pacman in a level
+    int lastLevel;//Understand when level up
+    int frame;//Control pacman animation
     std::array<bool, 4> ghsotCollision;//Pacman encounter with the ghost
-    bool start = false;//Is the game started?!
-    bool spawnFruit1 = false;
-    bool spawnFruit2 = false;
+    bool start;//Is the game started?!
+    bool spawnFruit1;//Spawn the first fruit in a level
+    bool spawnFruit2;////Spawn the second fruit in a level
     bool eatPowerFood;//Eating power food
-    int soul;//Wich ghost has met Pacman?
+    int ghostEncounter;//Wich ghost has met Pacman?
     std::array<bool, 4> scaredGhost;//Is the Ghost scared?!
-    float pacmanSpeed = Speed + 1;
-    bool levelUp = false;
-    int health = 3;
-    bool death = false;
+    float pacmanSpeed = Speed + 0.5;//The speed at wich Pacman moves
+    bool levelUp;
+    int health;//Player health
+    bool death;//Is Pacman out of health?!
     
     //Initialize variables
     void initVariables();
@@ -42,9 +42,9 @@ private:
     //When Pacman encouter foods, eat them
     void eat(std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
     ,std::vector<sf::Sprite> &fruit);
-    //
+    //Has Pacman encountered a ghost?!
     bool accident(sf::Sprite ghost);
-    //Reset pacman rotate
+    //Reset pacman rotation
     void Rotate();
     //Animate pacman
     void animation();
@@ -53,27 +53,25 @@ public:
     Pacman();
     //Draw Pacman in the window
     void draw(sf::RenderWindow & window);
-    
     //Pacman changes in every frame
     void update(std::array< std::array<sf::RectangleShape, Width>, Height> map
     , std::vector<sf::CircleShape> &food, std::vector<sf::CircleShape> &powerFood
     , std::array<sf::Sprite, 4> ghost, bool end, int level, std::vector<sf::Sprite> &fruit);
-
-    //Get score
-    int getScore() { return score; };
+    
     //Get Pacman position
     sf::Vector2f getPos() { return player.getPosition(); };
-    //Get Ghost collision
     std::array<bool, 4> getGhostCollision() { return ghsotCollision; };
-    //Check when Pacman has eaten 70 or 170 foods
-    bool createFruit(); 
-    //Get Pacman
     sf::Sprite getPacman() { return player; };
-    //Get announcing the start of the game
+    int getScore() { return score; };
     bool getStart() { return start; };
     bool getPowerFoodInfo();
     int getGhostEncounter();
     bool getLevelUp();
     int getHealth() { return health; };
     bool getDeath() { return death; };
+
+    //Reset pacman after his death
+    void resetPacman();
+    //Check when Pacman has eaten 70 or 170 foods
+    bool createFruit(); 
 };

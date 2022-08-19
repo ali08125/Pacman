@@ -40,7 +40,7 @@ void Pacman::resetPacman()
     
     dir = -1;
     nextDir = -1;
-    lastDir = -1;
+    previousDir = -1;
     score = 0;
     foodNum = 0;
     lastLevel = 1;
@@ -49,7 +49,7 @@ void Pacman::resetPacman()
     spawnFruit1 = false;
     spawnFruit2 = false;
     eatPowerFood = false;
-    soul = -1;
+    ghostEncounter = -1;
     for (size_t i = 0; i < 4; i++)
     {
         ghsotCollision[i] = false;
@@ -67,7 +67,7 @@ void Pacman::reset()
 
     dir = -1;
     Rotate();
-    lastDir = -1;
+    previousDir = -1;
     nextDir = -1;
     start = false;
     eatPowerFood = false;
@@ -75,7 +75,7 @@ void Pacman::reset()
     {
         scaredGhost[i] = false;
     }
-    soul = -1;
+    ghostEncounter = -1;
 }
 
 void Pacman::draw(RenderWindow & window)
@@ -93,7 +93,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     file.open("../data/data.txt", ios::in);
     file >> highScore;
     file.close();
-
     if (score > highScore)
     {
         fstream file;
@@ -103,7 +102,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         file.close();
     }
 
-    
+    //If 5 seconds have passed since eating a power food, the ghosts are no longer scared
     if (powerFoodTime.getElapsedTime().asSeconds() >= 5)
     {
         for (size_t i = 0; i < 4; i++)
@@ -112,6 +111,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
         }
     }
     
+    //Reset ghost collision after the collision
     for (size_t i = 0; i < 4; i++)
     {
         if (ghsotCollision[i])
@@ -119,11 +119,6 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
     }  
     
     //Check level up
-    if (dir != -1)
-    {
-        lastDir = dir;
-    }
-    
     if (level > lastLevel)
     {
         levelUp = true;
@@ -141,12 +136,19 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
             fruit.erase(fruit.begin());
         }
     }
+
+    //Set previous direction
+    if (dir != -1)
+        previousDir = dir;
     
+    
+    //
     if (end)
         this->reset();
 
+    //Move Pacman
     this->move(map);
-
+    
     //If player pressed a key, animation will work
     if (start && dir != -1)
     {
@@ -162,7 +164,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
             if (scaredGhost[i])
             {
                 score += 200;
-                soul = i;
+                ghostEncounter = i;
                 scaredGhost[i] = false;
             } else
             {
@@ -186,15 +188,15 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
     std::array<bool, 4> wall;
 
     // Collision Right
-    wall[0] = collision(player.getPosition().x + (Speed) - 15, player.getPosition().y - 15, map);
+    wall[0] = collision(player.getPosition().x + Speed - 15, player.getPosition().y - 15, map);
     // Collision Down
-    wall[1] = collision(player.getPosition().x - 15, player.getPosition().y + (Speed) - 15, map);
+    wall[1] = collision(player.getPosition().x - 15, player.getPosition().y + Speed - 15, map);
     // Collision Left
-    wall[2] = collision(player.getPosition().x - (Speed) - 15, player.getPosition().y - 15, map);
+    wall[2] = collision(player.getPosition().x - Speed - 15, player.getPosition().y - 15, map);
     // Collision Up
-    wall[3] = collision(player.getPosition().x - 15, player.getPosition().y - (Speed) - 15, map);
+    wall[3] = collision(player.getPosition().x - 15, player.getPosition().y - Speed - 15, map);
 
-    Vector2f position;
+    Vector2f position;//Position changes
     position.x = 0;
     position.y = 0;
 
@@ -289,14 +291,14 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
 
     player.move(position.x, position.y);
     
-    if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right
+    if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right side of the map
     {
-        position.x = pacmanSpeed - CellSize + 15;
+        position.x =  15 - CellSize;
         player.setPosition(Vector2f(position.x , player.getPosition().y));
         
-    } else if (player.getPosition().x - 15 <= -CellSize) //Exit from left
+    } else if (player.getPosition().x - 15 <= -CellSize) //Exit from left side of the map
     {
-        position.x = Width * CellSize - pacmanSpeed + 15;
+        position.x = Width * CellSize + 15;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
 }
@@ -387,10 +389,10 @@ bool Pacman::createFruit()
 
 void Pacman::Rotate()
 {
-    switch (lastDir)
+    switch (previousDir)
     {
-    case 0:
-        //Right 
+    case 0://Right 
+        
         break;    
     case 1:
         //Down
@@ -460,8 +462,8 @@ void Pacman::animation()
 
 int Pacman::getGhostEncounter()
 {
-    int temp = soul;
-    soul = -1;
+    int temp = ghostEncounter;
+    ghostEncounter = -1;
     return temp;
 }
 

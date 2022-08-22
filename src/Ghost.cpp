@@ -53,14 +53,12 @@ Ghost::Ghost()
         
     }
     
-    if(!eyes.loadFromFile("../Photo/ghost/eyes.png"))
-                cout << "can not load eyes" << endl;
-    
     initGhosts();
 }
 
 void Ghost::initGhosts()
 {    
+    //Reset everything
     for (size_t i = 0; i < 4; i++)
     {   
         clock[i].restart();
@@ -111,23 +109,23 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
 {   
     if (levelUp)
     {
-        initGhosts();
+        resetGhosts();
     }
-    
+
+    //If one of the ghosts hits Pacman in normal mode, the ghosts will be reset
     for (size_t i = 0; i < 4; i++)
     {
         if (accident[i] && !scared[i])
         {
-            initGhosts();
+            resetGhosts();
         }
     }
-    
+    //If the player did not press a key, do nothing
     if (!start)
     {
-        scaredTime.restart();
         return;
     } 
-
+    //If Pacman eats a powerFood, the ghosts will go into a fear
     if (eatPowerFood)
     {  
         scaredTime.restart();
@@ -137,7 +135,7 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
             wink[i] = 0;
         }
     }
-    
+    //After 5 seconds of fear mode, the ghosts return to normal mode
     if (scaredTime.getElapsedTime().asSeconds() >= 5 && scaredTime.getElapsedTime().asSeconds() <= 6)
     {
         for (size_t i = 0; i < 4; i++)
@@ -145,29 +143,26 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
             scared[i] = false;
         }   
     }
-    
-    
-    
-    array<array<bool, 4>, 4> wall;
 
-    Vector2f position;
+    array<bool, 4> wall;//Checking the wall on 4 sides of ghost
+    Vector2f position;//Position changes
 
     for (size_t i = 0; i < 4; i++)
     {
         // Collision Right
-        wall[i][0] = collision(ghost[i].getPosition().x - 15 + Speed, ghost[i].getPosition().y - 15, map);
+        wall[0] = collision(ghost[i].getPosition().x - 15 + Speed, ghost[i].getPosition().y - 15, map);
         // Collision Down
-        wall[i][1] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y + Speed - 15, map);
+        wall[1] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y + Speed - 15, map);
         // Collision Left
-        wall[i][2] = collision(ghost[i].getPosition().x - 15 - Speed, ghost[i].getPosition().y - 15, map);
+        wall[2] = collision(ghost[i].getPosition().x - 15 - Speed, ghost[i].getPosition().y - 15, map);
         // Collision Up
-        wall[i][3] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y - Speed - 15, map, 1);
+        wall[3] = collision(ghost[i].getPosition().x - 15, ghost[i].getPosition().y - Speed - 15, map, 1);
 
         position.x = 0;
         position.y = 0;
 
-        //dir = chaseMode(pacmanPos, wall);
-        if (i == eatGhost)
+        //If the ghost is eaten by Pacman in fear mode, reset it
+        if (eatGhost == i)
         {
             switch (i)
             {
@@ -198,10 +193,11 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
             }
         } else
         {
-            ghostDir[i] = scatterMode(wall[i], ghostDir[i]);
+            //Determining the direction of movement randomly
+            ghostDir[i] = scatterMode(wall, ghostDir[i]);
         }
-
-        if (wall[i][ghostDir[i]] == 0 && ghostDir[i] != -1)
+        //If it did not hit the wall, it would move
+        if (wall[ghostDir[i]] == 0 && ghostDir[i] != -1)
         { 
             switch (ghostDir[i])
             {
@@ -223,15 +219,15 @@ void Ghost::update(array<array<RectangleShape, Width>, Height> map
         ghost[i].move(position.x, position.y);
         animation(ghostDir[i], i, scared[i]);
 
-        // Exit from a side and enter from the other side
-        if (ghost[i].getPosition().x - 15 >= CellSize * Width)
+        //Use tunnel
+        if (ghost[i].getPosition().x - 15 >= CellSize * Width)//Exit from right side of the map
         {
-            position.x = Speed - CellSize + 15;
+            position.x = 15;
             ghost[i].setPosition(Vector2f(position.x, ghost[i].getPosition().y));
             
-        } else if (ghost[i].getPosition().x - 15 <= -CellSize)
+        } else if (ghost[i].getPosition().x - 15 <= -CellSize)//Exit from left side of the map
         {
-            position.x = Width * CellSize - Speed + 15;
+            position.x = Width * CellSize - 15;
             ghost[i].setPosition(Vector2f(position.x, ghost[i].getPosition().y));
         }
     }
@@ -248,11 +244,13 @@ void Ghost::draw(sf::RenderWindow &window)
 
 void Ghost::animation(int dir, int i, bool scared)
 {
+    //Scared time animation
     if (scared && scaredTime.getElapsedTime().asSeconds() <= 5)
     {
         if (scaredTimeWink[i].getElapsedTime().asSeconds() > 0.09)
         {
             scaredTimeWink[i].restart();
+            //The ghost flashes after 2 seconds of fear time
             if (scaredTime.getElapsedTime().asSeconds() >= 2)
             {
                 if (wink[i] == 0)
@@ -275,8 +273,10 @@ void Ghost::animation(int dir, int i, bool scared)
             else
                 frame[i] = 0;
         } 
+
     } else
     {
+        //Animate ghost in normal mode
         if (clock[i].getElapsedTime().asSeconds() > 0.05)
         {
             clock[i].restart();
@@ -297,199 +297,18 @@ int Ghost::scatterMode(array<bool, 4> wall, int dir)
     while (1)
     {
         try1++;
+        //Random number generation
         random = rand() % 4;
+        //Do not hit the wall and do not change direction 180 degrees
         if (!wall[random] && (random != dir - 2 && random != dir + 2))
         {
             return random;
         }
-
+        //Stop if it fails to find a suitable number more than 50 times
         if (try1 > 50)
         {
             return -1;   
         }
     }
-    return -1;
-}
-
-int Ghost::chaseMode(Vector2f pacmanPos, std::array<bool, 4> wall, int dir, int i)
-{
-    int random = rand() % 2;
-
-    // Pacman is the right top of the ghost
-    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
-    {
-        if (random == 0 && (pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
-        {
-            // Up
-            return 3;
-        } else if (random == 1 && (pacmanPos.x > ghost[i].getPosition().x && wall[0] == 0) && dir != 2)
-        {
-            // Right
-            return 0;
-        } else if (wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (wall[1] == 0 && dir != 3)
-        {
-            // Down
-            return 1;
-        }
-    }
-
-    // Pacman is the left top of the ghost
-    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
-    {
-        if (random == 0 && (pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
-        {
-            // Up
-            return 3;
-        } else if (random == 1 && (pacmanPos.x < ghost[i].getPosition().x && wall[2] == 0) && dir != 0)
-            {
-                // Left
-                return 2;
-            } else if (wall[1] == 0 && dir != 3)
-            {
-                // Down
-                return 1;
-            } else if (wall[0] == 0 && dir != 2)
-            {
-                // Right
-                return 0;
-            }
-    }
-
-    // Pacman is the top of the ghost
-    if (pacmanPos.x == ghost[i].getPosition().x && pacmanPos.y < ghost[i].getPosition().y)
-    {
-        if ((pacmanPos.y < ghost[i].getPosition().y && wall[3] == 0) && dir != 1)
-        {
-            // Up
-            return 3;
-        } else if (random == 0 && wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (random == 1 && wall[1] == 1 && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (wall[0] == 0 && dir != 2)
-        {
-            // Right
-            return 0;
-        }   
-    }
-
-    // Pacman is the right bottom of the ghost
-    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
-    {
-        if (random == 0 && (pacmanPos.y > ghost[i].getPosition().y && wall[1] == 0) && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (random == 1 && (pacmanPos.x > ghost[i].getPosition().x && wall[0] == 0) && dir != 2)
-        {
-            // Right
-            return 0;
-        } else if (wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (wall[3] == 0 && dir != 1)
-        {
-            // Up
-            return 3;
-        }
-    }
-
-    // Pacman is the left bottom of the ghost
-    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
-    {
-        if (random == 0 && (pacmanPos.x < ghost[i].getPosition().x && wall[2] == 0) && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (random == 1 && (pacmanPos.y > ghost[i].getPosition().y && wall[1] == 0) && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (wall[0] == 0 && dir != 2)
-        {
-            // Right
-            return 0;
-        } else if (wall[3] == 0 && dir != 1)
-        {
-            // Up
-            return 3;
-        }
-    }
-
-    // Pacman is the bottom of the ghost
-    if (pacmanPos.x == ghost[i].getPosition().x && pacmanPos.y > ghost[i].getPosition().y)
-    {
-        if ((wall[1] == 0) && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (wall[0] == 0 && dir != 2)
-        {
-            // Right
-            return 0;
-        } else if (wall[3] == 0 && dir != 1)
-        {
-            // Up
-            return 3;
-        }   
-    }
-
-    // Pacman is the left of the ghost
-    if (pacmanPos.x < ghost[i].getPosition().x && pacmanPos.y == ghost[i].getPosition().y)
-    {
-        if (wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        } else if (wall[1] == 0 && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (wall[3] == 0 && dir != 1)
-        {
-            // Up
-            return 3;
-        } else if (wall[0] == 0 && dir != 2)
-        {
-            // Right
-            return 0;
-        }    
-    }
-
-    // Pacman is the right of the ghost
-    if (pacmanPos.x > ghost[i].getPosition().x && pacmanPos.y == ghost[i].getPosition().y)
-    {
-        if (wall[0] == 0 && dir != 2)
-        {
-            // Right
-            return 0;
-        } else if (wall[1] == 0 && dir != 3)
-        {
-            // Down
-            return 1;
-        } else if (wall[3] == 0 && dir != 1)
-        {
-            // Up
-            return 3;
-        } else if (wall[2] == 0 && dir != 0)
-        {
-            // Left
-            return 2;
-        }   
-    }
-    
     return -1;
 }

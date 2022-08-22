@@ -39,6 +39,7 @@ void Pacman::resetPacman()
     player.setTexture(pacman1);
     
     dir = -1;
+    Rotate();
     nextDir = -1;
     previousDir = -1;
     score = 0;
@@ -180,7 +181,7 @@ void Pacman::update(array<array<RectangleShape, Width>, Height> map
 
 void Pacman::move(array<array<RectangleShape, Width>, Height> map)
 {
-    std::array<bool, 4> wall;
+    std::array<bool, 4> wall;//Checking the wall on 4 sides of Pacman
 
     // Collision Right
     wall[0] = collision(player.getPosition().x + Speed - 15, player.getPosition().y - 15, map);
@@ -285,15 +286,15 @@ void Pacman::move(array<array<RectangleShape, Width>, Height> map)
     }
 
     player.move(position.x, position.y);
-    
-    if (player.getPosition().x - 15 >= CellSize * Width) //Exit from right side of the map
+    //Use tunnel
+    if (player.getPosition().x - 15 >= CellSize * Width)//Exit from right side of the map
     {
-        position.x =  15 - CellSize;
+        position.x = 0;
         player.setPosition(Vector2f(position.x , player.getPosition().y));
         
-    } else if (player.getPosition().x - 15 <= -CellSize) //Exit from left side of the map
+    } else if (player.getPosition().x - 15 <= -CellSize)//Exit from left side of the map
     {
-        position.x = Width * CellSize + 15;
+        position.x = Width * CellSize;
         player.setPosition(Vector2f(position.x, player.getPosition().y));
     }
 }

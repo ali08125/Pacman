@@ -36,16 +36,18 @@ void Menu::initMenu()
 
     levelUp.setFont(font);
     levelUp.setCharacterSize(48);
-    levelUp.setPosition((Width / 2 * CellSize) - 70, (Height / 2 * CellSize) - 60);
 
     death.setFont(font);
     death.setCharacterSize(72);
     death.setString("YOU DIED");
     death.setOrigin(death.getLocalBounds().width / 2, death.getLocalBounds().height / 2);
-    death.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 70);
+    death.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 100);
 
     deathScore.setFont(font);
     deathScore.setCharacterSize(50);
+
+    highscore1.setFont(font);
+    highscore1.setCharacterSize(35);
 
     play.setFont(font);
     play.setCharacterSize(72);
@@ -95,7 +97,7 @@ void Menu::initMenu()
     deathScreenMenu.setString("BACK TO MENU");
     deathScreenMenu.setOrigin(deathScreenMenu.getLocalBounds().width / 2
     ,deathScreenMenu.getLocalBounds().height / 2);
-    deathScreenMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 90);
+    deathScreenMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 70);
 
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
         cout << "can not open 2.png" << endl;
@@ -149,6 +151,8 @@ void Menu::levelUpScreen(RenderWindow &window, int level)
 {
     Clock loadingScreen;
     this->levelUp.setString("LEVEL " + to_string(level));
+    levelUp.setOrigin(levelUp.getLocalBounds().width / 2, levelUp.getLocalBounds().height / 2);
+    levelUp.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f);
 
     Event event;
     while (loadingScreen.getElapsedTime().asSeconds() <= 2)
@@ -166,6 +170,7 @@ void Menu::levelUpScreen(RenderWindow &window, int level)
         }
         window.clear(Color::Black);
 
+        window.draw(background1);
         window.draw(levelUp);
 
         window.display();
@@ -174,9 +179,22 @@ void Menu::levelUpScreen(RenderWindow &window, int level)
 
 bool Menu::deathScreen(RenderWindow &window, int score)
 {
+    //Reading highScore from file
+    int high_score;
+    fstream file;
+    file.open("../data/data.txt", ios::in);
+    file >> high_score;
+    file.close();
+    
+    highscore1.setString("HIGH SCORE " + to_string(high_score));
+    highscore1.setOrigin(highscore1.getLocalBounds().width / 2
+    ,highscore1.getLocalBounds().height / 2);
+    highscore1.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 25);
+
+
     deathScore.setString("SCORE " + to_string(score));
     deathScore.setOrigin(deathScore.getLocalBounds().width / 2, deathScore.getLocalBounds().height / 2);
-    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 20);
+    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 30);
     
     while (window.isOpen())
     {
@@ -203,6 +221,7 @@ bool Menu::deathScreen(RenderWindow &window, int score)
         window.draw(background1);
         window.draw(death);
         window.draw(deathScore);
+        window.draw(highscore1);
         window.draw(deathScreenMenu);
 
         window.display();

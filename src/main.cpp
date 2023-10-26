@@ -17,7 +17,7 @@ int main()
     Time time;
 
     RenderWindow window(VideoMode(Width * CellSize, Height * CellSize), "PacMan");
-    window.setFramerateLimit(120);
+    window.setFramerateLimit(60);
 
     Event event;
     clock.restart();
@@ -37,7 +37,8 @@ int main()
                 window.close();
             }
         }
-        //menu.deathScreen(window, pacman.getScore());
+
+        //Show menu
         if (click == false)
         {
             int tmp = 0;
@@ -61,7 +62,9 @@ int main()
         }
         
         window.clear();
-        
+
+        //Start playing game
+
         if (pacman.createFruit())
         {
             map.createFruit(pacman.getPacman());
@@ -69,6 +72,7 @@ int main()
             time = seconds(clock.getElapsedTime().asSeconds());
         }
         time = seconds(clock.getElapsedTime().asSeconds());
+
 
         std::vector<CircleShape> temp = map.getFood();
         std::vector<CircleShape> temp1 = map.getPowerFood();
@@ -80,6 +84,7 @@ int main()
         map.setFood(temp);
         map.setPowerFood(temp1);
         map.setFruit(temp2);
+
         
         map.update(time);
 
@@ -99,13 +104,14 @@ int main()
         
         window.display(); 
 
+        //Death
         if (pacman.getDeath())
         {
             if(menu.deathScreen(window, pacman.getScore()))
             {
                 pacman.resetPacman();
-                map.initMap();
-                ghost.resetGhosts();
+                map.resetMap();
+               // ghost.resetGhosts();
                 click = false;
                 continue;
             }

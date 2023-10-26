@@ -97,7 +97,7 @@ void Menu::initMenu()
     deathScreenMenu.setString("BACK TO MENU");
     deathScreenMenu.setOrigin(deathScreenMenu.getLocalBounds().width / 2
     ,deathScreenMenu.getLocalBounds().height / 2);
-    deathScreenMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 70);
+    deathScreenMenu.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 110);
 
     if (!pacmanTexture.loadFromFile("../Photo/pacman/2.png"))
         cout << "can not open 2.png" << endl;
@@ -119,7 +119,6 @@ void Menu::draw(sf::RenderWindow &window, int score, int level, int health)
     this->score.setString("SCORE " + to_string(score));
     this->score.setOrigin(this->score.getLocalBounds().width / 2, this->score.getLocalBounds().height / 2);
     this->score.setPosition(CellSize * Width / 2.0f, 10);
-
 
     //Reading highScore from file
     int high_score;
@@ -185,16 +184,15 @@ bool Menu::deathScreen(RenderWindow &window, int score)
     file.open("../data/data.txt", ios::in);
     file >> high_score;
     file.close();
+
+    deathScore.setString("SCORE " + to_string(score));
+    deathScore.setOrigin(deathScore.getLocalBounds().width / 2, deathScore.getLocalBounds().height / 2);
+    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 10);
     
     highscore1.setString("HIGH SCORE " + to_string(high_score));
     highscore1.setOrigin(highscore1.getLocalBounds().width / 2
     ,highscore1.getLocalBounds().height / 2);
-    highscore1.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 25);
-
-
-    deathScore.setString("SCORE " + to_string(score));
-    deathScore.setOrigin(deathScore.getLocalBounds().width / 2, deathScore.getLocalBounds().height / 2);
-    deathScore.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f - 30);
+    highscore1.setPosition(CellSize * Width / 2.0f, CellSize * Width / 2.0f + 55);
     
     while (window.isOpen())
     {

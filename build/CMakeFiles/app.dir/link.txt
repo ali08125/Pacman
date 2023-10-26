@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/app.dir/src/main.cpp.o CMakeFiles/app.dir/src/Map.cpp.o CMakeFiles/app.dir/src/Pacman.cpp.o -o app  -lsfml-window -lsfml-system -lsfml-graphics 

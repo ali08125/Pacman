@@ -1,3 +1,0 @@
-/home/alimirzaei/Project/Pacman/build/CMakeFiles/app.dir
-/home/alimirzaei/Project/Pacman/build/CMakeFiles/edit_cache.dir
-/home/alimirzaei/Project/Pacman/build/CMakeFiles/rebuild_cache.dir

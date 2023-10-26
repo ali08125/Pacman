@@ -5,6 +5,9 @@ set(SOURCES
 	src/main.cpp
 	src/Map.cpp
 	src/Pacman.cpp
+	src/Menu.cpp
+	src/Ghost.cpp
+	src/Collision.cpp
 )
 include_directories(include/)
 add_executable(app ${SOURCES})
